@@ -1,0 +1,36 @@
+
+
+
+Cloned:
+https://github.com/raspberrypi/pico-sdk?tab=readme-ov-file
+
+https://github.com/TuriSc/Pico-Sequencer-Synth?tab=readme-ov-file
+
+--
+
+Installed 
+Raspberry Pi Pico extension into VSCode
+
+Downloaded Pico profile:
+https://github.com/raspberrypi/pico-vscode/blob/HEAD/scripts/Pico.code-profile
+
+Fo to Code > Settings  > Profiles 
+
+Click down arrow next to New Profile and Import
+Select profile file
+Create
+
+-------------
+
+Setting up VSCode
+https://www.youtube.com/watch?v=B5rQSoOmR5w
+
+
+https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf
+This seems much more helpful
+
+Blink example compiles and runs  
+
+
+-------------
+
