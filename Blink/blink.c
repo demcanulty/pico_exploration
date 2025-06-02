@@ -54,7 +54,7 @@ int main()
     //     tight_loop_contents();
     // }
     
-     printf("hello\n");
+    printf("hello\n");
     int rc = pico_led_init();
     hard_assert(rc == PICO_OK);
 
