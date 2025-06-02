@@ -47,7 +47,8 @@ add_executable(Buchla_Pico_Project
                 blink.c 
                 cdc_app.c 
                 uac2_app.c 
-                usb_descriptors.c)
+                usb_descriptors.c
+                midi.c)
 
 
 

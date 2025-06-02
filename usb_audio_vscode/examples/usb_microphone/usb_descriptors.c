@@ -124,9 +124,9 @@ char const* string_desc_arr [] =
 {
     (const char[]) { 0x09, 0x04 }, 	// 0: is supported language is English (0x0409)
     "nDStudioLab",                       // 1: Manufacturer
-    "RPi Pico",                      // 2: Product
-    "123456",                          // 3: Serials, should use chip ID
-    "UAC2",                          // 4: Audio Interface
+    "RPi Pico",                          // 2: Product
+    "123456",                            // 3: Serials, should use chip ID
+    "UAC2",                              // 4: Audio Interface
 };
 
 static uint16_t _desc_str[32];

@@ -79,7 +79,11 @@ uint8_t const * tud_descriptor_device_cb(void)
 //--------------------------------------------------------------------+
 // Configuration Descriptor
 //--------------------------------------------------------------------+
-#define CONFIG_TOTAL_LEN    	(TUD_CONFIG_DESC_LEN + CFG_TUD_AUDIO * TUD_AUDIO_HEADSET_STEREO_DESC_LEN + CFG_TUD_CDC * TUD_CDC_DESC_LEN)
+
+
+
+
+#define CONFIG_TOTAL_LEN    	(TUD_CONFIG_DESC_LEN + CFG_TUD_AUDIO * TUD_AUDIO_HEADSET_STEREO_DESC_LEN + CFG_TUD_CDC * TUD_CDC_DESC_LEN + CFG_TUD_MIDI * TUD_MIDI_DESC_LEN)
 
 #if CFG_TUSB_MCU == OPT_MCU_LPC175X_6X || CFG_TUSB_MCU == OPT_MCU_LPC177X_8X || CFG_TUSB_MCU == OPT_MCU_LPC40XX
   // LPC 17xx and 40xx endpoint type (bulk/interrupt/iso) are fixed by its number
@@ -117,6 +121,9 @@ uint8_t const * tud_descriptor_device_cb(void)
   #define EPNUM_CDC_NOTIF   0x83
   #define EPNUM_CDC_OUT     0x04
   #define EPNUM_CDC_IN      0x84
+
+  #define EPNUM_MIDI_OUT    0x02
+  #define EPNUM_MIDI_IN     0x02
 #endif
 
 uint8_t const desc_configuration[] =
@@ -128,7 +135,10 @@ uint8_t const desc_configuration[] =
     TUD_AUDIO_HEADSET_STEREO_DESCRIPTOR(2, EPNUM_AUDIO_OUT, EPNUM_AUDIO_IN | 0x80),
 
     // CDC: Interface number, string index, EP notification address and size, EP data address (out, in) and size.
-    TUD_CDC_DESCRIPTOR(ITF_NUM_CDC, 6, EPNUM_CDC_NOTIF, 8, EPNUM_CDC_OUT, EPNUM_CDC_IN, 64)
+    TUD_CDC_DESCRIPTOR(ITF_NUM_CDC, 6, EPNUM_CDC_NOTIF, 8, EPNUM_CDC_OUT, EPNUM_CDC_IN, 64),
+
+    // Interface number, string index, EP Out & EP In address, EP size
+    TUD_MIDI_DESCRIPTOR(ITF_NUM_MIDI, 0x04, EPNUM_MIDI_OUT, (0x80 | EPNUM_MIDI_IN), 64)
 };
 
 // Invoked when received GET CONFIGURATION DESCRIPTOR
@@ -157,8 +167,8 @@ char const *string_desc_arr[] =
 {
   (const char[]) { 0x09, 0x04 },  // 0: is supported language is English (0x0409)
   "Buchla",                      // 1: Manufacturer
-  "Buchla headset",              // 2: Product
-  NULL,                           // 3: Serials will use unique ID if possible
+  "Buchla Pico",                 // 2: Product
+  NULL,                          // 3: Serials will use unique ID if possible
   "Buchla Speakers",             // 4: Audio Interface
   "Buchla Microphone",           // 5: Audio Interface
   "Buchla CDC",                  // 6: Audio Interface

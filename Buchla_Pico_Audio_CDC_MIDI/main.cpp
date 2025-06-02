@@ -9,6 +9,7 @@
 #include "main.h"
 #include "blink.h"
 #include "common.h"
+#include "midi.h"
 
 //***  INCLUDE C HEADERS HERE  *****
 extern "C" {
@@ -34,7 +35,7 @@ extern uint32_t blink_interval_ms;// = BLINK_NOT_MOUNTED;
 
 
 uint32_t this_count;
-uint32_t this_time, blink_time;
+uint32_t this_time, blink_time, this_millis;
 bool led_state;
 
 
@@ -85,7 +86,7 @@ int main()
             
             printf("Runs through main: %d\n", this_count);
             printf("Time (in millis) : %d\n\n", this_time);
-
+            send_test_cc();
             this_count = 0;
         }
 
@@ -100,6 +101,16 @@ int main()
             pico_set_led(led_state);
 
         }
+
+        //*******************************
+        //***  ONCE PER MILLISECOND   ***
+        //*******************************
+        if(board_millis() != this_millis)
+        {
+            this_millis = board_millis();
+            usb_midi_task();
+        }
+        
         
 
         this_count++;
@@ -143,3 +154,7 @@ void tud_resume_cb(void)
 {
   blink_interval_ms = BLINK_MOUNTED;
 }
+
+
+
+

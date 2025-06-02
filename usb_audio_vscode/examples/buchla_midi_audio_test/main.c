@@ -88,8 +88,8 @@ int main(void)
     this_time = board_millis();
     while (1) {
         // run the USB microphone task continuously
-        // usb_microphone_task();
-        // usb_midi_task();
+        usb_microphone_task();
+        usb_midi_task();
 
 
         //**********************************
