@@ -16,7 +16,32 @@ extern "C" {
   
   
 }
+/*
+Note pico SDK 2.1.1 - 
+replaced the following function in dcd_rp2040.c in the tinyusb library.
+It's not perfect, but it crashes less often when switching to 24 bit.
+See:  https://github.com/hathach/tinyusb/pull/2937
 
+// New API: Configure and enable an ISO endpoint according to descriptor
+bool dcd_edpt_iso_activate(uint8_t rhport, tusb_desc_endpoint_t const * ep_desc) {
+  (void) rhport;
+  const uint8_t ep_addr = ep_desc->bEndpointAddress;
+
+  printf("ep_desc->wMaxPacketSize: %d\r\n",ep_desc->wMaxPacketSize);
+
+  // init w/o allocate (removed quantize size to 64)
+  hw_endpoint_init(ep_addr, ep_desc->wMaxPacketSize, TUSB_XFER_ISOCHRONOUS);
+
+  // Fill in endpoint control register with buffer offset
+  struct hw_endpoint* ep = hw_endpoint_get_by_addr(ep_addr);
+  TU_ASSERT(ep->hw_data_buf != NULL); // must be inited and buffer allocated
+  ep->wMaxPacketSize = ep_desc->wMaxPacketSize;
+
+  hw_endpoint_enable(ep);
+  return true;
+}
+
+*/
 
 extern uint32_t blink_interval_ms;// = BLINK_NOT_MOUNTED;
 
@@ -45,7 +70,7 @@ int main()
     pico_led_init();
 
 
-    //***********************
+    //***********************`
     //***  TINY USB INIT  ***
     //***********************
    
@@ -75,7 +100,7 @@ int main()
         //***  TinyUSB device task  ***
         //*****************************
         tud_task();                            
-
+        
         //**********************************
         //***  PRINT RUNS THROUGH MAIN   ***
         //**********************************

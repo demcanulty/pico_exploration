@@ -124,6 +124,9 @@ uint8_t const * tud_descriptor_device_cb(void)
 
   #define EPNUM_MIDI_OUT    0x02
   #define EPNUM_MIDI_IN     0x02
+
+//     #define EPNUM_MIDI_OUT    0x05
+//   #define EPNUM_MIDI_IN     0x05
 #endif
 
 uint8_t const desc_configuration[] =

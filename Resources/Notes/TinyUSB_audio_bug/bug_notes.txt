@@ -1,0 +1,13 @@
+
+
+https://github.com/raspberrypi/pico-sdk/issues/2236
+
+https://github.com/hathach/tinyusb/issues/2838
+
+https://github.com/hathach/tinyusb/pull/2937
+
+WARN: starting new transfer on already active ep 01
+
+*** PANIC ***
+
+ep 01 was already available
