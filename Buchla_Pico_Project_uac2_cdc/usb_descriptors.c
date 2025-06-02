@@ -29,6 +29,9 @@
 #include "tusb.h"
 #include "usb_descriptors.h"
 
+#define BUCHLA_VID  0x16D0
+
+
 /* A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
  * Same VID/PID with different interface e.g MSC (first), then CDC (later) will possibly cause system error on PC.
  *
@@ -55,7 +58,7 @@ tusb_desc_device_t const desc_device =
     .bDeviceProtocol    = MISC_PROTOCOL_IAD,
     .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
 
-    .idVendor           = 0xCafe,
+    .idVendor           = BUCHLA_VID,
     .idProduct          = USB_PID,
     .bcdDevice          = 0x0100,
 
@@ -153,12 +156,12 @@ enum {
 char const *string_desc_arr[] =
 {
   (const char[]) { 0x09, 0x04 },  // 0: is supported language is English (0x0409)
-  "TinyUSB",                      // 1: Manufacturer
-  "TinyUSB headset",              // 2: Product
+  "Buchla",                      // 1: Manufacturer
+  "Buchla headset",              // 2: Product
   NULL,                           // 3: Serials will use unique ID if possible
-  "TinyUSB Speakers",             // 4: Audio Interface
-  "TinyUSB Microphone",           // 5: Audio Interface
-  "TinyUSB CDC",                  // 6: Audio Interface
+  "Buchla Speakers",             // 4: Audio Interface
+  "Buchla Microphone",           // 5: Audio Interface
+  "Buchla CDC",                  // 6: Audio Interface
 };
 
 static uint16_t _desc_str[32 + 1];

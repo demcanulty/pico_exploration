@@ -17,7 +17,7 @@ extern "C" {
 }
 
 
-uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
+extern uint32_t blink_interval_ms;// = BLINK_NOT_MOUNTED;
 
 
 

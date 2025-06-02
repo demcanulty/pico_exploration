@@ -1,3 +1,9 @@
+
+set(FAMILY rp2040)
+set(BOARD pico_sdk)
+set(TINYUSB_FAMILY_PROJECT_NAME_PREFIX "tinyusb_dev_")
+set(TOP ${PICO_TINYUSB_PATH})
+
 # Generated Cmake Pico project file
 
 cmake_minimum_required(VERSION 3.13)
@@ -36,15 +42,13 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Buchla_Pico_Project main.cpp blink.c cdc_app.c uac2_app.c usb_descriptors.c)
+add_executable(Buchla_Pico_Project 
+                main.cpp 
+                blink.c 
+                cdc_app.c 
+                uac2_app.c 
+                usb_descriptors.c)
 
-# target_sources(${PROJECT} PUBLIC
-#   ${CMAKE_CURRENT_SOURCE_DIR}/cdc_app.c
-#   ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/uac2_app.c
-#   ${CMAKE_CURRENT_SOURCE_DIR}/usb_descriptors.c
-#   ${CMAKE_CURRENT_SOURCE_DIR}/blink.c
-#   )
 
 
 
@@ -59,6 +63,7 @@ pico_enable_stdio_usb(Buchla_Pico_Project 1)
 target_link_libraries(  Buchla_Pico_Project
                         pico_stdlib
                         tinyusb_board   #needed for bsp/board_api.h
+                        tinyusb_device
                         )
 
 # Add the standard include files to the build

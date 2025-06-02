@@ -59,6 +59,7 @@ pico_enable_stdio_usb(Buchla_Pico_Project 1)
 target_link_libraries(  Buchla_Pico_Project
                         pico_stdlib
                         tinyusb_board   #needed for bsp/board_api.h
+                        tinyusb_device
                         )
 
 # Add the standard include files to the build

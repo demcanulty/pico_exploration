@@ -58,6 +58,9 @@ target_include_directories(pico_analog_microphone INTERFACE
 
 target_link_libraries(pico_analog_microphone INTERFACE pico_stdlib hardware_adc hardware_dma)
 
-add_subdirectory("examples/hello_analog_microphone")
-add_subdirectory("examples/hello_pdm_microphone")
-add_subdirectory("examples/usb_microphone")
+
+add_subdirectory("examples/buchla_midi_audio_test")
+
+#add_subdirectory("examples/hello_analog_microphone")
+#add_subdirectory("examples/hello_pdm_microphone")
+#add_subdirectory("examples/usb_microphone")

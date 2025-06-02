@@ -67,7 +67,8 @@ void tud_cdc_rx_cb(uint8_t itf)
     uint32_t count = tud_cdc_n_read(itf, buf, sizeof(buf));
 
     // check if the data was received on the second cdc interface
-    if (itf == 1) {
+    if (itf == 1) 
+    {
         // process the received data
         buf[count] = 0; // null-terminate the string
         // now echo data back to the console on CDC 0
