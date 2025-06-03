@@ -47,7 +47,7 @@ endif()
 # ====================================================================================
 
 
-set(PICO_BOARD pico CACHE STRING "Board type")
+set(PICO_BOARD pico2 CACHE STRING "Board type")
 
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
@@ -83,6 +83,7 @@ target_link_libraries(  Buchla_Pico_Project
                         pico_stdlib
                         tinyusb_board   #needed for bsp/board_api.h
                         tinyusb_device
+                        pico_multicore
                         )
 
 # Add the standard include files to the build
