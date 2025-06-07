@@ -37,7 +37,14 @@ pico_sdk_init()
 
 add_executable(Pico_gen main.cpp 
                         chorus_flange.cpp 
-                        genlib.cpp)
+                        genlib.cpp
+                        chorus_flange_helper.cpp
+                        blink.cpp
+                        cdc_app.c 
+                        uac2_app.c
+                        usb_descriptors.c
+                        midi.cpp
+                        )
 
 pico_set_program_name(Pico_gen "Pico_gen")
 pico_set_program_version(Pico_gen "0.1")
@@ -47,8 +54,11 @@ pico_enable_stdio_uart(Pico_gen 0)
 pico_enable_stdio_usb(Pico_gen 1)
 
 # Add the standard library to the build
-target_link_libraries(Pico_gen
-        pico_stdlib)
+target_link_libraries(  Pico_gen        #THIS PROJECT
+                        pico_stdlib
+                        tinyusb_board   #needed for bsp/board_api.h
+                        tinyusb_device
+                        pico_multicore)
 
 # Add the standard include files to the build
 target_include_directories(Pico_gen PRIVATE

@@ -186,7 +186,10 @@ unsigned long systime_ticks(void)
 }
 
 // NEED THIS FOR WINDOWS:
-//  
+// void *operator new(size_t size) { return sysmem_newptr(size); }
+// void *operator new[](size_t size) { return sysmem_newptr(size); }
+// void operator delete(void *p) throw() { sysmem_freeptr(p); }
+// void operator delete[](void *p) throw() { sysmem_freeptr(p); }
 
 void *genlib_obtain_reference_from_string(const char *name)
 {
