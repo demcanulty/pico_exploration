@@ -1,0 +1,441 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 6,
+			"revision" : 5,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 58.0, 100.0, 1144.0, 839.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-33",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 663.106787025928497, 553.398050665855408, 29.5, 22.0 ],
+					"text" : "*"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-34",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 673.786398530006409, 479.61164391040802, 19.0, 22.0 ],
+					"text" : "3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-35",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 673.786398530006409, 514.56309974193573, 100.0, 22.0 ],
+					"text" : "peek amplitudes"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-36",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 666.019408345222473, 593.203875362873077, 35.0, 22.0 ],
+					"text" : "out 4"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-29",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 525.242711246013641, 553.398050665855408, 29.5, 22.0 ],
+					"text" : "*"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-30",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 535.922322750091553, 479.61164391040802, 19.0, 22.0 ],
+					"text" : "2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-31",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 535.922322750091553, 514.56309974193573, 100.0, 22.0 ],
+					"text" : "peek amplitudes"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-32",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 528.155332565307617, 593.203875362873077, 35.0, 22.0 ],
+					"text" : "out 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 401.941742062568665, 553.398050665855408, 29.5, 22.0 ],
+					"text" : "*"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-26",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 412.621353566646576, 479.61164391040802, 19.0, 22.0 ],
+					"text" : "1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 412.621353566646576, 514.56309974193573, 100.0, 22.0 ],
+					"text" : "peek amplitudes"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-28",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 404.85436338186264, 593.203875362873077, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-22",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 280.582520425319672, 553.398050665855408, 29.5, 22.0 ],
+					"text" : "*"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 291.262131929397583, 479.61164391040802, 19.0, 22.0 ],
+					"text" : "0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 291.262131929397583, 514.56309974193573, 100.0, 22.0 ],
+					"text" : "peek amplitudes"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontsize" : 14.0,
+					"id" : "obj-1",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 514.56309974193573, 854.36892032623291, 512.0, 53.0 ],
+					"text" : "a simple way of using the panner to create circular pans is to set an x,y location, then use rotate to move it in a circle. really, I should have 4 parameters: x and y for cartesian, angle and radius for polar. "
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 1,
+					"fontsize" : 16.0,
+					"id" : "obj-13",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 514.56309974193573, 716.504844546318054, 95.0, 24.0 ],
+					"text" : "parameters"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontsize" : 14.0,
+					"id" : "obj-12",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 514.56309974193573, 733.980572462081909, 512.0, 116.0 ],
+					"text" : "atten, attenuate the output\nrotate, rotate the positions of the speakers/rotate the room \nx_loc, x coordinate of sound placement in the room\ny_loc y coordinate of sound placement in the room\nbleed, low value concentrates sound in point sources (speakers)\nmax_dist, used to restrict diameter of sound field\nspeaker_preset, currently only two position presets - corners(\"X\") or LRFB (\"+\")"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 115.533978998661041, 452.427178263664246, 58.0, 33.0 ],
+					"text" : "audio outs"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 301.0, 17.0, 51.0, 20.0 ],
+					"text" : "audio in"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "//a function to smooth data changes\r\nsmooth(v){\r\n\tHistory prev;\r\n\tincr = 250/samplerate;\r\n\tprev = prev + incr * (v -prev);\t\t\r\n\treturn prev;\r\n}\r\n\r\n//locations are from -1. to 1.\r\nParam atten(0.1,min=0,max=1);\r\nParam rotate(0,min=0,max=1);\r\nParam x_loc(0,min=-1,max=1);\r\nParam y_loc(0,min=-1,max=1);\r\n\r\n//if position is == to a speaker position, how much will the other speakers get sound?\r\n//likely need to compensate for lower values, since it falls off very rapidly\r\nParam bleed(1,min=0,max=2);\r\n\r\n//create a circle boundary \r\nParam max_dist(1.414,min=0,max=2);\r\n\r\n//currently two presets: 0 (corners) and 1 (plus)\r\nParam speaker_preset(0);\r\n\r\n//buffer to hold amp levels to the four outputs\r\nData amplitudes(4);\r\n\r\n//buffer to hold signals to the four outputs\r\nData tospeakers(4);\r\n\r\n//Data speaker_loc(17); //defined externally\r\n\r\n//clip mouse input to a circle by converting to polar and clipping radius\r\n//also allows rotation from a single param\r\ndist,angle = cartopol(x_loc,y_loc);\r\ndist = clip(dist,0,1);\r\nangle_rot = angle + (2*pi*rotate);\r\nx_rad, y_rad = poltocar(dist,angle_rot);\r\nx_rad_sm = smooth(x_rad);\r\ny_rad_sm = smooth(y_rad);\r\n\r\n//get intial index for speaker locations\r\nspeaker_offset = 1+(speaker_preset*8);\r\n//keep it in the circle:\r\n//max_dist = 1.414;\r\n\r\n//calculate amplitude of sound for each speaker based on distance\r\nfor (i=0;i<4;i+=1){\r\n\tsi = speaker_offset + (i*2); //index for speaker locations\r\n\tx_spk = peek(speaker_loc,si,0);\r\n\ty_spk = peek(speaker_loc,si+1,0);\r\n\tdx = x_rad_sm-x_spk;\r\n\tdy = y_rad_sm-y_spk;\r\n\tdistance = clip( sqrt(dx*dx+dy*dy) ,0,max_dist);\r\n\t//scale distance 0-max to PI/2 - 0 for use in sin. Also add bleed curve.\r\n\tclose = scale(distance,0,max_dist,halfpi,0,bleed);\r\n\tamp = atten*sin( close );\r\n\tpoke(amplitudes,amp,i);\r\n\t//poke(tospeakers,in1*amp,i);\r\n\t//poke(tospeakers,amp,i);\r\n}\r\n//out1 = peek(tospeakers,0);\r\n//out2 = peek(tospeakers,1);\r\n//out3 = peek(tospeakers,2);\r\n//out4 = peek(tospeakers,3);",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-15",
+					"maxclass" : "codebox",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 271.0, 50.0, 562.0, 365.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 202.912618577480316, 16.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 283.262131929397583, 593.203875362873077, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-22", 0 ],
+					"midpoints" : [ 212.412618577480316, 545.684458792209625, 290.082520425319672, 545.684458792209625 ],
+					"order" : 3,
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"midpoints" : [ 212.412618577480316, 544.713585019111633, 411.441742062568665, 544.713585019111633 ],
+					"order" : 2,
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-29", 0 ],
+					"midpoints" : [ 212.412618577480316, 545.684458792209625, 534.742711246013641, 545.684458792209625 ],
+					"order" : 1,
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 0 ],
+					"midpoints" : [ 212.412618577480316, 546.655332565307617, 672.606787025928497, 546.655332565307617 ],
+					"order" : 0,
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-22", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-28", 0 ],
+					"source" : [ "obj-25", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-27", 0 ],
+					"source" : [ "obj-26", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 1 ],
+					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-32", 0 ],
+					"source" : [ "obj-29", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-31", 0 ],
+					"source" : [ "obj-30", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-29", 1 ],
+					"source" : [ "obj-31", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-36", 0 ],
+					"source" : [ "obj-33", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-34", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-33", 1 ],
+					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-22", 1 ],
+					"source" : [ "obj-8", 0 ]
+				}
+
+			}
+ ]
+	}
+
+}

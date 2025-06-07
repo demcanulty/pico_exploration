@@ -1,6 +1,10 @@
 
 
 #include "main.h"
+#include "hardware/timer.h"
+#include "pico/time.h"
+
+
 
 
 
@@ -15,24 +19,60 @@ s16 audio_out_combined[BLOCK_SIZE * 2];
 
 CommonState* chorus_flange_device;
 
+t_sample scratch_buff[MAX_IN_OUT_CHANNELS][BLOCK_SIZE];
+t_sample dummy_buff[MAX_IN_OUT_CHANNELS][BLOCK_SIZE];
 
 
 void init_gen_device(void)
 {
 
     chorus_flange_device = (CommonState *) chorus_flange    ::  create(SAMPLE_RATE, BLOCK_SIZE);
+    
+    
+    //chorus_flange::setparameter(chorus_flange_device, 1, map_val, nullptr);
+
 
 }
 
 
+const float * inputs[] = { audio_in_0[0],  audio_in_1[0],  dummy_buff[0],  dummy_buff[1],    dummy_buff[2] };
+      float * outs[] =   { audio_out_0[0], audio_out_1[0], dummy_buff[0], dummy_buff[1], dummy_buff[2], scratch_buff[5], scratch_buff[6], scratch_buff[7] };  
+
+
+u32 accum_dt, ave_dt, accum_dt_count;
+u32 dt;
+u32 max_dt;
+bool accum_dt_lockout;
+u64 t0;
 void process_audio(void)
 {
-    for(int i=0; i<BLOCK_SIZE; i++)
+
+    //t0 = timer_hw->timerawl; 
+    t0 = time_us_64();
+
+    // for(int i=0; i<BLOCK_SIZE; i++)
+    // {
+    //     audio_out_0[0][i] = audio_in_0[0][i];
+    //     audio_out_1[0][i] = audio_in_0[0][i] / 2.f;  
+    // }
+
+    chorus_flange::perform(chorus_flange_device,(t_sample **)inputs,5,outs,8,BLOCK_SIZE);      
+
+
+        //***  TICK BASED MICROSECOND COUNTER  
+
+    if(!accum_dt_lockout)
     {
+        //***  accumulate tick deltas
+        dt = (timer_hw->timerawl) - t0;
+        accum_dt += dt;
+        accum_dt_count++;
 
-        audio_out_0[0][i] = audio_in_0[0][i];
-        audio_out_1[0][i] = audio_in_0[0][i] / 2.f;  
-
+        //***  save greatest tick delta
+        if(max_dt < dt)
+        {
+            max_dt = dt;
+        }
     }
         
 }
