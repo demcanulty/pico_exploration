@@ -11,12 +11,13 @@
 
 
 //midi settings
-uint8_t const cable_num = 0; // MIDI jack associated with USB endpoint
-uint8_t const channel   = 0; // 0 for channel 1
+uint8_t const cable_num_to_send = 0; // MIDI jack associated with USB endpoint
+uint8_t const channel           = 0; // 0 for channel 1
 
 
 void handle_cc(u8 status, u8 cc_num, u8 cc_val);
 
+u8 Status_byte, byte_two, byte_three;
 void usb_midi_task(void)
 {
       static uint32_t start_ms = 0;
@@ -31,28 +32,29 @@ void usb_midi_task(void)
     while ( tud_midi_available() )
     {
         tud_midi_packet_read(inpacket);
+        
+        // outpacket[0] = inpacket[0];//cable_num?
+        // outpacket[1] = inpacket[1];//message type
+        // outpacket[2] = inpacket[2];//Data byte1
+        // outpacket[3] = inpacket[3];//Data byte2
+        // tud_midi_packet_write(outpacket);
 
-        u8 Status_byte, byte_two, byte_three, cable_num;
 
-        cable_num   = inpacket[MIDI_CABLE_NUM];    //cable_num
+
+        //cable_num   = inpacket[MIDI_CABLE_NUM];    //cable_num
         Status_byte = inpacket[MIDI_BYTE_ONE];     //message type
         byte_two    = inpacket[MIDI_BYTE_TWO];     //Data byte1
         byte_three  = inpacket[MIDI_BYTE_THREE];   //Data byte2
         
-
-        if(Status_byte & 0xF0 == MIDI_CC)
+        
+        switch(Status_byte & 0xF0 )
         {
-            handle_cc(Status_byte, byte_two, byte_three);
-
-            outpacket[0] = cable_num;
-            outpacket[1] = Status_byte;
-            outpacket[2] = byte_two;
-            outpacket[3] = byte_three;
-            tud_midi_packet_write(outpacket);
-            
+            case MIDI_CC:
+            {
+                handle_cc(Status_byte, byte_two, byte_three);
+            }break;
         }
-    
-        // 
+        
 
 
 
@@ -68,7 +70,7 @@ void send_test_cc(void)
     
      // Send CC 
      cc_msg[2] = countup & 0x7F;
-     tud_midi_stream_write(cable_num, cc_msg, 3);
+     tud_midi_stream_write(cable_num_to_send, cc_msg, 3);
 
      countup++;
 }
@@ -79,7 +81,7 @@ void handle_cc(u8 status, u8 cc_num, u8 cc_val)
 {
     //***  CONVERT TO 0-1 float  
     float map_val = cc_val / 127.f;
-
+    
 
     switch(cc_num)
     {
@@ -91,41 +93,42 @@ void handle_cc(u8 status, u8 cc_num, u8 cc_val)
         {
             map_val = (map_val * 41) ; 
             gverb_set_roomsize(verb, map_val);
-            
+            printf("Roomsize set to  %f\n", map_val);
         }break;
 
         case 14:      
         {
             map_val = (map_val * 30); 
             gverb_set_revtime(verb, map_val);
-            
+            printf("revtime set to  %f\n", map_val);
         }break;
         
         case 15:     
         {
-            map_val = (map_val * 5);  
+            //map_val = (map_val * 5);  
             gverb_set_damping(verb, map_val);
-            
+            printf("damping set to  %f\n", map_val);
         }break;
         
         case 16:     
         {
-            map_val = (map_val * 5);  
+            //map_val = (map_val * 5);  
             gverb_set_inputbandwidth(verb, map_val);
-            
+            printf("input bandwidth set to  %f\n", map_val);
         }break;
         
         case 17:       
         {
-            map_val = (map_val * 5);  
+            //map_val = (map_val * 5);  
             gverb_set_earlylevel(verb, map_val);
-            
+            printf("early level set to  %f\n", map_val);
         }break;
         
         case 18:      
         {
-            map_val = (map_val * 5);  
+            //map_val = (map_val * 5);  
             gverb_set_taillevel(verb, map_val);
+            printf("tail level set to  %f\n", map_val);
         }break;
         
         case 19:       
@@ -138,5 +141,5 @@ void handle_cc(u8 status, u8 cc_num, u8 cc_val)
         
     }
 
-
+    
 }

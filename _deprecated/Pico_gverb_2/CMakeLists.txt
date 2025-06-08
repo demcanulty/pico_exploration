@@ -49,46 +49,49 @@ endif()
 
 set(PICO_BOARD pico2 CACHE STRING "Board type")
 
+
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(Pico_gen C CXX ASM)
+project(Buchla_Pico_Project C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Pico_gen main.c 
-                        audio_process.c
-                        blink.c
-                        cdc_app.c 
-                        uac2_app.c
-                        usb_descriptors.c
-                        midi.c
-                        gverb.c
-                        gverbdsp.c
-                        
-                        )
+add_executable(Buchla_Pico_Project 
+                main.c
+                audio_process.c
+                blink.c
+                cdc_app.c 
+                uac2_app.c
+                usb_descriptors.c
+                midi.c
+                gverb.c
+                gverbdsp.c)
 
-pico_set_program_name(Pico_gen "Pico_gen")
-pico_set_program_version(Pico_gen "0.1")
+
+pico_set_program_name(Buchla_Pico_Project "Buchla_Pico_Project")
+pico_set_program_version(Buchla_Pico_Project "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(Pico_gen 0)
-pico_enable_stdio_usb(Pico_gen 1)
+pico_enable_stdio_uart(Buchla_Pico_Project 0)
+pico_enable_stdio_usb(Buchla_Pico_Project 1)
 
 # Add the standard library to the build
-target_link_libraries(  Pico_gen        #THIS PROJECT
+target_link_libraries(  Buchla_Pico_Project
                         pico_stdlib
                         tinyusb_board   #needed for bsp/board_api.h
                         tinyusb_device
-                        pico_multicore)
+                        pico_multicore
+                        )
 
 # Add the standard include files to the build
-target_include_directories(Pico_gen PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}
+target_include_directories(Buchla_Pico_Project PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
 )
 
-pico_add_extra_outputs(Pico_gen)
+
+pico_add_extra_outputs(Buchla_Pico_Project)
 

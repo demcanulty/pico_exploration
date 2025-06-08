@@ -21,6 +21,32 @@ s16 audio_out_combined[BLOCK_SIZE * 2];
 float scratch_buff[MAX_IN_OUT_CHANNELS][BLOCK_SIZE];
 float dummy_buff[MAX_IN_OUT_CHANNELS][BLOCK_SIZE];
 
+
+
+/** Tanh signal distortion using piecewise approximation of a hyperbolic tangent */
+float tanhDriveSignal(float x) //, float drive) {
+{
+    //x *= drive;
+
+    if(x < -1.25f) {
+        return -1.f;
+    }
+    else if(x < -0.75f) {
+        return 1.f - (x * (-2.5f - x) - 0.5625f) - 1.f;
+    }
+    else if(x > 1.25f) {
+        return 1.f;
+    }
+    else if(x > 0.75f) {
+        return x * (2.5f - x) - 0.5625f;
+    }
+
+    return x;
+}
+
+
+
+
 ty_gverb        *verb;
 
 
@@ -63,8 +89,12 @@ void process_audio(void)
     {
         // audio_out_0[i] = audio_in_0[i];
         // audio_out_1[i] = audio_in_1[i];
-        
-        gverb_do(verb, audio_in_0[i], &audio_out_0[i], &audio_out_1[i]);
+        float left, right;
+        gverb_do(verb, audio_in_0[i], &left, &right);
+
+
+         audio_out_0[i] = tanhDriveSignal(left);
+         audio_out_1[i] = tanhDriveSignal(right);
     }
 
 
@@ -86,6 +116,9 @@ void process_audio(void)
     }
         
 }
+
+
+
 
 
 
