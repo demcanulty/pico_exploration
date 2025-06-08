@@ -1,9 +1,9 @@
 # ninja log v6
 836	990	1749255016554413996	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime/runtime.c.o	afad9387f14fb073
 772	1044	1749255016490739879	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_flash/flash.c.o	ce81e7a5ff0a22ce
-217	608	1749255015934931554	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o	7d51b703ec5fc744
-608	858	1749255016326026447	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_uart/uart.c.o	22276f22226baf33
 667	824	1749255016385744045	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_vreg/vreg.c.o	ae98529a77b85950
+608	858	1749255016326026447	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_uart/uart.c.o	22276f22226baf33
+217	608	1749255015934931554	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o	7d51b703ec5fc744
 223	586	1749255015941527011	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/critical_section.c.o	7b1fa15571fbe182
 216	582	1749255015934212966	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2350/pico_platform/platform.c.o	fa2442ec06b88b37
 728	888	1749255016446594703	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_ticks/ticks.c.o	b69e27118d2c5a1c
@@ -28,11 +28,11 @@
 895	1143	1749255016612974938	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_divider/divider_compiler.c.o	9d341836ae603f9e
 929	1004	1749255016647886740	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_fma_dcp.S.o	f629fd8cee0e1807
 218	344	1749255015936655126	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_irq/irq_handler_chain.S.o	bdc650155e61fdd1
-957	1027	1749255016675816817	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_conv_m33.S.o	28bb0ac082e13186
 847	1307	1749255016565017238	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init.c.o	6e075e4976d68202
+957	1027	1749255016675816817	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_conv_m33.S.o	28bb0ac082e13186
 945	1017	1749255016663220404	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_sci_m33.S.o	badf58e632a1e8a1
 215	817	1749255015933869344	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o	2edb3fc173f1215f
-19	999	1749275371672095958	build.ninja	1d5e561437821bbb
+19	999	1749280956216366589	build.ninja	1d5e561437821bbb
 990	1060	1749255016708649363	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_float/float_common_m33.S.o	e22bed5f2f8d2730
 216	654	1749255015934544773	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o	d4b1f8291d267ce0
 1579	1630	1749255017297289325	pico-sdk/src/rp2350/boot_stage2/CMakeFiles/bs2_default_library.dir/bs2_default_padded_checksummed.S.o	f112c3536eec88d2
@@ -60,8 +60,8 @@
 612	1125	1749255016330614473	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_clocks/clocks.c.o	9c4815fa1ba8bbf9
 10	348	1749261803557695756	CMakeFiles/Pico_gen.dir/cdc_app.c.o	5f5ab1e7dd183918
 219	612	1749255015937284687	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/sem.c.o	e4ab0bcc2644d701
-584	913	1749255016302808310	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_timer/timer.c.o	e158b07b40dac0f7
 824	957	1749255016542252804	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_divider/divider.c.o	d55392b2f0aa0fc4
+584	913	1749255016302808310	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_timer/timer.c.o	e158b07b40dac0f7
 1017	1349	1749255016735480461	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_atomic/atomic.c.o	7f2e9b834d404e76
 344	1287	1749255016062373274	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_time/time.c.o	295332f77b607e32
 27	395	1749257762771384409	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/dfu/dfu_rt_device.c.o	bc09cba6b1f407da
@@ -81,9 +81,9 @@
 28	398	1749257762772467644	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/msc/msc_device.c.o	4bce52a9817856b5
 969	1527	1749255016687778488	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_float/float_math.c.o	23aa054dbab7d759
 221	673	1749255015939784289	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/mutex.c.o	bccb55963433d269
-28	821	1749257762772007352	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/midi/midi_device.c.o	6fac978878022975
 119	136	1749255015854256288	/Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gen/build/pico-sdk/src/rp2350/boot_stage2/bs2_default.bin	7a9e1883581709ef
 891	969	1749255016608920057	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.o	6ba6f652a3491cbb
+28	821	1749257762772007352	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/midi/midi_device.c.o	6fac978878022975
 387	471	1749257763131039649	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/video/video_device.c.o	d0800e5a6745ea45
 1535	1796	1749255017252996406	CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_multicore/multicore.c.o	9e3135ae5b02b790
 213	766	1749255015931696618	CMakeFiles/Pico_gen.dir/blink.cpp.o	9d7fd7dea75c6c93
