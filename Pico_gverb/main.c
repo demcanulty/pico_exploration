@@ -6,14 +6,14 @@
 #include "tusb_config.h"  
 #include "bsp/board_api.h"
 #include "pico/multicore.h"
-
+#include "hardware/clocks.h"
 
 #include "main.h"
 #include "blink.h"
 #include "common.h"
 #include "midi.h"
 
-
+#define OVERCLOCK_300MHZ  
 
 
 //**************************************************************
@@ -100,6 +100,12 @@ bool led_state;
 
 int main()
 {
+
+    #ifdef OVERCLOCK_300MHZ
+    set_sys_clock_khz(300000, true);
+    #endif
+
+
     board_init();
     pico_led_init();
 
