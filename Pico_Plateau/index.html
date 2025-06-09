@@ -1,0 +1,857 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ELF size information for Pico_gen.elf - RAM</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>tr:nth-child(even) {
+    background-color: #efefef;
+}
+
+tr:nth-child(odd) {
+    background-color: #e0e0e0;
+}
+
+table {
+    border-spacing: 0px;
+    table-layout:fixed;
+    width: 100%;
+}
+
+h3 {
+    font-family: "Verdana";
+    font-size: 14pt;
+}
+
+td {
+    font-family: "Verdana";
+    font-size: 10pt;
+}
+
+tr:hover {
+    background: #adf0c2 !important;
+}
+
+tr.collapsed {
+    background-color: #c0dbc9;
+    font-style: italic;
+}
+
+tr.collapsed td:first-child::after {
+    content: " …";
+}
+
+.collapse-buttons {
+    margin: 1px 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+</style>
+        <script>// Build a tree out of table rows to easily manipulate rows as tree elements
+function buildTree() {
+  const tree = { elem: null, parent: null, children: [] };
+  const current = {
+    node: tree,
+    level: 0,
+    max_level: 0,
+  };
+
+  for (const elem of document.getElementsByClassName('collapsible')) {
+    const level = getLevel(elem);
+    if (level == undefined) continue;
+
+    current.max_level = Math.max(current.max_level, level);
+
+    if (level > current.level) {
+      if (level != current.level + 1) throw Error('Expected level+1 - invalid rows list');
+      current.level = level;
+      current.node = current.node.children[current.node.children.length - 1];
+      if (!current.node) throw Error('what?')
+    } else if (level < current.level) {
+      for (let i = 0; i < current.level - level; i++) {
+        current.node = current.node.parent;
+      }
+      current.level = level;
+    }
+
+    const node = { element: elem, parent: current.node, children: [] };
+    current.node.children.push(node);
+  }
+
+  return { tree, max_level: current.max_level };
+}
+
+function updateChildren(node, collapsed) {
+  for (const child of node.children) {
+    // Remove this class because it is used for the visible element with collapsed children
+    child.element.classList.remove('collapsed');
+    child.element.hidden = collapsed;
+    updateChildren(child, collapsed);
+  }
+}
+
+function setCollapsed(node, collapsed) {
+  if (node.children.length == 0) return;
+  const method = collapsed ? 'add' : 'remove';
+  node.element.classList[method]('collapsed');
+  updateChildren(node, collapsed);
+}
+
+function addOnClick(node) {
+  // root node has no parent, nor elements
+  if (node.element) {
+    node.element.addEventListener('click', () => {
+      setCollapsed(node, !node.element.classList.contains('collapsed'));
+    })
+  }
+
+  node.children.forEach(addOnClick);
+}
+
+// Find row level from element classes
+function getLevel(elem) {
+  const pattern = /level-(\d+)/
+  for (const cls of elem.classList) {
+    const match = cls.match(pattern);
+    if (match) {
+      return Number(match[1]);
+    }
+  }
+  return undefined;
+}
+
+function collapseAtLevel(tree, level) {
+  updateChildren(tree, false);
+
+  const collapse = (node) => {
+    if (node.element && getLevel(node.element) == level) {
+      setCollapsed(node, true);
+    }
+    for (const child of node.children) {
+      collapse(child, level);
+    }
+  }
+
+  collapse(tree);
+}
+
+function onLoaded() {
+  const { tree, max_level } = buildTree();
+  addOnClick(tree);
+
+  let level = max_level;
+
+  const class_change = {
+    more: () => (level = Math.max(level - 1, 0)),
+    less: () => (level = Math.min(level + 1, max_level)),
+    all: () => (level = 0),
+    none: () => (level = max_level),
+  };
+
+  const buttons = document.getElementsByClassName('collapse-buttons')[0];
+  for (const cls of Object.keys(class_change)) {
+    const action = class_change[cls];
+    for (const elem of buttons.getElementsByClassName(cls)) {
+      elem.addEventListener('click', () => {
+        action();
+        collapseAtLevel(tree, level);
+      });
+
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', onLoaded);
+</script>
+    </head>
+    <body>
+        <h3>ELF size information for Pico_gen.elf - RAM</h3>
+        <div class="collapse-buttons">
+            <span>Collapse</span>
+            <button class="all">All</button>
+            <button class="none">None</button>
+            <button class="less">Less</button>
+            <button class="more">More</button>
+            <span>or click on rows</span>
+        </div>
+        <table>
+            <tr class="collapsible level-0">
+                <td style='padding-left:0px;word-break:break-all;word-wrap:break-word'>/</td>
+                <td width='200px' align='right'>12939</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>Users/mcanulty/.pico-sdk/sdk/2.1.1</td>
+                <td width='200px' align='right'>6667</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>lib/tinyusb/src</td>
+                <td width='200px' align='right'>3808</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>class</td>
+                <td width='200px' align='right'>2391</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>audio/audio_device.c</td>
+                <td width='200px' align='right'>1734</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ep_in_sw_buf</td>
+                <td width='200px' align='right'>388</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>lin_buf_in</td>
+                <td width='200px' align='right'>388</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ep_out_sw_buf</td>
+                <td width='200px' align='right'>388</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>lin_buf_out</td>
+                <td width='200px' align='right'>388</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_audiod_fct</td>
+                <td width='200px' align='right'>96</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ctrl_buf_1</td>
+                <td width='200px' align='right'>64</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ep_in_ff_mutex_wr_1</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ep_out_ff_mutex_rd_1</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ctrl_blackout.1</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>alt_setting_1</td>
+                <td width='200px' align='right'>2</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>cdc/cdc_device.c</td>
+                <td width='200px' align='right'>329</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_cdcd_itf</td>
+                <td width='200px' align='right'>200</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_cdcd_epbuf</td>
+                <td width='200px' align='right'>128</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_cdcd_fifo_cfg</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>midi/midi_device.c</td>
+                <td width='200px' align='right'>328</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_midid_itf</td>
+                <td width='200px' align='right'>200</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_midid_epbuf</td>
+                <td width='200px' align='right'>128</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>portable/raspberrypi/rp2040</td>
+                <td width='200px' align='right'>1033</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>dcd_rp2040.c</td>
+                <td width='200px' align='right'>1029</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>hw_endpoints</td>
+                <td width='200px' align='right'>1024</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>next_buffer_ptr</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_sof_enable</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>rp2040_usb.c</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>e15_last_sof</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>device</td>
+                <td width='200px' align='right'>382</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>usbd.c</td>
+                <td width='200px' align='right'>298</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_usbd_qdef_buf</td>
+                <td width='200px' align='right'>192</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_usbd_dev</td>
+                <td width='200px' align='right'>84</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_ubsd_mutexdef</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_app_driver</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_usbd_mutex</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_usbd_q</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_app_driver_count</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_usbd_queued_setup</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>usbd_control.c</td>
+                <td width='200px' align='right'>84</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_ctrl_epbuf</td>
+                <td width='200px' align='right'>64</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_ctrl_xfer</td>
+                <td width='200px' align='right'>20</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>tusb.c</td>
+                <td width='200px' align='right'>2</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>_tusb_rhport_role</td>
+                <td width='200px' align='right'>2</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>src</td>
+                <td width='200px' align='right'>2859</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>rp2_common</td>
+                <td width='200px' align='right'>2439</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pico_multicore/multicore.c</td>
+                <td width='200px' align='right'>2048</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>core1_stack</td>
+                <td width='200px' align='right'>2048</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pico_runtime_init/runtime_init.c</td>
+                <td width='200px' align='right'>272</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>ram_vector_table</td>
+                <td width='200px' align='right'>272</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>hardware_clocks/clocks.c</td>
+                <td width='200px' align='right'>40</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>configured_freq</td>
+                <td width='200px' align='right'>40</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>hardware_sync_spin_lock/include/hardware/sync/spin_lock.h</td>
+                <td width='200px' align='right'>32</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>_sw_spin_locks</td>
+                <td width='200px' align='right'>32</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pico_stdio_usb/stdio_usb.c</td>
+                <td width='200px' align='right'>24</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>stdio_usb_mutex</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>last_avail_time.3</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>chars_available_callback</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>chars_available_param</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pico_stdio/stdio.c</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>drivers</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>filter</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pico_unique_id/unique_id.c</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>retrieved_id</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pico_clib_interface/newlib_interface.c</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>heap_end.0</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>hardware_timer/timer.c</td>
+                <td width='200px' align='right'>2</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>claimed</td>
+                <td width='200px' align='right'>2</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>hardware_irq/irq.c</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-5">
+                <td style='padding-left:50px;word-break:break-all;word-wrap:break-word'>irq_handler_chain_free_slot_head</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>common/pico_time/time.c</td>
+                <td width='200px' align='right'>420</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>default_alarm_pool_entries</td>
+                <td width='200px' align='right'>384</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>pools</td>
+                <td width='200px' align='right'>32</td>
+            </tr>
+    
+            <tr class="collapsible level-4">
+                <td style='padding-left:40px;word-break:break-all;word-wrap:break-word'>sleep_notifier</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_Plateau</td>
+                <td width='200px' align='right'>6272</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>chorus_flange_helper.cpp</td>
+                <td width='200px' align='right'>4581</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>reverb</td>
+                <td width='200px' align='right'>2824</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>audio_in_0</td>
+                <td width='200px' align='right'>384</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>audio_out_0</td>
+                <td width='200px' align='right'>384</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>audio_in_1</td>
+                <td width='200px' align='right'>384</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>audio_out_1</td>
+                <td width='200px' align='right'>384</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>audio_out_combined</td>
+                <td width='200px' align='right'>192</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>t0</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>accum_dt_count</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>ave_dt</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>max_dt</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>accum_dt</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>dt</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>accum_dt_lockout</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>uac2_app.c</td>
+                <td width='200px' align='right'>1566</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>spk_buf</td>
+                <td width='200px' align='right'>1552</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>volume</td>
+                <td width='200px' align='right'>6</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>spk_data_size</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>mute</td>
+                <td width='200px' align='right'>3</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>current_resolution</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>usb_descriptors.c</td>
+                <td width='200px' align='right'>66</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>_desc_str</td>
+                <td width='200px' align='right'>66</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>main.cpp</td>
+                <td width='200px' align='right'>34</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>this_millis</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>blink_time</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>this_time</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>dt_in_us</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>max_dt_in_us</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>this_count</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>core1_this_time</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>core1_this_count</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>led_state</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>core_1_trigger_process</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>chorus_flange.cpp</td>
+                <td width='200px' align='right'>16</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>chorus_flange::noise</td>
+                <td width='200px' align='right'>16</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>genlib_ops.h</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>Noise::uniqueTickCount()::lasttime</td>
+                <td width='200px' align='right'>8</td>
+            </tr>
+    
+            <tr class="collapsible level-2">
+                <td style='padding-left:20px;word-break:break-all;word-wrap:break-word'>midi.cpp</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-3">
+                <td style='padding-left:30px;word-break:break-all;word-wrap:break-word'>countup</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-0">
+                <td style='padding-left:0px;word-break:break-all;word-wrap:break-word'>?</td>
+                <td width='200px' align='right'>833</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__atexit0</td>
+                <td width='200px' align='right'>400</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__sf</td>
+                <td width='200px' align='right'>312</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__malloc_current_mallinfo</td>
+                <td width='200px' align='right'>40</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>(anonymous namespace)::emergency_pool</td>
+                <td width='200px' align='right'>16</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>std::basic_string<char, std::char_traits<char>, std::allocator<char> >::_Rep::_S_empty_rep_storage</td>
+                <td width='200px' align='right'>16</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>(anonymous namespace)::eh_globals</td>
+                <td width='200px' align='right'>12</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>claimed</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>initial_env</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__stdio_exit_handler</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>errno</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__malloc_top_pad</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__malloc_max_sbrked_mem</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__atexit</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__malloc_max_total_mem</td>
+                <td width='200px' align='right'>4</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__gnu_cxx::__verbose_terminate_handler()::terminating</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__lock___atexit_recursive_mutex</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__lock___env_recursive_mutex</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__lock___malloc_recursive_mutex</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr class="collapsible level-1">
+                <td style='padding-left:10px;word-break:break-all;word-wrap:break-word'>__lock___sfp_recursive_mutex</td>
+                <td width='200px' align='right'>1</td>
+            </tr>
+    
+            <tr>
+                <td align="right"><b>Overall size in bytes</b></td>
+                <td align="right">13772</td>
+            </tr>
+        </table>
+    </body>
+</html>
+

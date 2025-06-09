@@ -51,14 +51,29 @@ bool led_state;
 
 int main()
 {
-    set_sys_clock_khz(300000, true);
+    //*****************************
+    //***  CHANGE SYSTEM CLOCK  ***
+    //*****************************
+
+    set_sys_clock_khz(300000, true);      
+
+    /*
+        "Note that not all clock frequencies are possible; 
+        it is preferred that you use src/rp2_common/hardware_clocks/scripts/vcocalc.py 
+        to calculate the parameters for use with set_sys_clock_pll"
+
+        See documentation:  
+        https://www.raspberrypi.com/documentation/pico-sdk/hardware.html#group_hardware_clocks_1gab3a273e837ba1947bb5fd8fc97cf47e5
+
+    */
 
     //***  USB UART INIT  ****
     stdio_init_all();
 
+    //***  ADC FOR CHECKING TEMPERATURE  ***
     adc_init();
-    adc_set_temp_sensor_enabled(true);
-    adc_select_input(4);   //on RP2350A 4 is temp sensor, on RP2350B 8 is temp sensor
+    adc_set_temp_sensor_enabled(true);  //Must enable first 
+    adc_select_input(4);                //on RP2350A input 4 is temp sensor, on RP2350B input 8 is temp sensor
 
 
     this_time = board_millis();
@@ -74,9 +89,12 @@ int main()
         {
             this_time = board_millis();
 
+            //***  TEMP CALCULATION  ***
             float volt = (3.3/4096)*adc_read();
             float temp_c = 27-(volt-0.706)/0.001721;
             float temp_f = (temp_c * (9/5)) + 32;
+
+            
             printf("Core 0 - Runs through main: %d\n", this_count);
             printf("Time (in millis)          : %d\n", this_time);
             printf("Core Temp:  %.1fF   %.1fC\n\n", temp_f, temp_c);

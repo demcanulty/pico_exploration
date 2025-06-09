@@ -25,6 +25,7 @@ endif()
 # ====================================================================================
 set(PICO_BOARD pico2 CACHE STRING "Board type")
 
+
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
@@ -60,4 +61,8 @@ target_include_directories(overclock_c PRIVATE
 )
 
 pico_add_extra_outputs(overclock_c)
+
+set_property(TARGET ${PROGRAM_NAME} APPEND_STRING PROPERTY LINK_FLAGS 
+  "-Wl,--print-memory-usage"
+)
 

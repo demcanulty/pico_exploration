@@ -43,6 +43,7 @@ static constexpr float zerodBGain = 1.f;
 float inputSensitivity = minus18dBGain;
 
 //
+Dattorro reverb;
 
 void init_gen_device(void)
 {
@@ -67,9 +68,9 @@ void init_gen_device(void)
     // reverb.setTankModSpeed(modSpeed);
     // reverb.setTankModDepth(modDepth);
     // reverb.setTankModShape(modShape);
-    Dattorro1997Tank * reverb = new Dattorro1997Tank(48000.0, 16.0, sizeMax);
+    //Dattorro1997Tank * reverb = new Dattorro1997Tank(48000.0, 16.0, sizeMax);
 
-    //reverb.Dattorro(48000.0, 16.0, sizeMax);
+    //Dattorro reverb.Dattorro(48000.0, 16.0, sizeMax);
 }
 
 
