@@ -58,7 +58,8 @@ target_link_libraries(  Pico_gen        #THIS PROJECT
                         pico_stdlib
                         tinyusb_board   #needed for bsp/board_api.h
                         tinyusb_device
-                        pico_multicore)
+                        pico_multicore
+                        hardware_clocks)
 
 # Add the standard include files to the build
 target_include_directories(Pico_gen PRIVATE

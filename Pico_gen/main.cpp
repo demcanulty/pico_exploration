@@ -6,7 +6,7 @@
 #include "tusb_config.h"  
 #include "bsp/board_api.h"
 #include "pico/multicore.h"
-
+#include "hardware/clocks.h"
 
 #include "main.h"
 #include "blink.h"
@@ -100,6 +100,14 @@ bool led_state;
 
 int main()
 {
+    //*****************************
+    //***  CHANGE SYSTEM CLOCK  ***
+    //*****************************
+
+    set_sys_clock_khz(300000, true);      
+
+
+
     board_init();
     pico_led_init();
 
