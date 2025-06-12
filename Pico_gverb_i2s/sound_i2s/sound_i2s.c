@@ -44,7 +44,8 @@ int sound_i2s_init(const struct sound_i2s_config *cfg)
   size_t sound_buffer_size = (config.bits_per_sample/8) * 2 * SOUND_I2S_BUFFER_NUM_SAMPLES;
   sound_sample_buffers[0] = malloc(sound_buffer_size);
   sound_sample_buffers[1] = malloc(sound_buffer_size);
-  if (! sound_sample_buffers[0] || ! sound_sample_buffers[1]) {
+  if (! sound_sample_buffers[0] || ! sound_sample_buffers[1]) 
+  {
     free(sound_sample_buffers[0]);
     free(sound_sample_buffers[1]);
     return -1;

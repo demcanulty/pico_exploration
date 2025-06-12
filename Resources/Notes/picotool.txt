@@ -1,0 +1,6 @@
+
+If you are loading via GDB the load command will also give the size.
+
+picotool info -a filename.elf also works.
+
+For bss ram I refer to the map file. Not as straightforward.

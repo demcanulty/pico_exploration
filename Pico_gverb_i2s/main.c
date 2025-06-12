@@ -12,12 +12,33 @@
 #include "blink/blink.h"
 #include "midi/midi.h"
 
+
+
+#include "sound_i2s/sound_i2s.h"
+
+
+//*************************************
+//**********   I2S STUFF  *************
+//*************************************
+#define I2S_DATA_PIN             28 // -> I2S DIN
+#define I2S_CLOCK_PIN_BASE       26 // -> I2S BCK
+// The third required connection is GPIO 27 -> I2S LRCK (BCK+1)
+
+static const struct sound_i2s_config sound_config = {
+.pin_sda         = I2S_DATA_PIN,
+.pin_scl         = I2S_CLOCK_PIN_BASE,
+.pin_ws          = I2S_CLOCK_PIN_BASE + 1,
+.sample_rate     = SAMPLE_RATE,
+.bits_per_sample = 16,
+.pio_num         = 0, // 0 for pio0, 1 for pio1
+};
+
+
 #define OVERCLOCK_300MHZ  
 
-
 //**************************************************************
 //**************************************************************
-//**********   SECOND MAIN LOOP FOR SECOND CORE  !!  ***********
+//**********   SECOND MAIN LOOP FOR SECOND CORE  ***************
 //**************************************************************
 //**************************************************************
 
@@ -31,7 +52,6 @@ float max_dt_in_us;
 bool core_1_trigger_process;
 void core1_main()
 {
-
     while(true)
     {
         //**********************************
@@ -46,41 +66,36 @@ void core1_main()
             
             core1_this_count = 0;
 
-
             //**************************************
             //***  CALCULATE AUDIO PERFORMANCE  ****
             //**************************************
 
             accum_dt_lockout = true;
 
-            
             dt_in_us     = (float) accum_dt / accum_dt_count;
             max_dt_in_us = (float)   max_dt;
             ave_dt = accum_dt / accum_dt_count;
-            
 
+            //*************************
             //***  RESET VARIABLES  ***
+            //*************************
             accum_dt = 0;
             accum_dt_count = 0;
             max_dt = 0;
             accum_dt_lockout = false;
-
-            
-
-
         }
 
         core1_this_count++;
 
-
+        //*************************
+        //***  PROCESS AUDIO
+        //*************************
         if(core_1_trigger_process)
         {
             process_audio();
             core_1_trigger_process = false;
         }
     }
-
-    
 }
 
 
@@ -99,7 +114,9 @@ bool led_state;
 
 int main()
 {
-
+    //********************
+    //***  OVERCLOCK  ***
+    //********************
     #ifdef OVERCLOCK_300MHZ
     set_sys_clock_khz(300000, true);
     #endif
@@ -122,9 +139,21 @@ int main()
     tusb_init(BOARD_TUD_RHPORT, &dev_init);
 
 
-
+    //************************
     //***  USB UART INIT  ****
+    //************************
+
     stdio_init_all();
+
+    //******************************************
+    //****  I2S AUDIO OUT  *********************
+    //******************************************
+
+    sound_i2s_init(&sound_config);
+    
+    // Change the overall volume (I2S output only):
+    set_volume(50);       // 0-100, default 100
+
 
     //*********************************************************************************************
     //*********************************************************************************************

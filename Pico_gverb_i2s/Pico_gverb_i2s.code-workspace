@@ -37,14 +37,15 @@
         "raspberry-pi-pico.cmakePath": "${HOME}/.pico-sdk/cmake/v3.31.5/bin/cmake",
         "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
         "files.associations": {
-
             "format": "cpp",
             "cstdint": "cpp",
             "usb_descriptors.h": "c",
             "tusb_config.h": "c",
             "board_api.h": "c",
             "tusb.h": "c",
-            "main.h": "c"
+            "main.h": "c",
+            "sound_i2s.h": "c",
+            "sound_i2s_16bits.pio.h": "c"
         }
     }
 }

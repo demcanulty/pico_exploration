@@ -5,6 +5,7 @@ set(TINYUSB_FAMILY_PROJECT_NAME_PREFIX "tinyusb_dev_")
 set(TOP ${PICO_TINYUSB_PATH})
 
 set(CMAKE_BUILD_TYPE "Debug")
+set( CMAKE_VERBOSE_MAKEFILE on )
 # Generated Cmake Pico project file
 
 cmake_minimum_required(VERSION 3.13)
@@ -70,8 +71,8 @@ target_include_directories(audio_i2s INTERFACE
 
 )
 
-# pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_16bits.pio)
-# pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_8bits.pio)
+pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_16bits.pio)
+pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_8bits.pio)
 
 
 # Add executable. Default name is the project name, version 0.1
@@ -85,7 +86,7 @@ add_executable(Pico_gen main.c
                         midi/midi.c
                         gverb/gverb.c
                         gverb/gverbdsp.c
-                        
+                        sound_i2s/sound_i2s.c
                         
                         )
 
@@ -103,7 +104,13 @@ target_link_libraries(  Pico_gen        #THIS PROJECT
                         tinyusb_board   #needed for bsp/board_api.h
                         tinyusb_device
                         pico_multicore
-                        hardware_clocks)
+                        hardware_clocks
+                        hardware_pio
+                        hardware_pwm
+                        hardware_irq
+                        hardware_dma
+                        audio_i2s       #declared above, this creates the pio.h files
+                        )
 
 # Add the standard include files to the build
 target_include_directories(Pico_gen PRIVATE
@@ -111,4 +118,12 @@ target_include_directories(Pico_gen PRIVATE
 )
 
 pico_add_extra_outputs(Pico_gen)
+
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+        # This is where you define the audio output.
+        # Make sure to define one of the two lines only.
+        # USE_AUDIO_PWM=1
+        USE_AUDIO_I2S=1
+        )
 
