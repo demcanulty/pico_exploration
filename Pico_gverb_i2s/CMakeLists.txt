@@ -78,7 +78,7 @@ add_executable(Pico_gen main.c
                         audio_process.c
                         blink.c
                         cdc_app.c 
-                        uac2_app.c
+                        usb/uac2_app.c
                         usb/usb_descriptors.c
                         midi.c
                         gverb/gverb.c
