@@ -30,7 +30,7 @@
 #include "bsp/board_api.h"
 #include "tusb.h"
 #include "usb/usb_descriptors.h"
-#include "common.h"
+#include "main.h"
 #include "audio_process.h"
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTOTYPES

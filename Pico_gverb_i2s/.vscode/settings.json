@@ -38,7 +38,7 @@
     "raspberry-pi-pico.cmakePath": "${HOME}/.pico-sdk/cmake/v3.31.5/bin/cmake",
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     "files.associations": {
-        "common.h": "c",
+
         "format": "cpp",
         "cstdint": "cpp"
     }

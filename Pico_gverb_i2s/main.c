@@ -9,9 +9,8 @@
 #include "hardware/clocks.h"
 
 #include "main.h"
-#include "blink.h"
-#include "common.h"
-#include "midi.h"
+#include "blink/blink.h"
+#include "midi/midi.h"
 
 #define OVERCLOCK_300MHZ  
 

@@ -65,6 +65,8 @@ target_include_directories(audio_i2s INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/sound_i2s
         ${CMAKE_CURRENT_LIST_DIR}/gverb
         ${CMAKE_CURRENT_LIST_DIR}/usb
+        ${CMAKE_CURRENT_LIST_DIR}/midi
+        ${CMAKE_CURRENT_LIST_DIR}/blink
 
 )
 
@@ -76,11 +78,11 @@ target_include_directories(audio_i2s INTERFACE
 
 add_executable(Pico_gen main.c 
                         audio_process.c
-                        blink.c
+                        blink/blink.c
                         usb/cdc_app.c 
                         usb/uac2_app.c
                         usb/usb_descriptors.c
-                        midi.c
+                        midi/midi.c
                         gverb/gverb.c
                         gverb/gverbdsp.c
                         
