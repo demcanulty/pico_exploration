@@ -31,7 +31,7 @@
 extern "C" {
 #endif
 
-#include "usb_descriptors.h"
+#include "usb/usb_descriptors.h"
 
 //--------------------------------------------------------------------+
 // Board Specific Configuration

@@ -29,7 +29,7 @@
 
 #include "bsp/board_api.h"
 #include "tusb.h"
-#include "usb_descriptors.h"
+#include "usb/usb_descriptors.h"
 #include "common.h"
 #include "audio_process.h"
 //--------------------------------------------------------------------+

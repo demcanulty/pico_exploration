@@ -27,7 +27,7 @@
 
 #include "bsp/board_api.h"
 #include "tusb.h"
-#include "usb_descriptors.h"
+#include "usb/usb_descriptors.h"
 
 
 #define BUCHLA_VID  0x16D0
