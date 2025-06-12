@@ -33,6 +33,9 @@ extern "C" {
 
 #include "usb/usb_descriptors.h"
 
+//***  NOTE  ***  THIS FILE SEEMS TO NEED TO LIVE IN THE BASE DIRECTORY OF THE PROJECT?  
+
+
 //--------------------------------------------------------------------+
 // Board Specific Configuration
 //--------------------------------------------------------------------+

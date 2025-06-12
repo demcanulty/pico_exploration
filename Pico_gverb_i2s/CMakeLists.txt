@@ -77,7 +77,7 @@ target_include_directories(audio_i2s INTERFACE
 add_executable(Pico_gen main.c 
                         audio_process.c
                         blink.c
-                        cdc_app.c 
+                        usb/cdc_app.c 
                         usb/uac2_app.c
                         usb/usb_descriptors.c
                         midi.c
@@ -93,7 +93,6 @@ pico_set_program_version(Pico_gen "0.1")
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(Pico_gen 0)
 pico_enable_stdio_usb(Pico_gen 1)
-
 
 
 # Add the standard library to the build
