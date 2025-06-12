@@ -1,7 +1,7 @@
 Archive member included to satisfy reference by file (symbol)
 
 /Users/mcanulty/.pico-sdk/toolchain/14_2_Rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libm.a(libm_a-wf_sqrt.o)
-                              CMakeFiles/Pico_gen.dir/gverbdsp.c.o (sqrtf)
+                              CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o (sqrtf)
 /Users/mcanulty/.pico-sdk/toolchain/14_2_Rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libm.a(libm_a-ef_sqrt.o)
                               /Users/mcanulty/.pico-sdk/toolchain/14_2_Rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libm.a(libm_a-wf_sqrt.o) (__ieee754_sqrtf)
 /Users/mcanulty/.pico-sdk/toolchain/14_2_Rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v8-m.main+fp/softfp/libgcc.a(_arm_addsubdf3.o)
@@ -221,31 +221,31 @@ Discarded input sections
                 0x00000000        0x1 CMakeFiles/Pico_gen.dir/midi.c.o
  .rodata.cable_num_to_send
                 0x00000000        0x1 CMakeFiles/Pico_gen.dir/midi.c.o
- .text          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb.c.o
- .data          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb.c.o
- .bss           0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb.c.o
+ .text          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .data          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .bss           0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
  .text.gverb_free
-                0x00000000       0x8c CMakeFiles/Pico_gen.dir/gverb.c.o
+                0x00000000       0x8c CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
  .text.gverb_flush
-                0x00000000       0x64 CMakeFiles/Pico_gen.dir/gverb.c.o
- .text          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
- .data          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
- .bss           0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000       0x64 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .text          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
+ .data          0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
+ .bss           0x00000000        0x0 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.diffuser_free
-                0x00000000       0x12 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000       0x12 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.diffuser_flush
-                0x00000000       0x10 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000       0x10 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.damper_free
-                0x00000000        0x8 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000        0x8 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.damper_flush
-                0x00000000        0x6 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000        0x6 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.fixeddelay_free
-                0x00000000       0x12 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000       0x12 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.fixeddelay_flush
-                0x00000000       0x10 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
- .text.isprime  0x00000000       0x4a CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000       0x10 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
+ .text.isprime  0x00000000       0x4a CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text.nearest_prime
-                0x00000000       0x58 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000000       0x58 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .text          0x00000000        0x0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdlib/stdlib.c.o
  .data          0x00000000        0x0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdlib/stdlib.c.o
  .bss           0x00000000        0x0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdlib/stdlib.c.o
@@ -3053,16 +3053,16 @@ LOAD /Users/mcanulty/.pico-sdk/toolchain/14_2_Rel1/bin/../lib/gcc/arm-none-eabi/
                 0x10001354                usb_midi_task
  *fill*         0x100013a4        0x4 
  .text.gverb_new
-                0x100013a8      0x4a0 CMakeFiles/Pico_gen.dir/gverb.c.o
+                0x100013a8      0x4a0 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
                 0x100013a8                gverb_new
  .text.diffuser_make
-                0x10001848       0x36 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x10001848       0x36 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
                 0x10001848                diffuser_make
  .text.damper_make
-                0x1000187e       0x12 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x1000187e       0x12 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
                 0x1000187e                damper_make
  .text.fixeddelay_make
-                0x10001890       0x32 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x10001890       0x32 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
                 0x10001890                fixeddelay_make
  *fill*         0x100018c2        0x2 
  .text.gpio_set_function
@@ -4848,8 +4848,8 @@ LOAD CMakeFiles/Pico_gen.dir/cdc_app.c.o
 LOAD CMakeFiles/Pico_gen.dir/uac2_app.c.o
 LOAD CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
 LOAD CMakeFiles/Pico_gen.dir/midi.c.o
-LOAD CMakeFiles/Pico_gen.dir/gverb.c.o
-LOAD CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+LOAD CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+LOAD CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
 LOAD CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdlib/stdlib.c.o
 LOAD CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
 LOAD CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2350/pico_platform/platform.c.o
@@ -4973,9 +4973,9 @@ LOAD linker stubs
  .ARM.attributes
                 0x000001ac       0x38 CMakeFiles/Pico_gen.dir/midi.c.o
  .ARM.attributes
-                0x000001e4       0x38 CMakeFiles/Pico_gen.dir/gverb.c.o
+                0x000001e4       0x38 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
  .ARM.attributes
-                0x0000021c       0x38 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x0000021c       0x38 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .ARM.attributes
                 0x00000254       0x38 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .ARM.attributes
@@ -5118,8 +5118,8 @@ LOAD linker stubs
  .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/uac2_app.c.o
  .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
  .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/midi.c.o
- .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/gverb.c.o
- .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+ .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
  .comment       0x00000045       0x46 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
@@ -5170,8 +5170,8 @@ LOAD linker stubs
  .debug_info    0x00002006     0x1513 CMakeFiles/Pico_gen.dir/uac2_app.c.o
  .debug_info    0x00003519      0xe13 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
  .debug_info    0x0000432c      0xebf CMakeFiles/Pico_gen.dir/midi.c.o
- .debug_info    0x000051eb      0xbd4 CMakeFiles/Pico_gen.dir/gverb.c.o
- .debug_info    0x00005dbf      0x53c CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+ .debug_info    0x000051eb      0xbd4 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .debug_info    0x00005dbf      0x53c CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .debug_info    0x000062fb     0x1c47 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_info    0x00007f42      0x1b3 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
  .debug_info    0x000080f5      0x745 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
@@ -5225,8 +5225,8 @@ LOAD linker stubs
  .debug_abbrev  0x00000a1c      0x4cc CMakeFiles/Pico_gen.dir/uac2_app.c.o
  .debug_abbrev  0x00000ee8      0x221 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
  .debug_abbrev  0x00001109      0x2e7 CMakeFiles/Pico_gen.dir/midi.c.o
- .debug_abbrev  0x000013f0      0x22d CMakeFiles/Pico_gen.dir/gverb.c.o
- .debug_abbrev  0x0000161d      0x1a8 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+ .debug_abbrev  0x000013f0      0x22d CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .debug_abbrev  0x0000161d      0x1a8 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .debug_abbrev  0x000017c5      0x4a8 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_abbrev  0x00001c6d      0x12d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
  .debug_abbrev  0x00001d9a      0x2c8 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
@@ -5289,9 +5289,9 @@ LOAD linker stubs
  .debug_loclists
                 0x0000103d      0x56a CMakeFiles/Pico_gen.dir/midi.c.o
  .debug_loclists
-                0x000015a7      0x734 CMakeFiles/Pico_gen.dir/gverb.c.o
+                0x000015a7      0x734 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
  .debug_loclists
-                0x00001cdb      0x203 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00001cdb      0x203 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .debug_loclists
                 0x00001ede      0xc4d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_loclists
@@ -5385,9 +5385,9 @@ LOAD linker stubs
  .debug_aranges
                 0x00000190       0x40 CMakeFiles/Pico_gen.dir/midi.c.o
  .debug_aranges
-                0x000001d0       0x30 CMakeFiles/Pico_gen.dir/gverb.c.o
+                0x000001d0       0x30 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
  .debug_aranges
-                0x00000200       0x70 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x00000200       0x70 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .debug_aranges
                 0x00000270      0x128 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_aranges
@@ -5494,9 +5494,9 @@ LOAD linker stubs
  .debug_rnglists
                 0x00000191       0x2d CMakeFiles/Pico_gen.dir/midi.c.o
  .debug_rnglists
-                0x000001be       0x21 CMakeFiles/Pico_gen.dir/gverb.c.o
+                0x000001be       0x21 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
  .debug_rnglists
-                0x000001df       0x4f CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+                0x000001df       0x4f CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .debug_rnglists
                 0x0000022e      0x10a CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_rnglists
@@ -5584,116 +5584,116 @@ LOAD linker stubs
  .debug_rnglists
                 0x00001dbe      0x117 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_multicore/multicore.c.o
 
-.debug_line     0x00000000    0x22efa
+.debug_line     0x00000000    0x23023
  .debug_line    0x00000000      0x7f9 CMakeFiles/Pico_gen.dir/main.c.o
- .debug_line    0x000007f9      0x7be CMakeFiles/Pico_gen.dir/audio_process.c.o
- .debug_line    0x00000fb7      0x1be CMakeFiles/Pico_gen.dir/blink.c.o
- .debug_line    0x00001175      0x462 CMakeFiles/Pico_gen.dir/cdc_app.c.o
- .debug_line    0x000015d7      0xae9 CMakeFiles/Pico_gen.dir/uac2_app.c.o
- .debug_line    0x000020c0      0x582 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
- .debug_line    0x00002642      0x78c CMakeFiles/Pico_gen.dir/midi.c.o
- .debug_line    0x00002dce      0x766 CMakeFiles/Pico_gen.dir/gverb.c.o
- .debug_line    0x00003534      0x3d9 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
- .debug_line    0x0000390d      0xde9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_line    0x000046f6      0x222 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_line    0x00004918      0x58a CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
- .debug_line    0x00004ea2      0x3bd CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync/sync.c.o
- .debug_line    0x0000525f      0x3e2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_line    0x00005641     0x11fa CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_irq/irq.c.o
- .debug_line    0x0000683b      0x26c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/lock_core.c.o
- .debug_line    0x00006aa7     0x104c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/mutex.c.o
- .debug_line    0x00007af3      0x35c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/critical_section.c.o
- .debug_line    0x00007e4f     0x1d96 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_time/time.c.o
- .debug_line    0x00009be5      0xf8e CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_timer/timer.c.o
- .debug_line    0x0000ab73      0xba0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_line    0x0000b713      0x56c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_pll/pll.c.o
- .debug_line    0x0000bc7f      0x315 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_line    0x0000bf94      0x69e CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_line    0x0000c632      0x39d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom_lock.c.o
- .debug_line    0x0000c9cf      0x3ec CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_boot_lock/boot_lock.c.o
- .debug_line    0x0000cdbb      0x34f CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_line    0x0000d10a      0x27e CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime/runtime.c.o
- .debug_line    0x0000d388      0x5a2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_line    0x0000d92a      0x562 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_line    0x0000de8c     0x21a9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_math.c.o
- .debug_line    0x00010035      0x28f CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_aeabi_dcp.S.o
- .debug_line    0x000102c4      0x4a7 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_sci_m33.S.o
- .debug_line    0x0001076b     0x1fd6 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_float/float_math.c.o
- .debug_line    0x00012741      0x44c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_malloc/malloc.c.o
- .debug_line    0x00012b8d      0x1fa CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
- .debug_line    0x00012d87     0x12c1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_printf/printf.c.o
- .debug_line    0x00014048       0xa1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_crt0/crt0.S.o
- .debug_line    0x000140e9      0x7e9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_line    0x000148d2      0xd70 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio/stdio.c.o
- .debug_line    0x00015642      0xac0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_line    0x00016102      0x3ee CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_line    0x000164f0     0x12f4 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_line    0x000177e4      0xbb9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_line    0x0001839d     0x2493 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd.c.o
- .debug_line    0x0001a830      0x6e2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd_control.c.o
- .debug_line    0x0001af12     0x1e61 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/audio/audio_device.c.o
- .debug_line    0x0001cd73      0xff1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_line    0x0001dd64     0x1051 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/midi/midi_device.c.o
- .debug_line    0x0001edb5     0x1411 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/tusb.c.o
- .debug_line    0x000201c6     0x135f CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/common/tusb_fifo.c.o
- .debug_line    0x00021525      0x6f6 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/hw/bsp/rp2040/family.c.o
- .debug_line    0x00021c1b     0x12df CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_multicore/multicore.c.o
+ .debug_line    0x000007f9      0x81f CMakeFiles/Pico_gen.dir/audio_process.c.o
+ .debug_line    0x00001018      0x1be CMakeFiles/Pico_gen.dir/blink.c.o
+ .debug_line    0x000011d6      0x462 CMakeFiles/Pico_gen.dir/cdc_app.c.o
+ .debug_line    0x00001638      0xae9 CMakeFiles/Pico_gen.dir/uac2_app.c.o
+ .debug_line    0x00002121      0x582 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
+ .debug_line    0x000026a3      0x7ed CMakeFiles/Pico_gen.dir/midi.c.o
+ .debug_line    0x00002e90      0x7c7 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .debug_line    0x00003657      0x3df CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
+ .debug_line    0x00003a36      0xde9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_line    0x0000481f      0x222 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_line    0x00004a41      0x58a CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
+ .debug_line    0x00004fcb      0x3bd CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync/sync.c.o
+ .debug_line    0x00005388      0x3e2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_line    0x0000576a     0x11fa CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_irq/irq.c.o
+ .debug_line    0x00006964      0x26c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/lock_core.c.o
+ .debug_line    0x00006bd0     0x104c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/mutex.c.o
+ .debug_line    0x00007c1c      0x35c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/critical_section.c.o
+ .debug_line    0x00007f78     0x1d96 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_time/time.c.o
+ .debug_line    0x00009d0e      0xf8e CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_timer/timer.c.o
+ .debug_line    0x0000ac9c      0xba0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_line    0x0000b83c      0x56c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_pll/pll.c.o
+ .debug_line    0x0000bda8      0x315 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_line    0x0000c0bd      0x69e CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_line    0x0000c75b      0x39d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom_lock.c.o
+ .debug_line    0x0000caf8      0x3ec CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_boot_lock/boot_lock.c.o
+ .debug_line    0x0000cee4      0x34f CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_line    0x0000d233      0x27e CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_line    0x0000d4b1      0x5a2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_line    0x0000da53      0x562 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_line    0x0000dfb5     0x21a9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_math.c.o
+ .debug_line    0x0001015e      0x28f CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_aeabi_dcp.S.o
+ .debug_line    0x000103ed      0x4a7 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_sci_m33.S.o
+ .debug_line    0x00010894     0x1fd6 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_float/float_math.c.o
+ .debug_line    0x0001286a      0x44c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_line    0x00012cb6      0x1fa CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+ .debug_line    0x00012eb0     0x12c1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_printf/printf.c.o
+ .debug_line    0x00014171       0xa1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_crt0/crt0.S.o
+ .debug_line    0x00014212      0x7e9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_line    0x000149fb      0xd70 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_line    0x0001576b      0xac0 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_line    0x0001622b      0x3ee CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_line    0x00016619     0x12f4 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_line    0x0001790d      0xbb9 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_line    0x000184c6     0x2493 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd.c.o
+ .debug_line    0x0001a959      0x6e2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_line    0x0001b03b     0x1e61 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/audio/audio_device.c.o
+ .debug_line    0x0001ce9c      0xff1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_line    0x0001de8d     0x1051 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/midi/midi_device.c.o
+ .debug_line    0x0001eede     0x1411 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/tusb.c.o
+ .debug_line    0x000202ef     0x135f CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_line    0x0002164e      0x6f6 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/hw/bsp/rp2040/family.c.o
+ .debug_line    0x00021d44     0x12df CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_multicore/multicore.c.o
 
-.debug_str      0x00000000     0xc448
- .debug_str     0x00000000     0xc448 CMakeFiles/Pico_gen.dir/main.c.o
+.debug_str      0x00000000     0xc454
+ .debug_str     0x00000000     0xc454 CMakeFiles/Pico_gen.dir/main.c.o
                                 0xb92 (size before relaxing)
- .debug_str     0x0000c448      0x81a CMakeFiles/Pico_gen.dir/audio_process.c.o
- .debug_str     0x0000c448      0x4b7 CMakeFiles/Pico_gen.dir/blink.c.o
- .debug_str     0x0000c448      0x3b6 CMakeFiles/Pico_gen.dir/cdc_app.c.o
- .debug_str     0x0000c448      0xe1b CMakeFiles/Pico_gen.dir/uac2_app.c.o
- .debug_str     0x0000c448     0x2535 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
- .debug_str     0x0000c448      0xb49 CMakeFiles/Pico_gen.dir/midi.c.o
- .debug_str     0x0000c448      0x46b CMakeFiles/Pico_gen.dir/gverb.c.o
- .debug_str     0x0000c448      0x310 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
- .debug_str     0x0000c448      0xd61 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
- .debug_str     0x0000c448      0x237 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
- .debug_str     0x0000c448      0x3cf CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
- .debug_str     0x0000c448      0x36c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync/sync.c.o
- .debug_str     0x0000c448      0xc2c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
- .debug_str     0x0000c448      0xc67 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_irq/irq.c.o
- .debug_str     0x0000c448      0x263 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/lock_core.c.o
- .debug_str     0x0000c448      0x945 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/mutex.c.o
- .debug_str     0x0000c448      0x337 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/critical_section.c.o
- .debug_str     0x0000c448     0x1362 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_time/time.c.o
- .debug_str     0x0000c448      0xbfa CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_timer/timer.c.o
- .debug_str     0x0000c448      0xbc6 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_clocks/clocks.c.o
- .debug_str     0x0000c448      0x4f8 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_pll/pll.c.o
- .debug_str     0x0000c448      0x317 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_ticks/ticks.c.o
- .debug_str     0x0000c448      0x711 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom.c.o
- .debug_str     0x0000c448      0x2ff CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom_lock.c.o
- .debug_str     0x0000c448      0x2eb CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_boot_lock/boot_lock.c.o
- .debug_str     0x0000c448      0x282 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_xosc/xosc.c.o
- .debug_str     0x0000c448      0x2d8 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime/runtime.c.o
- .debug_str     0x0000c448     0x121d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init.c.o
- .debug_str     0x0000c448      0x524 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
- .debug_str     0x0000c448      0x53b CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_math.c.o
- .debug_str     0x0000c448       0xc1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_aeabi_dcp.S.o
- .debug_str     0x0000c448       0xbf CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_sci_m33.S.o
- .debug_str     0x0000c448      0x4fb CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_float/float_math.c.o
- .debug_str     0x0000c448      0x5ad CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_malloc/malloc.c.o
- .debug_str     0x0000c448      0x481 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
- .debug_str     0x0000c448      0x499 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_printf/printf.c.o
- .debug_str     0x0000c448       0xb3 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_crt0/crt0.S.o
- .debug_str     0x0000c448      0x8e2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_clib_interface/newlib_interface.c.o
- .debug_str     0x0000c448      0xcad CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio/stdio.c.o
- .debug_str     0x0000c448      0xbd2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
- .debug_str     0x0000c448      0x2eb CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_unique_id/unique_id.c.o
- .debug_str     0x0000c448     0x1403 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
- .debug_str     0x0000c448      0xc27 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
- .debug_str     0x0000c448     0x1d2a CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd.c.o
- .debug_str     0x0000c448      0x844 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd_control.c.o
- .debug_str     0x0000c448     0x1e04 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/audio/audio_device.c.o
- .debug_str     0x0000c448     0x18c3 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/cdc/cdc_device.c.o
- .debug_str     0x0000c448     0x135d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/midi/midi_device.c.o
- .debug_str     0x0000c448     0x102d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/tusb.c.o
- .debug_str     0x0000c448      0x666 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/common/tusb_fifo.c.o
- .debug_str     0x0000c448      0x945 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/hw/bsp/rp2040/family.c.o
- .debug_str     0x0000c448     0x1317 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_multicore/multicore.c.o
+ .debug_str     0x0000c454      0x81a CMakeFiles/Pico_gen.dir/audio_process.c.o
+ .debug_str     0x0000c454      0x4b7 CMakeFiles/Pico_gen.dir/blink.c.o
+ .debug_str     0x0000c454      0x3b6 CMakeFiles/Pico_gen.dir/cdc_app.c.o
+ .debug_str     0x0000c454      0xe1b CMakeFiles/Pico_gen.dir/uac2_app.c.o
+ .debug_str     0x0000c454     0x2535 CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
+ .debug_str     0x0000c454      0xb49 CMakeFiles/Pico_gen.dir/midi.c.o
+ .debug_str     0x0000c454      0x471 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .debug_str     0x0000c454      0x316 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
+ .debug_str     0x0000c454      0xd61 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
+ .debug_str     0x0000c454      0x237 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
+ .debug_str     0x0000c454      0x3cf CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o
+ .debug_str     0x0000c454      0x36c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync/sync.c.o
+ .debug_str     0x0000c454      0xc2c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c.o
+ .debug_str     0x0000c454      0xc67 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_irq/irq.c.o
+ .debug_str     0x0000c454      0x263 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/lock_core.c.o
+ .debug_str     0x0000c454      0x945 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/mutex.c.o
+ .debug_str     0x0000c454      0x337 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_sync/critical_section.c.o
+ .debug_str     0x0000c454     0x1362 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/pico_time/time.c.o
+ .debug_str     0x0000c454      0xbfa CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_timer/timer.c.o
+ .debug_str     0x0000c454      0xbc6 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_clocks/clocks.c.o
+ .debug_str     0x0000c454      0x4f8 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_pll/pll.c.o
+ .debug_str     0x0000c454      0x317 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_ticks/ticks.c.o
+ .debug_str     0x0000c454      0x711 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom.c.o
+ .debug_str     0x0000c454      0x2ff CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_bootrom/bootrom_lock.c.o
+ .debug_str     0x0000c454      0x2eb CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_boot_lock/boot_lock.c.o
+ .debug_str     0x0000c454      0x282 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_xosc/xosc.c.o
+ .debug_str     0x0000c454      0x2d8 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime/runtime.c.o
+ .debug_str     0x0000c454     0x121d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init.c.o
+ .debug_str     0x0000c454      0x524 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_runtime_init/runtime_init_clocks.c.o
+ .debug_str     0x0000c454      0x53b CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_math.c.o
+ .debug_str     0x0000c454       0xc1 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_aeabi_dcp.S.o
+ .debug_str     0x0000c454       0xbf CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_double/double_sci_m33.S.o
+ .debug_str     0x0000c454      0x4fb CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_float/float_math.c.o
+ .debug_str     0x0000c454      0x5ad CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_malloc/malloc.c.o
+ .debug_str     0x0000c454      0x481 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_standard_binary_info/standard_binary_info.c.o
+ .debug_str     0x0000c454      0x499 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_printf/printf.c.o
+ .debug_str     0x0000c454       0xb3 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_crt0/crt0.S.o
+ .debug_str     0x0000c454      0x8e2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_clib_interface/newlib_interface.c.o
+ .debug_str     0x0000c454      0xcad CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio/stdio.c.o
+ .debug_str     0x0000c454      0xbd2 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_stdio_usb/stdio_usb.c.o
+ .debug_str     0x0000c454      0x2eb CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_unique_id/unique_id.c.o
+ .debug_str     0x0000c454     0x1403 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.o
+ .debug_str     0x0000c454      0xc27 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.o
+ .debug_str     0x0000c454     0x1d2a CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd.c.o
+ .debug_str     0x0000c454      0x844 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/device/usbd_control.c.o
+ .debug_str     0x0000c454     0x1e04 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/audio/audio_device.c.o
+ .debug_str     0x0000c454     0x18c3 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/cdc/cdc_device.c.o
+ .debug_str     0x0000c454     0x135d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/class/midi/midi_device.c.o
+ .debug_str     0x0000c454     0x102d CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/tusb.c.o
+ .debug_str     0x0000c454      0x666 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/src/common/tusb_fifo.c.o
+ .debug_str     0x0000c454      0x945 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/lib/tinyusb/hw/bsp/rp2040/family.c.o
+ .debug_str     0x0000c454     0x1317 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_multicore/multicore.c.o
 
 .debug_frame    0x00000000     0x4cd8
  .debug_frame   0x00000000       0x7c CMakeFiles/Pico_gen.dir/main.c.o
@@ -5703,8 +5703,8 @@ LOAD linker stubs
  .debug_frame   0x000001ec      0x134 CMakeFiles/Pico_gen.dir/uac2_app.c.o
  .debug_frame   0x00000320       0x6c CMakeFiles/Pico_gen.dir/usb_descriptors.c.o
  .debug_frame   0x0000038c       0xb4 CMakeFiles/Pico_gen.dir/midi.c.o
- .debug_frame   0x00000440       0x88 CMakeFiles/Pico_gen.dir/gverb.c.o
- .debug_frame   0x000004c8      0x130 CMakeFiles/Pico_gen.dir/gverbdsp.c.o
+ .debug_frame   0x00000440       0x88 CMakeFiles/Pico_gen.dir/gverb/gverb.c.o
+ .debug_frame   0x000004c8      0x130 CMakeFiles/Pico_gen.dir/gverb/gverbdsp.c.o
  .debug_frame   0x000005f8      0x2fc CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/hardware_gpio/gpio.c.o
  .debug_frame   0x000008f4       0x4c CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/rp2_common/pico_platform_panic/panic.c.o
  .debug_frame   0x00000940       0x98 CMakeFiles/Pico_gen.dir/Users/mcanulty/.pico-sdk/sdk/2.1.1/src/common/hardware_claim/claim.c.o

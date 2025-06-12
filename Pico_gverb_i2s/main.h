@@ -10,7 +10,7 @@
 #endif
 
 
-#include "gverb.h"
+#include "gverb/gverb.h"
 
 
 

@@ -16,10 +16,12 @@ bitloop_right:
     jmp x-- bitloop_right side 0b11
     out pins, 1           side 0b00   ; write
 
-% c-sdk {
+% c-sdk 
+{
 #include "hardware/clocks.h"
 
-static inline void sound_i2s_16bits_program_init(PIO pio, uint sm, uint offset, uint sample_rate, uint data_pin, uint clock_pin_base) {
+static inline void sound_i2s_16bits_program_init(PIO pio, uint sm, uint offset, uint sample_rate, uint data_pin, uint clock_pin_base) 
+{
   // configure PIO pins
   uint pin_mask = (1u << data_pin) | (0b11 << clock_pin_base);
   uint pin_dirs = (1u << data_pin) | (0b11 << clock_pin_base);

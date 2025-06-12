@@ -39,7 +39,11 @@
         "files.associations": {
             "common.h": "c",
             "format": "cpp",
-            "cstdint": "cpp"
+            "cstdint": "cpp",
+            "usb_descriptors.h": "c",
+            "tusb_config.h": "c",
+            "board_api.h": "c",
+            "tusb.h": "c"
         }
     }
 }

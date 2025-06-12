@@ -63,11 +63,13 @@ add_library(audio_i2s INTERFACE)
 
 target_include_directories(audio_i2s INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/sound_i2s
+        ${CMAKE_CURRENT_LIST_DIR}/gverb
+        #${CMAKE_CURRENT_LIST_DIR}/usb
 
 )
 
-pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_16bits.pio)
-pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_8bits.pio)
+# pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_16bits.pio)
+# pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s_8bits.pio)
 
 
 # Add executable. Default name is the project name, version 0.1
@@ -79,8 +81,8 @@ add_executable(Pico_gen main.c
                         uac2_app.c
                         usb_descriptors.c
                         midi.c
-                        gverb.c
-                        gverbdsp.c
+                        gverb/gverb.c
+                        gverb/gverbdsp.c
                         
                         
                         )

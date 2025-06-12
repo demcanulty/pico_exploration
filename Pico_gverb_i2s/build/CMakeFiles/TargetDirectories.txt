@@ -1,5 +1,3 @@
-/Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gverb_i2s/build/CMakeFiles/audio_i2s_sound_i2s_16bits_pio_h.dir
-/Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gverb_i2s/build/CMakeFiles/audio_i2s_sound_i2s_8bits_pio_h.dir
 /Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gverb_i2s/build/CMakeFiles/Pico_gen.dir
 /Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gverb_i2s/build/CMakeFiles/edit_cache.dir
 /Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gverb_i2s/build/CMakeFiles/rebuild_cache.dir

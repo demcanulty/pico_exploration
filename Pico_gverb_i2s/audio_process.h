@@ -5,7 +5,7 @@
 #define _AUDIO_PROCESS_H_ 1
 
 #include "common.h"
-#include "gverb.h"
+#include "gverb/gverb.h"
 
 
 #define BLOCK_SIZE     (48 * 1)

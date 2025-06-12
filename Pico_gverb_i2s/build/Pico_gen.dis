@@ -49,13 +49,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  22 .debug_rnglists 00001ed5  00000000  00000000  00074050  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 23 .debug_line   00022efa  00000000  00000000  00075f25  2**0
+ 23 .debug_line   00023023  00000000  00000000  00075f25  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 24 .debug_str    0000c448  00000000  00000000  00098e1f  2**0
+ 24 .debug_str    0000c454  00000000  00000000  00098f48  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 25 .debug_frame  00004cd8  00000000  00000000  000a5268  2**2
+ 25 .debug_frame  00004cd8  00000000  00000000  000a539c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 26 .debug_line_str 000002eb  00000000  00000000  000a9f40  2**0
+ 26 .debug_line_str 000002eb  00000000  00000000  000aa074  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 /Volumes/黑星冰川/KMI Dropbox/daniel mcanulty/_Buchla_local/github/Pico/Pico_gverb_i2s/build/Pico_gen.elf:     file format elf32-littlearm

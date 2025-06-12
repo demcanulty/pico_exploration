@@ -3,7 +3,7 @@
 #include "main.h"
 #include "hardware/timer.h"
 #include "pico/time.h"
-#include "gverb.h"
+#include "gverb/gverb.h"
 
 
 
