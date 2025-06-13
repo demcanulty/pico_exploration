@@ -15,7 +15,7 @@
 
 
 #include "sound_i2s/sound_i2s.h"
-
+uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 //*************************************
 //**********   I2S STUFF  *************
@@ -180,7 +180,6 @@ int main()
             
             printf("Core 0 - Runs through main: %d\n", this_count);
             printf("Time (in millis)          : %d\n\n", this_time);
-            send_test_cc();
             this_count = 0;
         }
 

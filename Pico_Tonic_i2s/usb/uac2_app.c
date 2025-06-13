@@ -44,7 +44,7 @@ uint32_t current_sample_rate  = 48000;
 
 #define N_SAMPLE_RATES  TU_ARRAY_SIZE(sample_rates)
 
-uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
+
 
 // Audio controls
 // Current states

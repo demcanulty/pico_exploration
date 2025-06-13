@@ -53,7 +53,7 @@ set(PICO_BOARD pico2 CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(Pico_gen C CXX ASM)
+project(Pico_project C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -64,7 +64,6 @@ add_library(audio_i2s INTERFACE)
 
 target_include_directories(audio_i2s INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/sound_i2s
-        ${CMAKE_CURRENT_LIST_DIR}/gverb
         ${CMAKE_CURRENT_LIST_DIR}/usb
         ${CMAKE_CURRENT_LIST_DIR}/midi
         ${CMAKE_CURRENT_LIST_DIR}/blink
@@ -77,29 +76,28 @@ pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Pico_gen main.c 
+add_executable(Pico_project 
+                        main.c 
                         audio_process.c
                         blink/blink.c
                         usb/cdc_app.c 
-                        usb/uac2_app.c
+                        #usb/uac2_app.c
                         usb/usb_descriptors.c
                         midi/midi.c
-                        gverb/gverb.c
-                        gverb/gverbdsp.c
                         sound_i2s/sound_i2s.c
                         
                         )
 
-pico_set_program_name(Pico_gen "Pico_gen")
-pico_set_program_version(Pico_gen "0.1")
+pico_set_program_name(Pico_project "Pico_project")
+pico_set_program_version(Pico_project "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(Pico_gen 0)
-pico_enable_stdio_usb(Pico_gen 1)
+pico_enable_stdio_uart(Pico_project 0)
+pico_enable_stdio_usb(Pico_project 1)
 
 
 # Add the standard library to the build
-target_link_libraries(  Pico_gen        #THIS PROJECT
+target_link_libraries(  Pico_project        #THIS PROJECT
                         pico_stdlib
                         tinyusb_board   #needed for bsp/board_api.h
                         tinyusb_device
@@ -114,11 +112,11 @@ target_link_libraries(  Pico_gen        #THIS PROJECT
                         )
 
 # Add the standard include files to the build
-target_include_directories(Pico_gen PRIVATE
+target_include_directories(Pico_project PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
 )
 
-pico_add_extra_outputs(Pico_gen)
+pico_add_extra_outputs(Pico_project)
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
