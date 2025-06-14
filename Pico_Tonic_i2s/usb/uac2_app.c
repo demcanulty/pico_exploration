@@ -289,7 +289,7 @@ bool tud_audio_rx_done_pre_read_cb(uint8_t rhport, uint16_t n_bytes_received, ui
 
     //***  LOAD AUDIO IN FROM USB  ***
     spk_data_size = tud_audio_read(spk_buf, n_bytes_received);
-
+    tud_audio_write(spk_buf, n_bytes_received);
 
     //***  SET UP POINTERS FOR THE DATA  ***
     s16 * in_ptr = (s16 * )spk_buf;             //*** parse spk_buf as int16 rather than int32
@@ -319,7 +319,7 @@ bool tud_audio_rx_done_pre_read_cb(uint8_t rhport, uint16_t n_bytes_received, ui
     }
         
     //***  LOAD AUDIO BACK OUT TO USB  ***
-    tud_audio_write(audio_out_combined, n_bytes_received);
+    //tud_audio_write(audio_out_combined, n_bytes_received);
 
     //***  TELL OTHER PROCESSOR TO BEGIN WORKING ***
     core_1_trigger_process = true;          //This leaves about 1 millisecond of time to do the audio processing
