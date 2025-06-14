@@ -22,8 +22,8 @@ struct sound_i2s_config {
 
 int sound_i2s_init(const struct sound_i2s_config *cfg);
 void sound_i2s_playback_start(void);
-void *sound_i2s_get_next_buffer(void);
-void *sound_i2s_get_buffer(int buffer_num);
+int16_t *sound_i2s_get_next_buffer(void);
+int16_t *sound_i2s_get_buffer(int buffer_num);
 
 extern volatile unsigned int sound_i2s_num_buffers_played;
 

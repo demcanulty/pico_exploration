@@ -296,7 +296,7 @@ bool tud_audio_rx_done_pre_read_cb(uint8_t rhport, uint16_t n_bytes_received, ui
     s16 * out_ptr = audio_out_combined;
 
     s16 * i2s_buff = sound_i2s_get_next_buffer();
-    for(int i=0; i<BLOCK_SIZE; i++)
+    for(int i=0; i<I2S_BLOCK_SIZE; i++)
     {
         //*******************************************
         //***  DE-INTERLEAVE AND CONVERT TO FLOAT ***

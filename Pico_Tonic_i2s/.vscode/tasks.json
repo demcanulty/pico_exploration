@@ -8,7 +8,8 @@
             "command": "${userHome}/.pico-sdk/ninja/v1.12.1/ninja",
             "args": [
                 "-C",
-                "${workspaceFolder}/build"
+                "${workspaceFolder}/build",
+                "-j20"
             ],
             "group": "build",
             "presentation": {

@@ -19,7 +19,8 @@ typedef int32_t s32;
 typedef int64_t s64;
 
 
-#define BLOCK_SIZE     (256 * 1)
+#define I2S_BLOCK_SIZE       256
+#define BLOCK_SIZE          48
 #define SAMPLE_RATE     48000
 #define CALLBACK_HERTZ  1000
 #define MAX_IN_OUT_CHANNELS  8
@@ -29,7 +30,8 @@ extern u32 accum_dt, ave_dt, accum_dt_count;
 extern u32 dt;
 extern u32 max_dt;
 extern bool accum_dt_lockout;
-
+extern int16_t buffer_0[I2S_BLOCK_SIZE * 2];
+extern int16_t buffer_1[I2S_BLOCK_SIZE * 2];
 
 
 void init_audio_code(void);

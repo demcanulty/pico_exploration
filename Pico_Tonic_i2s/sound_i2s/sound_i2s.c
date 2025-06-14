@@ -23,23 +23,37 @@ static uint sound_pio_sm;
 static uint sound_dma_chan;
 
 static volatile int sound_cur_buffer_num;
-static void *sound_sample_buffers[2];
+static int16_t *sound_sample_buffers[2] = {buffer_0, buffer_1};
 
+int cur_buff     = 0;
+int resting_buff = 1;
 
 static void __isr __time_critical_func(dma_handler)(void)
 {
   // swap buffers
-  uint cur_buf = !sound_cur_buffer_num;
-  sound_cur_buffer_num = cur_buf;
-  sound_i2s_num_buffers_played++;
+
+    switch(cur_buff)
+    {
+        case 0:
+            cur_buff     = 1;
+            resting_buff = 0;
+        break;
+
+        case 1:
+            cur_buff     = 0;
+            resting_buff = 1;
+        break;
+    }
+
+  //sound_i2s_num_buffers_played++;
 
   // set dma dest to new buffer and re-trigger dma:
-  dma_hw->ch[sound_dma_chan].al3_read_addr_trig = (uintptr_t) sound_sample_buffers[cur_buf];
+  dma_hw->ch[sound_dma_chan].al3_read_addr_trig = (uintptr_t) sound_sample_buffers[cur_buff];
 
   // ack dma irq
   dma_hw->ints0 = 1u << sound_dma_chan;
 
-    process_audio();
+    //process_audio();
 
 }
 
@@ -48,21 +62,25 @@ int sound_i2s_init(const struct sound_i2s_config *cfg)
   config = *cfg;
 
   // allocate sound buffers
-  size_t sound_buffer_size = (config.bits_per_sample/8) * 2 * SOUND_I2S_BUFFER_NUM_SAMPLES;
-  sound_sample_buffers[0] = malloc(sound_buffer_size);
-  sound_sample_buffers[1] = malloc(sound_buffer_size);
-  if (! sound_sample_buffers[0] || ! sound_sample_buffers[1]) 
-  {
-    free(sound_sample_buffers[0]);
-    free(sound_sample_buffers[1]);
-    return -1;
-  }
-  memset(sound_sample_buffers[0], 0, sound_buffer_size);
-  memset(sound_sample_buffers[1], 0, sound_buffer_size);
+ // size_t sound_buffer_size = (config.bits_per_sample/8) * 2 * SOUND_I2S_BUFFER_NUM_SAMPLES;
+//   sound_sample_buffers[0] = malloc(sound_buffer_size);
+//   sound_sample_buffers[1] = malloc(sound_buffer_size);
+//   if (! sound_sample_buffers[0] || ! sound_sample_buffers[1]) 
+//   {
+//     free(sound_sample_buffers[0]);
+//     free(sound_sample_buffers[1]);
+//     return -1;
+//   }
+
+    // sound_sample_buffers[0] = &buffer_0;
+    // sound_sample_buffers[1] = &buffer_1;
+    memset(sound_sample_buffers[0], 0, sizeof(buffer_0));
+    memset(sound_sample_buffers[1], 0, sizeof(buffer_0));
   
     //******************************************
     //******  PRELOAD SINE TABLES  *************
     //******************************************
+    /*
     uint16_t * buff_1 = sound_i2s_get_buffer(0);
     uint16_t * buff_2 = sound_i2s_get_buffer(1);
     for (int i = 0; i < sound_buffer_size; ++i) 
@@ -73,7 +91,7 @@ int sound_i2s_init(const struct sound_i2s_config *cfg)
 
         *buff_2++ = sample;         //and also in the other buffer
         *buff_2++ = sample;
-    }   
+    }   */
   
   // setup pio
   sound_pio = (config.pio_num == 0) ? pio0 : pio1;
@@ -100,8 +118,8 @@ void sound_i2s_playback_start(void)
 {
   // reset buffer
   sound_i2s_num_buffers_played = 0;
-  sound_cur_buffer_num = 0;
-  void *buffer = sound_sample_buffers[sound_cur_buffer_num];
+
+  void *buffer = sound_sample_buffers[cur_buff];
 
   // start pio
   pio_sm_set_enabled(sound_pio, sound_pio_sm, true);
@@ -120,12 +138,12 @@ void sound_i2s_playback_start(void)
                         );
 }
 
-void *sound_i2s_get_next_buffer(void)
+int16_t * sound_i2s_get_next_buffer(void)
 {
-  return sound_sample_buffers[1-sound_cur_buffer_num];
+  return sound_sample_buffers[resting_buff];
 }
 
-void *sound_i2s_get_buffer(int buffer_num)
+int16_t * sound_i2s_get_buffer(int buffer_num)
 {
   return sound_sample_buffers[buffer_num];
 }

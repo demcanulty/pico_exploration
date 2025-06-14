@@ -15,7 +15,7 @@
 
 
 #include "sound_i2s/sound_i2s.h"
-//#include "Tonic.h"
+#include "Tonic.h"
 uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 //*************************************
@@ -99,8 +99,8 @@ void core1_main()
         //*************************
         if(core_1_trigger_process)
         {
-            // process_audio();
-            // core_1_trigger_process = false;
+            process_audio();
+            core_1_trigger_process = false;
         }
     }
 }
@@ -156,8 +156,8 @@ int main()
     //******************************************
     //****  I2S AUDIO OUT  *********************
     //******************************************
-    sound_i2s_init(&sound_config);
-    sound_i2s_playback_start();
+    // sound_i2s_init(&sound_config);
+    // sound_i2s_playback_start();
     
 
 
