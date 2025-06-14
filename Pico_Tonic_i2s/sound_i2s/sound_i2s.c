@@ -13,6 +13,7 @@
 #include "sound_i2s_16bits.pio.h"
 
 #include "math.h"
+#include "audio_process.h"
 
 volatile unsigned int sound_i2s_num_buffers_played = 0;
 
@@ -37,6 +38,9 @@ static void __isr __time_critical_func(dma_handler)(void)
 
   // ack dma irq
   dma_hw->ints0 = 1u << sound_dma_chan;
+
+    process_audio();
+
 }
 
 int sound_i2s_init(const struct sound_i2s_config *cfg)

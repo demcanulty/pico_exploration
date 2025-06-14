@@ -6,6 +6,9 @@
 
 #include "main.h"
 
+
+
+
 typedef uint8_t   u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -16,7 +19,7 @@ typedef int32_t s32;
 typedef int64_t s64;
 
 
-#define BLOCK_SIZE     (48 * 1)
+#define BLOCK_SIZE     (256 * 1)
 #define SAMPLE_RATE     48000
 #define CALLBACK_HERTZ  1000
 #define MAX_IN_OUT_CHANNELS  8
@@ -44,7 +47,7 @@ extern u32 active_out_buffer;
 
 extern void process_audio(void);
 
-
+extern u32 audio_interrupt_count;
 
 #endif 
 

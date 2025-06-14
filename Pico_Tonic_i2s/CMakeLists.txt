@@ -50,6 +50,8 @@ endif()
 
 set(PICO_BOARD pico2 CACHE STRING "Board type")
 
+#set(PICO_CXX_ENABLE_EXCEPTIONS 1)
+
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
@@ -59,7 +61,6 @@ project(Pico_project C CXX ASM)
 pico_sdk_init()
 
 
-
 add_library(audio_i2s INTERFACE)
 
 target_include_directories(audio_i2s INTERFACE
@@ -67,6 +68,7 @@ target_include_directories(audio_i2s INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/usb
         ${CMAKE_CURRENT_LIST_DIR}/midi
         ${CMAKE_CURRENT_LIST_DIR}/blink
+        ${CMAKE_CURRENT_LIST_DIR}/Tonic
 
 )
 
@@ -77,7 +79,7 @@ pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(Pico_project 
-                        main.c 
+                        main.cpp
                         audio_process.c
                         blink/blink.c
                         usb/cdc_app.c 
@@ -94,6 +96,7 @@ pico_set_program_version(Pico_project "0.1")
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(Pico_project 0)
 pico_enable_stdio_usb(Pico_project 1)
+
 
 
 # Add the standard library to the build

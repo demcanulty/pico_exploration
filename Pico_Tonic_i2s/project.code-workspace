@@ -2,7 +2,8 @@
 	"folders": [
 		{
 			"path": "."
-		},
+		}
+        //,
         // {
         //     // Add folder with your username here to be able to search the SDK
         //     //"path": "/Users/mcanulty/.pico-sdk/sdk/2.1.1/"

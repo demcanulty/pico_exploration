@@ -4,13 +4,13 @@
 #define SOUND_I2S_H_FILE
 
 #include <stdint.h>
-
+#include "audio_process.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 //#define SOUND_I2S_BUFFER_NUM_SAMPLES  1024
-#define SOUND_I2S_BUFFER_NUM_SAMPLES   96
+#define SOUND_I2S_BUFFER_NUM_SAMPLES   BLOCK_SIZE * 2  //96
 struct sound_i2s_config {
   uint8_t  pio_num;
   uint8_t  pin_scl;

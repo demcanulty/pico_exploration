@@ -6,6 +6,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+
 
 #include "audio_process.h"
 
@@ -80,4 +85,11 @@ enum
 
 
 extern uint32_t blink_interval_ms;
+
+
+
+
+#ifdef __cplusplus
+}
+#endif
 #endif 
