@@ -3,10 +3,10 @@
 		{
 			"path": "."
 		},
-        {
-            // Add folder with your username here to be able to search the SDK
-            //"path": "/Users/mcanulty/.pico-sdk/sdk/2.1.1/"
-        }
+        // {
+        //     // Add folder with your username here to be able to search the SDK
+        //     //"path": "/Users/mcanulty/.pico-sdk/sdk/2.1.1/"
+        // }
 	],
     "settings": {
         "cmake.options.statusBarVisibility": "hidden",

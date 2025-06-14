@@ -4,8 +4,11 @@
 #include "bsp/board_api.h"
 #include "hardware/clocks.h"
 #include "hardware/adc.h"
+#include "hardware/vreg.h"
 void pico_led_init(void);
 void pico_set_led(bool led_on);
+
+#define OVERCLOCK_300MHZ
 //**************************************************************
 //**************************************************************
 //**********   SECOND MAIN LOOP FOR SECOND CORE  !!  ***********
@@ -55,7 +58,10 @@ int main()
     //***  CHANGE SYSTEM CLOCK  ***
     //*****************************
 
-    set_sys_clock_khz(300000, true);      
+    #ifdef OVERCLOCK_300MHZ
+    vreg_set_voltage(VREG_VOLTAGE_1_30);  //300Mhz was locking up at 1.10v
+    set_sys_clock_khz(300000, true);
+    #endif
 
     /*
         "Note that not all clock frequencies are possible; 

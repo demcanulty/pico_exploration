@@ -53,6 +53,7 @@ target_link_libraries(overclock_c
         tinyusb_board
         pico_stdlib
         pico_multicore
+        hardware_vreg
         )
 
 # Add the standard include files to the build
