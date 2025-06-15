@@ -1,0 +1,94 @@
+
+
+These notes made while using Pico_Tonic_i2s running Sine and Saw
+
+
+60007207
+01100000 00000000 01110010 00000111 
+
+60 00 72 03
+01100000 00000000 01110010 00000011 
+
+
+300Mhz
+Core 0 - Runs through main: 945143
+Core 1 - Runs through main: 3465618
+Audio Interrupts per sec: 200
+ave_dt: 1026    max_dt: 1205
+qmi_hw->m[0].timing: 60007203
+
+
+340
+Core 0 - Runs through main: 1071948
+Core 1 - Runs through main: 4048619
+Audio Interrupts per sec: 200
+ave_dt: 905    max_dt: 1061
+qmi_hw->m[0].timing: 60007203
+
+
+360
+Core 0 - Runs through main: 1134598
+Core 1 - Runs through main: 4337394
+Audio Interrupts per sec: 200
+ave_dt: 859    max_dt: 1004
+qmi_hw->m[0].timing: 60007203
+
+
+380
+Core 0 - Runs through main: 1198723
+Core 1 - Runs through main: 4632657
+Audio Interrupts per sec: 200
+ave_dt: 823    max_dt: 958
+qmi_hw->m[0].timing: 60007203
+
+390
+Core 0 - Runs through main: 1252326
+Core 1 - Runs through main: 4767712
+Audio Interrupts per sec: 199
+ave_dt: 794    max_dt: 976
+qmi_hw->m[0].timing: 60007204
+
+
+400Mhz 
+Core 0 - Runs through main: 1263680
+Core 1 - Runs through main: 4816924
+Audio Interrupts per sec: 199
+ave_dt: 787    max_dt: 984
+qmi_hw->m[0].timing: 60007207
+
+400
+Core 0 - Runs through main: 1286381
+Core 1 - Runs through main: 4920372
+Audio Interrupts per sec: 199
+ave_dt: 787    max_dt: 896
+qmi_hw->m[0].timing: 60007204    note lower clkdiv
+
+
+----------------
+
+Original chip 
+
+
+380
+Core 0 - Runs through main: 1199048
+Core 1 - Runs through main: 4633670
+Audio Interrupts per sec: 200
+ave_dt: 811    max_dt: 969
+qmi_hw->m[0].timing: 60007203
+
+390
+Core 0 - Runs through main: 1229668
+Core 1 - Runs through main: 4774881
+Audio Interrupts per sec: 200
+ave_dt: 792    max_dt: 930
+qmi_hw->m[0].timing: 60007203      this board can run 390 without the clockdiv
+
+
+400
+Core 0 - Runs through main: 1284931
+Core 1 - Runs through main: 4914325
+Audio Interrupts per sec: 200
+ave_dt: 789    max_dt: 948
+qmi_hw->m[0].timing: 60007204
+
+

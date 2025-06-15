@@ -10,11 +10,15 @@
 #include "hardware/vreg.h"
 #include "main.h"
 #include "midi/midi.h"
-
-
-
 #include "sound_i2s/sound_i2s.h"
 #include "Tonic.h"
+
+#include <hardware/structs/qmi.h>
+
+#define OVERCLOCK_300MHZ  
+//#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
+
+
 uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 //*************************************
@@ -37,7 +41,7 @@ static const struct sound_i2s_config sound_config =
 
 
 
-#define OVERCLOCK_300MHZ  
+
 //**************************************************************
 //**************************************************************
 //**********   SECOND MAIN LOOP FOR SECOND CORE  ***************
@@ -101,10 +105,17 @@ int main()
     //***  OVERCLOCK  ***
     //********************
     #ifdef OVERCLOCK_300MHZ
-    vreg_set_voltage(VREG_VOLTAGE_1_30);  //300Mhz was locking up at 1.10v
+    vreg_set_voltage(VREG_VOLTAGE_1_20);    //300Mhz was locking up at 1.10v, bumping to 1.20v
     set_sys_clock_khz(300000, true);
     #endif
 
+    #ifdef OVERCLOCK_400MHZ
+    //***  REDUCE FLASH TIMING CLOCK  ***
+    qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit, qmi clkdiv is now 3)
+    qmi_hw->m[0].timing &= ~(0x3);          //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits, qmi clkdiv is now 4) 
+    vreg_set_voltage(VREG_VOLTAGE_1_30);    //400 Mhz may be highest achievable at 1.30v. 
+    set_sys_clock_khz(400000, true);
+    #endif
 
     board_init();
     init_pins();
@@ -166,6 +177,7 @@ int main()
             //printf("Time (in millis)          : %d\n\n", this_time);
             printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
             printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
+            printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
             this_count = 0;
             audio_interrupt_count = 0;
             core1_this_count = 0;

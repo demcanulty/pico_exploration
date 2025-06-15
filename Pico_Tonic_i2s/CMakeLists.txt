@@ -171,6 +171,7 @@ target_link_libraries(  Pico_project        #THIS PROJECT
                         audio_i2s       #declared above, this creates the pio.h files
                         hardware_vreg
                         pico_bootrom
+                        
                         )
 
 # Add the standard include files to the build

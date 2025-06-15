@@ -5,10 +5,14 @@
 #include "hardware/clocks.h"
 #include "hardware/adc.h"
 #include "hardware/vreg.h"
+#include <hardware/structs/qmi.h>
+
 void pico_led_init(void);
 void pico_set_led(bool led_on);
 
-#define OVERCLOCK_300MHZ
+#define OVERCLOCK_300MHZ  
+//#define OVERCLOCK_400MHZ     //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
+
 //**************************************************************
 //**************************************************************
 //**********   SECOND MAIN LOOP FOR SECOND CORE  !!  ***********
@@ -59,8 +63,16 @@ int main()
     //*****************************
 
     #ifdef OVERCLOCK_300MHZ
-    vreg_set_voltage(VREG_VOLTAGE_1_30);  //300Mhz was locking up at 1.10v
+    vreg_set_voltage(VREG_VOLTAGE_1_20);    //300Mhz was locking up at 1.10v, bumping to 1.20v
     set_sys_clock_khz(300000, true);
+    #endif
+
+    #ifdef OVERCLOCK_400MHZ
+    //***  REDUCE FLASH TIMING CLOCK  ***
+    qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit, qmi clkdiv is now 3)
+    qmi_hw->m[0].timing &= ~(0x3);          //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits, qmi clkdiv is now 4) 
+    vreg_set_voltage(VREG_VOLTAGE_1_30);  
+    set_sys_clock_khz(400000, true);
     #endif
 
     /*
@@ -102,9 +114,10 @@ int main()
 
             
             printf("Core 0 - Runs through main: %d\n", this_count);
-            printf("Time (in millis)          : %d\n", this_time);
+            //printf("Time (in millis)          : %d\n", this_time);
+            printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);  //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
             printf("Core Temp:  %.1fF   %.1fC\n\n", temp_f, temp_c);
-
+            
             this_count = 0;
         }
 
