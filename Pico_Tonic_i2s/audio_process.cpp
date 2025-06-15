@@ -48,11 +48,11 @@ void init_audio_code(void)
     sineWave = new 	SineWave();
 
     sawWave->freq(FixedValue(START_FREQ));
-	sineWave->freq(FixedValue(START_FREQ));
+    sineWave->freq(FixedValue(START_FREQ));
 
 
     sineSynth->setOutputGen(*sineWave);
-	sawSynth ->setOutputGen( *sawWave);
+    sawSynth ->setOutputGen( *sawWave);
 
 }
 
