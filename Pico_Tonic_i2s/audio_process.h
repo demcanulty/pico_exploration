@@ -19,8 +19,8 @@ typedef int32_t s32;
 typedef int64_t s64;
 
 
-#define I2S_BLOCK_SIZE       256
-#define BLOCK_SIZE          48
+#define I2S_BLOCK_SIZE       240  
+#define BLOCK_SIZE         I2S_BLOCK_SIZE
 #define SAMPLE_RATE     48000
 #define CALLBACK_HERTZ  1000
 #define MAX_IN_OUT_CHANNELS  8

@@ -81,9 +81,8 @@ pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s
 add_executable(Pico_project 
                         main.cpp
                         audio_process.cpp
-                        blink/blink.c
                         usb/cdc_app.c 
-                        usb/uac2_app.c
+                        #usb/uac2_app.c
                         usb/usb_descriptors.c
                         midi/midi.c
                         sound_i2s/sound_i2s.c
@@ -168,6 +167,7 @@ target_link_libraries(  Pico_project        #THIS PROJECT
                         hardware_dma
                         audio_i2s       #declared above, this creates the pio.h files
                         hardware_vreg
+                        pico_bootrom
                         )
 
 # Add the standard include files to the build

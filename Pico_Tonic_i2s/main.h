@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
+#include "pico/stdlib.h"
 #ifdef __cplusplus
 extern "C" 
 {
@@ -86,8 +86,13 @@ enum
 
 extern uint32_t blink_interval_ms;
 
+#define DEBUG_A  5
+#define DEBUG_B  6
+#define DEBUG_C  7
 
 
+void init_pins(void);
+void pico_set_led(bool led_on);
 
 #ifdef __cplusplus
 }

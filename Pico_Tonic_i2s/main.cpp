@@ -9,7 +9,6 @@
 #include "hardware/clocks.h"
 #include "hardware/vreg.h"
 #include "main.h"
-#include "blink/blink.h"
 #include "midi/midi.h"
 
 
@@ -38,7 +37,7 @@ static const struct sound_i2s_config sound_config =
 
 
 
-#define OVERCLOCK_300MHZ  
+//#define OVERCLOCK_300MHZ  
 
 //**************************************************************
 //**************************************************************
@@ -68,28 +67,6 @@ void core1_main()
         {
             core1_this_time = board_millis();
 
-            printf("\nave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
-            printf("Core 1 - Runs through main: %d\n", core1_this_count);
-            
-            core1_this_count = 0;
-
-            //**************************************
-            //***  CALCULATE AUDIO PERFORMANCE  ****
-            //**************************************
-
-            accum_dt_lockout = true;
-
-            dt_in_us     = (float) accum_dt / accum_dt_count;
-            max_dt_in_us = (float)   max_dt;
-            ave_dt = accum_dt / accum_dt_count;
-
-            //*************************
-            //***  RESET VARIABLES  ***
-            //*************************
-            accum_dt = 0;
-            accum_dt_count = 0;
-            max_dt = 0;
-            accum_dt_lockout = false;
         }
 
         core1_this_count++;
@@ -131,7 +108,7 @@ int main()
 
 
     board_init();
-    pico_led_init();
+    init_pins();
 
     init_audio_code();
 
@@ -156,8 +133,8 @@ int main()
     //******************************************
     //****  I2S AUDIO OUT  *********************
     //******************************************
-    // sound_i2s_init(&sound_config);
-    // sound_i2s_playback_start();
+    sound_i2s_init(&sound_config);
+    sound_i2s_playback_start();
     
 
 
@@ -185,11 +162,36 @@ int main()
             this_time = board_millis();
 
             
-            printf("Core 0 - Runs through main: %d\n", this_count);
+            printf("\nCore 0 - Runs through main: %d\n", this_count);
+            printf("Core 1 - Runs through main: %d\n", core1_this_count);
             //printf("Time (in millis)          : %d\n\n", this_time);
-            printf("Audio Interrupts per sec: %d\n\n", audio_interrupt_count);
+            printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
+            printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
             this_count = 0;
             audio_interrupt_count = 0;
+            core1_this_count = 0;
+
+            //**************************************
+            //***  CALCULATE AUDIO PERFORMANCE  ****
+            //**************************************
+
+            accum_dt_lockout = true;
+
+            dt_in_us     = (float) accum_dt / accum_dt_count;
+            max_dt_in_us = (float)   max_dt;
+            ave_dt = accum_dt / accum_dt_count;
+
+            //*************************
+            //***  RESET VARIABLES  ***
+            //*************************
+            accum_dt = 0;
+            accum_dt_count = 0;
+            max_dt = 0;
+            accum_dt_lockout = false;
+
+            
+            
+            //gpio_put(DEBUG_C, !gpio_get(DEBUG_C));
         }
 
         //********************
@@ -201,9 +203,6 @@ int main()
 
             led_state = !led_state;
             pico_set_led(led_state);
-
-            //printf("Co");
-
         }
 
         //*******************************
@@ -218,4 +217,48 @@ int main()
         this_count++;
 
     }
+}
+
+
+
+
+
+
+
+//*******************************************************************************************
+//*******************************************************************************************
+//*******************************************************************************************
+//*******************************************************************************************
+
+
+// Perform initialisation
+void init_pins(void) 
+
+{
+
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_init(DEBUG_A);
+    gpio_init(DEBUG_B);
+    gpio_init(DEBUG_C);
+
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    gpio_set_dir(DEBUG_A, GPIO_OUT);
+    gpio_set_dir(DEBUG_B, GPIO_OUT);
+    gpio_set_dir(DEBUG_C, GPIO_OUT);
+
+
+
+
+}
+
+
+
+
+
+// Turn the led on or off
+void pico_set_led(bool led_on) 
+{
+    // Just set the GPIO on or off
+    gpio_put(PICO_DEFAULT_LED_PIN, led_on);
+
 }
