@@ -32,7 +32,7 @@ int resting_buff = 1;
 static void __isr __time_critical_func(dma_handler)(void)
 {
     // swap buffers
-    gpio_put(DEBUG_A, 1);
+    //gpio_put(DEBUG_A, 1);
     switch (cur_buff)
     {
     case 0:

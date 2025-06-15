@@ -37,8 +37,7 @@ static const struct sound_i2s_config sound_config =
 
 
 
-//#define OVERCLOCK_300MHZ  
-
+#define OVERCLOCK_300MHZ  
 //**************************************************************
 //**************************************************************
 //**********   SECOND MAIN LOOP FOR SECOND CORE  ***************
@@ -61,7 +60,7 @@ void core1_main()
 
 
         //**********************************
-        //***  PRINT RUNS THROUGH MAIN   ***
+        //***  Do nothing every second   ***
         //**********************************
         if(board_millis() - core1_this_time > 999)
         {

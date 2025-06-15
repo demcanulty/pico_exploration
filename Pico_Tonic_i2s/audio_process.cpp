@@ -10,32 +10,17 @@
 #include "Tonic.h"
 using namespace Tonic;
 
-u32 active_out_buffer;
-float audio_in_0[BLOCK_SIZE];
-float audio_in_1[BLOCK_SIZE];
-
-float audio_out_0[BLOCK_SIZE];
-float audio_out_1[BLOCK_SIZE];
-s16 audio_out_combined[BLOCK_SIZE * 2];
 
 alignas(32) int16_t buffer_0[I2S_BLOCK_SIZE * 2];
 alignas(32) int16_t buffer_1[I2S_BLOCK_SIZE * 2];
-
-// float scratch_buff[MAX_IN_OUT_CHANNELS][BLOCK_SIZE];
-// float dummy_buff[MAX_IN_OUT_CHANNELS][BLOCK_SIZE];
 
 
 
 
 
 TonicFloat sineBuff[BLOCK_SIZE];
-TonicFloat noiseBuff[BLOCK_SIZE];
 TonicFloat sawBuff[BLOCK_SIZE];
-TonicFloat rectBuffBL[BLOCK_SIZE];
-TonicFloat rectBuffNoBL[BLOCK_SIZE];
 
-uint32_t outputBuff1[BLOCK_SIZE];
-uint32_t outputBuff2[BLOCK_SIZE];
 
 
 Synth           *sineSynth;
@@ -66,7 +51,6 @@ void init_audio_code(void)
     sineSynth->setOutputGen(*sineWave);
 	sawSynth ->setOutputGen( *sawWave);
 
-
 }
 
 
@@ -96,18 +80,9 @@ void process_audio(void)
     for(int i=0; i<BLOCK_SIZE; i++)
     {
 
-        // float left = (sin(2.0f * ((float) M_PI) * sin_count++ / 256.0f));
-        // float right;// = 1 - left;
-
-
         //*****  CONVERT FLOAT TO INT16  *****
         *buff++ = (int16_t)(sineBuff[i] * 32767);      //
         *buff++ = (int16_t)(sawBuff[i]  * 32767);
-        
-        //*buff++ = (int16_t)(left * 32767);
-        // *buff++ = (int16_t)(right * -32767);   
-        //*buff++ = 0;
-        //*buff++ = 0x7fff ;
     }
     out_count++;
 
@@ -128,7 +103,7 @@ void process_audio(void)
         }
     }
 
-    gpio_put(DEBUG_A, 0);
+    //gpio_put(DEBUG_A, 0);
 }
 
 
