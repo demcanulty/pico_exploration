@@ -92,3 +92,25 @@ ave_dt: 789    max_dt: 948
 qmi_hw->m[0].timing: 60007204
 
 
+-----------
+
+Ran into some instability at 400mhz, testing to see if it's flash:
+
+400
+Core 0 - Runs through main: 1280110
+Core 1 - Runs through main: 4892315
+Audio Interrupts per sec: 200
+ave_dt: 784    max_dt: 972
+qmi_hw->m[0].timing: 60007205
+
+
+----
+
+Instability with a 5 divider as well, trying 380 Mhz, 3x divider
+
+Core 0 - Runs through main: 1200919
+Core 1 - Runs through main: 4643917
+Audio Interrupts per sec: 200
+ave_dt: 820    max_dt: 921
+qmi_hw->m[0].timing: 60007203
+

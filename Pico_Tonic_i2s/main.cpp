@@ -15,8 +15,9 @@
 
 #include <hardware/structs/qmi.h>
 
-#define OVERCLOCK_300MHZ  
-//#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
+
+//#define OVERCLOCK_300MHZ  
+#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
 
 
 uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
@@ -113,8 +114,9 @@ int main()
     //***  REDUCE FLASH TIMING CLOCK  ***
     qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit, qmi clkdiv is now 3)
     qmi_hw->m[0].timing &= ~(0x3);          //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits, qmi clkdiv is now 4) 
+    //qmi_hw->m[0].timing &= ~(0x2);          //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit, qmi clkdiv is now 5) 
     vreg_set_voltage(VREG_VOLTAGE_1_30);    //400 Mhz may be highest achievable at 1.30v. 
-    set_sys_clock_khz(400000, true);
+    set_sys_clock_khz(380000, true);        //400 Mhz may be too unstable, trying something lower 
     #endif
 
     board_init();
