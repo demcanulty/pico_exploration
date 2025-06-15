@@ -34,6 +34,9 @@ SawtoothWaveBL  *sawWave;
 
 u32 audio_interrupt_count;
 
+//********************************************
+//****  INIT AUDIO DEVICES
+//********************************************
 
 void init_audio_code(void)
 {
@@ -62,33 +65,44 @@ u32 max_dt;
 bool accum_dt_lockout;
 u32 t0;
 
-u8 sin_count;
 
-int16_t out_count;
+
+
+//********************************************
+//****  AUDIO PROCESSING INTERRUPT
+//********************************************
+
 void process_audio(void)
 {
-
+    //**********************************
+    //***  JUST SOME TIMING METRICS  ***
+    //**********************************
     t0 = timer_hw->timerawl; 
-
     audio_interrupt_count++;
 
+    //***************************************************
+    //***  CALCULATE SAMPLES FOR TONIC SYNTH BUFFERS  ***
+    //***************************************************
     sineSynth->fillBufferOfFloats((float*)sineBuff,  BLOCK_SIZE, 1);
     sawSynth ->fillBufferOfFloats((float*)sawBuff,   BLOCK_SIZE, 1);
 
 
+    //*****************************************************
+    //***  CONVERT TO INT16 AND TRANSFER TO I2S BUFFER  ***
+    //*****************************************************
     int16_t * buff = sound_i2s_get_next_buffer();
     for(int i=0; i<BLOCK_SIZE; i++)
     {
 
-        //*****  CONVERT FLOAT TO INT16  *****
-        *buff++ = (int16_t)(sineBuff[i] * 32767);      //
-        *buff++ = (int16_t)(sawBuff[i]  * 32767);
+        //*****  CONVERT FLOAT TO INT16  AND INTERLEAVE  *****
+        *buff++ = (int16_t)(sineBuff[i] * 32767);      //RIGHT OUTPUT BUFFER LOCATION
+        *buff++ = (int16_t)(sawBuff[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
     }
-    out_count++;
-
-
-        //***  MICROSECOND COUNTER  ***
-
+   
+   
+    //**********************************
+    //***  TIMING METRICS CONTINUED  ***
+    //**********************************
     if(!accum_dt_lockout)
     {
         //***  accumulate uS deltas
