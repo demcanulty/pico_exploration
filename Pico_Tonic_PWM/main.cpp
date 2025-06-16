@@ -12,6 +12,7 @@
 
 #include "midi/midi.h"
 #include "sound_i2s/sound_i2s.h"
+#include "sound_pwm/sound_pwm.h"
 #include "Tonic.h"
 
 #include <hardware/structs/qmi.h>
@@ -20,6 +21,8 @@
 //#define OVERCLOCK_300MHZ  
 //#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
 
+#define AUDIO_PWM_PIN_0  0
+#define AUDIO_PWM_PIN_1  1
 
 uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
@@ -149,11 +152,16 @@ int main()
     //******************************************
     //****  I2S AUDIO OUT  *********************
     //******************************************
-    sound_i2s_init(&sound_config);
-    sound_i2s_playback_start();
+    // sound_i2s_init(&sound_config);
+    // sound_i2s_playback_start();
     
+    //******************************************
+    //****  PWM AUDIO OUT  *********************
+    //******************************************
+    sound_pwm_init(AUDIO_PWM_PIN_0, SAMPLE_RATE);
+    sound_pwm_start();
 
-
+    set_pwm(20);
     //*********************************************************************************************
     //*********************************************************************************************
     //******************************  MAIN LOOP  **************************************************
@@ -189,6 +197,8 @@ int main()
             audio_interrupt_count = 0;
             core1_this_count = 0;
 
+            set_pwm( 0xFFFF / 2);
+            
             //**************************************
             //***  CALCULATE AUDIO PERFORMANCE  ****
             //**************************************

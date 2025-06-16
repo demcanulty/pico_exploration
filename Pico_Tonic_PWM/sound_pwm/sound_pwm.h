@@ -1,7 +1,7 @@
 #ifndef SOUND_PWM_H
 #define SOUND_PWM_H
 #include "pico/stdlib.h"
-
+#include "main.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -14,6 +14,8 @@ void sound_pwm_init(uint16_t audio_pin, uint32_t sample_rate);
 void sound_pwm_start();
 void sound_pwm_stop();
 void pwm_isr();
+void set_pwm(u16 pwm_duty);
+
 
 #ifdef __cplusplus
 }
