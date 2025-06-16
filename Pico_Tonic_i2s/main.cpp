@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "main.h"
 #include "pico/stdlib.h"
 
 
@@ -8,7 +9,7 @@
 #include "pico/multicore.h"
 #include "hardware/clocks.h"
 #include "hardware/vreg.h"
-#include "main.h"
+
 #include "midi/midi.h"
 #include "sound_i2s/sound_i2s.h"
 #include "Tonic.h"
@@ -17,7 +18,7 @@
 
 
 //#define OVERCLOCK_300MHZ  
-#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
+//#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
 
 
 uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
@@ -102,21 +103,24 @@ bool led_state;
 
 int main()
 {
+    u32 clock_speed;
     //********************
     //***  OVERCLOCK  ***
     //********************
     #ifdef OVERCLOCK_300MHZ
     vreg_set_voltage(VREG_VOLTAGE_1_20);    //300Mhz was locking up at 1.10v, bumping to 1.20v
-    set_sys_clock_khz(300000, true);
+    clock_speed = 300000;
+    set_sys_clock_khz(clock_speed, true);
     #endif
 
     #ifdef OVERCLOCK_400MHZ
     //***  REDUCE FLASH TIMING CLOCK  ***
-    qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit, qmi clkdiv is now 3)
-    qmi_hw->m[0].timing &= ~(0x3);          //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits, qmi clkdiv is now 4) 
-    //qmi_hw->m[0].timing &= ~(0x2);          //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit, qmi clkdiv is now 5) 
+    qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit,              qmi clkdiv is now 7)
+    //qmi_hw->m[0].timing &= ~(0x3);        //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits,   qmi clkdiv is now 4) 
+    qmi_hw->m[0].timing &= ~(0x2);        //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit,          qmi clkdiv is now 5) 
     vreg_set_voltage(VREG_VOLTAGE_1_30);    //400 Mhz may be highest achievable at 1.30v. 
-    set_sys_clock_khz(380000, true);        //400 Mhz may be too unstable, trying something lower 
+    clock_speed = 380000;
+    set_sys_clock_khz(clock_speed, true);        //400 Mhz may be too unstable
     #endif
 
     board_init();
@@ -176,10 +180,11 @@ int main()
             
             printf("\nCore 0 - Runs through main: %d\n", this_count);
             printf("Core 1 - Runs through main: %d\n", core1_this_count);
-            //printf("Time (in millis)          : %d\n\n", this_time);
+            printf("Time (in millis)          : %d\n", this_time);
             printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
             printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
             printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
+            printf("clock_speed:  %d\n", clock_speed/1000);
             this_count = 0;
             audio_interrupt_count = 0;
             core1_this_count = 0;

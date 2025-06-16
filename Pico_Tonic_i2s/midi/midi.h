@@ -10,8 +10,6 @@ extern "C"
 
 
 
-void usb_midi_task(void);
-void send_test_cc(void);
 
 
 
@@ -119,6 +117,11 @@ void USB_MIDI_ContinueOut( void );
 void USB_MIDI_SongSelectOut( U8 songNum );
 
 
+
+void usb_midi_task(void);
+void send_test_cc(void);
+void handle_note(u8 status, u8 note_num, u8 note_velocity);
+void handle_cc(u8 status, u8 cc_num, u8 cc_val);
 #ifdef __cplusplus
 }
 #endif

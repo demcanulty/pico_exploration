@@ -6,6 +6,11 @@
 
 #include "main.h"
 
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+
 
 
 
@@ -50,6 +55,15 @@ extern u32 active_out_buffer;
 extern void process_audio(void);
 
 extern u32 audio_interrupt_count;
+
+void set_oscillator_frequency(float this_freq);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+
 
 #endif 
 

@@ -32,7 +32,7 @@ int resting_buff = 1;
 static void __isr __time_critical_func(dma_handler)(void)
 {
     // swap buffers
-    //gpio_put(DEBUG_A, 1);
+    gpio_put(DEBUG_A, 1);
     switch (cur_buff)
     {
     case 0:
@@ -54,8 +54,8 @@ static void __isr __time_critical_func(dma_handler)(void)
     // ack dma irq
     dma_hw->ints0 = 1u << sound_dma_chan;
 
-    //process_audio();
-    core_1_trigger_process = true;
+    process_audio();
+    //core_1_trigger_process = true;
 }
 
 int sound_i2s_init(const struct sound_i2s_config *cfg)

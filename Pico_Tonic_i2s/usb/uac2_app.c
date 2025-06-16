@@ -322,7 +322,7 @@ bool tud_audio_rx_done_pre_read_cb(uint8_t rhport, uint16_t n_bytes_received, ui
     //tud_audio_write(audio_out_combined, n_bytes_received);
 
     //***  TELL OTHER PROCESSOR TO BEGIN WORKING ***
-    core_1_trigger_process = true;          //This leaves about 1 millisecond of time to do the audio processing
+    //core_1_trigger_process = true;          //This leaves about 1 millisecond of time to do the audio processing
 
     return true;
 }

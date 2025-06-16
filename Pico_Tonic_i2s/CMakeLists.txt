@@ -87,7 +87,7 @@ add_executable(Pico_project
                         usb/cdc_app.c 
                         #usb/uac2_app.c
                         usb/usb_descriptors.c
-                        midi/midi.c
+                        midi/midi.cpp
                         sound_i2s/sound_i2s.c
                         Tonic/ADSR.cpp  
                         Tonic/Arithmetic.cpp            
