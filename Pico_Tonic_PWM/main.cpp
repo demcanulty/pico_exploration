@@ -18,6 +18,28 @@
 #include <hardware/structs/qmi.h>
 
 
+/*****************************************************
+
+NOTE - This code is unfinished.
+
+After checking PWM pulse speeds and reading about 
+filters, I decided to put off PWM in favor of 
+focusing on DAC outputs for the moment.   
+
+Some progress was made in the PWM area, but not
+completed.  It would be nice to get DMA working
+with the PWM, and make some notes about optimizing 
+for pulse speed and bit depth.  
+
+See python calculator pwm_calculator.py   
+
+
+- mcanulty June 2025
+
+*******************************************************/
+
+
+
 //#define OVERCLOCK_300MHZ  
 //#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
 

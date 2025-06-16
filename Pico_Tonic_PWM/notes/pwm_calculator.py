@@ -2,11 +2,6 @@
 
 
 
-#for i in range(16):
-#   print(i, 0xFFFF >> i , "\t",16 - i, "bit resolution")
-#-----------
-
-
 def print_pwm(clk, bit_depth):
     
     right_shift = 16 - bit_depth
@@ -16,9 +11,6 @@ def print_pwm(clk, bit_depth):
     
     print(str(bit_depth).rjust(3),"bits - ", "rollover:", str(rollover).rjust(6), "   freq:", str(round(rollover_freq)).rjust(9))
     
-
-SYSCLK = 150000000
-
 
 def print_range_of_freqs(sysclk):
     
@@ -31,6 +23,20 @@ def print_range_of_freqs(sysclk):
 print_range_of_freqs(150000000)
 print_range_of_freqs(300000000)
 print_range_of_freqs(400000000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

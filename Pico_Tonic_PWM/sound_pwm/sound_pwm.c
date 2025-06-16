@@ -8,6 +8,10 @@
 #include "hardware/irq.h"
 #include "main.h"
 
+//***  PICKING LOW PASS FILTER  ***
+//https://www.allaboutcircuits.com/technical-articles/low-pass-filter-a-pwm-signal-into-an-analog-voltage/
+
+
 
 static uint8_t slice_num;
 static uint8_t audio_gpio;
