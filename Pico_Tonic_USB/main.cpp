@@ -12,6 +12,7 @@
 #include "blink/blink.h"
 #include "midi/midi.h"
 
+#include <hardware/structs/qmi.h>
 
 
 #include "sound_i2s/sound_i2s.h"
@@ -38,7 +39,8 @@ static const struct sound_i2s_config sound_config =
 
 
 
-#define OVERCLOCK_300MHZ  
+//#define OVERCLOCK_300MHZ  
+#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
 
 //**************************************************************
 //**************************************************************
@@ -62,34 +64,12 @@ void core1_main()
 
 
         //**********************************
-        //***  PRINT RUNS THROUGH MAIN   ***
+        //***  Do nothing every second   ***
         //**********************************
         if(board_millis() - core1_this_time > 999)
         {
             core1_this_time = board_millis();
 
-            printf("\nave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
-            printf("Core 1 - Runs through main: %d\n", core1_this_count);
-            
-            core1_this_count = 0;
-
-            //**************************************
-            //***  CALCULATE AUDIO PERFORMANCE  ****
-            //**************************************
-
-            accum_dt_lockout = true;
-
-            dt_in_us     = (float) accum_dt / accum_dt_count;
-            max_dt_in_us = (float)   max_dt;
-            ave_dt = accum_dt / accum_dt_count;
-
-            //*************************
-            //***  RESET VARIABLES  ***
-            //*************************
-            accum_dt = 0;
-            accum_dt_count = 0;
-            max_dt = 0;
-            accum_dt_lockout = false;
         }
 
         core1_this_count++;
@@ -104,6 +84,7 @@ void core1_main()
         }
     }
 }
+
 
 
 //**************************************************************
@@ -121,12 +102,24 @@ bool led_state;
 
 int main()
 {
+    u32 clock_speed;
     //********************
     //***  OVERCLOCK  ***
     //********************
     #ifdef OVERCLOCK_300MHZ
-    vreg_set_voltage(VREG_VOLTAGE_1_30);  //300Mhz was locking up at 1.10v
-    set_sys_clock_khz(300000, true);
+    vreg_set_voltage(VREG_VOLTAGE_1_20);    //300Mhz was locking up at 1.10v, bumping to 1.20v
+    clock_speed = 300000;
+    set_sys_clock_khz(clock_speed, true);
+    #endif
+
+    #ifdef OVERCLOCK_400MHZ
+    //***  REDUCE FLASH TIMING CLOCK  ***
+    qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit,              qmi clkdiv is now 7)
+    //qmi_hw->m[0].timing &= ~(0x3);        //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits,   qmi clkdiv is now 4) 
+    qmi_hw->m[0].timing &= ~(0x2);        //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit,          qmi clkdiv is now 5) 
+    vreg_set_voltage(VREG_VOLTAGE_1_30);    //400 Mhz may be highest achievable at 1.30v. 
+    clock_speed = 380000;
+    set_sys_clock_khz(clock_speed, true);        //400 Mhz may be too unstable
     #endif
 
 
@@ -185,11 +178,36 @@ int main()
             this_time = board_millis();
 
             
-            printf("Core 0 - Runs through main: %d\n", this_count);
-            //printf("Time (in millis)          : %d\n\n", this_time);
-            printf("Audio Interrupts per sec: %d\n\n", audio_interrupt_count);
+            printf("\nCore 0 - Runs through main: %d\n", this_count);
+            printf("Core 1 - Runs through main: %d\n", core1_this_count);
+            printf("Time (in millis)          : %d\n", this_time);
+            printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
+            printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
+            printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
+            printf("clock_speed:  %d\n", clock_speed/1000);
             this_count = 0;
             audio_interrupt_count = 0;
+            core1_this_count = 0;
+
+            //**************************************
+            //***  CALCULATE AUDIO PERFORMANCE  ****
+            //**************************************
+
+            accum_dt_lockout = true;
+
+            dt_in_us     = (float) accum_dt / accum_dt_count;
+            max_dt_in_us = (float)   max_dt;
+            ave_dt = accum_dt / accum_dt_count;
+
+            //*************************
+            //***  RESET VARIABLES  ***
+            //*************************
+            accum_dt = 0;
+            accum_dt_count = 0;
+            max_dt = 0;
+            accum_dt_lockout = false;
+
+            
         }
 
         //********************
@@ -202,7 +220,6 @@ int main()
             led_state = !led_state;
             pico_set_led(led_state);
 
-            //printf("Co");
 
         }
 

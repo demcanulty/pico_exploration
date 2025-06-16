@@ -104,8 +104,13 @@ void process_audio(void)
     int16_t * buff = sound_i2s_get_next_buffer();
     for(int i=0; i<BLOCK_SIZE; i++)
     {
+        //***  NOTE  --  AUDIO CLICKS FOR SOME REASON  
+        //*************  I THINK MAYBE IT'S I2S??   
+
+
         //float sine = (sin(2.0f * ((float) M_PI) * sine_count++ / 256.0f) * 32767);
         //*****  CONVERT FLOAT TO INT16  AND INTERLEAVE  *****
+        
         *buff++ = (int16_t)(  sineBuff[i] * -1 * 32767);      //RIGHT OUTPUT BUFFER LOCATION
         // *buff++ = (int16_t)(  sineBuff[i] * -1 * 32767);      //RIGHT OUTPUT BUFFER LOCATION
         //*buff++ = (int16_t)(sawBuff[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
