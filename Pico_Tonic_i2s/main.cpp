@@ -26,8 +26,8 @@ uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 //*************************************
 //**********   I2S STUFF  *************
 //*************************************
-#define I2S_DATA_PIN             28 // -> I2S DIN
-#define I2S_CLOCK_PIN_BASE       26 // -> I2S BCK
+#define I2S_DATA_PIN             20 // -> I2S DIN
+#define I2S_CLOCK_PIN_BASE       18 // -> I2S BCK
 // The third required connection is GPIO 27 -> I2S LRCK (BCK+1)
 
 static const struct sound_i2s_config sound_config = 
