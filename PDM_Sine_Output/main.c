@@ -12,15 +12,28 @@
 #include <hardware/structs/qmi.h>
 
 
-#define PDM_GPIO      16
-#define SAMPLE_RATE   48000
-#define OVERSAMPLE    64
-#define PDM_BITRATE   (SAMPLE_RATE * OVERSAMPLE)  // e.g. 3.072 MHz
-#define TABLE_SIZE    256
-#define PI            3.14159265f
+#define SAMPLE_RATE    48000
+#define OVERSAMPLE     128
+#define PDM_RATE       (SAMPLE_RATE * OVERSAMPLE)
+#define TABLE_SIZE     256
+#define CHANNELS       8
+#define BASE_GPIO      15  // GPIO 2–7
 
-int32_t accumulator = 0;
+#define PDM_WORDS_PER_SAMPLE (OVERSAMPLE / 32)
 
+
+#define PI 3.14159265f
+
+typedef struct {
+    PIO pio;
+    uint sm;
+    uint gpio;
+    int32_t accumulator;
+    uint32_t phase;
+    uint32_t phase_step;
+    uint32_t pdm_words[PDM_WORDS_PER_SAMPLE];
+    int word_index;
+} pdm_channel_t;
 
 void pdm_output_program_init(PIO pio, uint state_machine, uint offset, uint pin) 
 {
@@ -37,31 +50,48 @@ void pdm_output_program_init(PIO pio, uint state_machine, uint offset, uint pin)
     // Initialize the state machine
     pio_sm_init(pio, state_machine, offset, &c);
 }
-
-// Fill a sine table with 16-bit unsigned values
+pdm_channel_t channels[CHANNELS];
 uint16_t sine_table[TABLE_SIZE];
 
+// Fill sine wave table (0–65535)
 void generate_sine_table() {
     for (int i = 0; i < TABLE_SIZE; i++) {
-        float phase = 2.0f * PI * i / TABLE_SIZE;
-        float amplitude = (sinf(phase) * 0.9f + 1.0f) * 0.5f;  // 0.05–0.95
-        sine_table[i] = (uint16_t)(amplitude * 65535.0f);
+        float phase = 2 * PI * i / TABLE_SIZE;
+        float val = (sinf(phase) * 0.9f + 1.0f) * 0.5f;
+        sine_table[i] = (uint16_t)(val * 65535.0f);
     }
 }
 
+
 // Sigma-delta PDM generator: 2x 32-bit words per 16-bit sample
-void generate_pdm_words(uint16_t sample, uint32_t *out_words) {
-    for (int word_index = 0; word_index < 2; ++word_index) {
+
+// void generate_pdm_words(pdm_channel_t *ch, uint16_t sample) 
+// {
+//     for (int word_index = 0; word_index < 2; word_index++) 
+//     {
+//         uint32_t bits = 0;
+//         for (int i = 0; i < 32; i++) {
+//             int32_t target = (ch->accumulator >= 0) ? 65535 : 0;
+//             ch->accumulator += ((int32_t)sample - target);
+//             bits = (bits << 1) | (ch->accumulator >= 0);
+//         }
+//         ch->pdm_words[word_index] = bits;
+//     }
+//     ch->word_index = 0;
+// }
+
+ //Sigma-delta PDM generator: 4x 32-bit words per 16-bit sample
+void generate_pdm_words(pdm_channel_t *ch, uint16_t sample) {
+    for (int w = 0; w < 4; w++) {  // Now 4 words
         uint32_t bits = 0;
-        for (int i = 0; i < 32; ++i) {
-            int32_t target = (accumulator >= 0) ? 65535 : 0;
-            int32_t error = (int32_t)sample - target;
-            accumulator += error;
-            uint32_t bit = (accumulator >= 0) ? 1 : 0;
-            bits = (bits << 1) | bit;
+        for (int i = 0; i < 32; i++) {
+            int32_t target = (ch->accumulator >= 0) ? 65535 : 0;
+            ch->accumulator += ((int32_t)sample - target);
+            bits = (bits << 1) | (ch->accumulator >= 0);
         }
-        out_words[word_index] = bits;
+        ch->pdm_words[w] = bits;
     }
+    ch->word_index = 0;
 }
 
 
@@ -83,30 +113,55 @@ int main()
     set_sys_clock_khz(clock_speed, true);        //400 Mhz may be too unstable
 
 
+    // vreg_set_voltage(VREG_VOLTAGE_1_20);    //400 Mhz may be highest achievable at 1.30v. 
+    // uint32_t clock_speed = 300000;
+    // set_sys_clock_khz(clock_speed, true);        //400 Mhz may be too unstable
 
     stdio_init_all();
+
     stdio_usb_init();
     while (!stdio_usb_connected()) {
         sleep_ms(100);  // Optional: wait for terminal to connect
     }
     generate_sine_table();
 
-    PIO pio = pio0;
-    uint sm = 0;
-    uint offset = pio_add_program(pio, &pdm_output_program);
-    pdm_output_program_init(pio, sm, offset, PDM_GPIO);
 
-    float clk_div = (float)clock_get_hz(clk_sys) / PDM_BITRATE;
-    pio_sm_set_clkdiv(pio, sm, clk_div);
-    pio_sm_set_enabled(pio, sm, true);
+    uint offset0 = pio_add_program(pio0, &pdm_output_program);
+    uint offset1 = pio_add_program(pio1, &pdm_output_program);
 
-    uint32_t phase = 0;
-    uint32_t phase_step = (TABLE_SIZE << 16) / SAMPLE_RATE * 440;
+    for (int i = 0; i < CHANNELS; i++) 
+    {
+        pdm_channel_t *ch = &channels[i];
 
-    uint32_t pdm_words[2];
-    int pdm_word_index = 2;  // Start > 1 to trigger initial generation
+        switch(i)
+        {
+            case 0 ... 3:
+                ch->pio = pio0;
+                ch->sm = i;
+            break;
+            case 4 ... 7:
+                ch->pio = pio1;
+                ch->sm = i - 4;
+            break;
+        }
+        
+        
+        ch->gpio = BASE_GPIO + i;
+        ch->phase = 0;
+        ch->accumulator = 0;
 
-    while (true) 
+        int freq = 220 + i * 20;
+        ch->phase_step = ((TABLE_SIZE << 16) / SAMPLE_RATE) * freq;
+
+        // Init this channel's PIO pin and SM
+        uint offset = (ch->pio == pio0) ? offset0 : offset1;
+        pdm_output_program_init(ch->pio, ch->sm, offset, ch->gpio);
+        float div = (float)clock_get_hz(clk_sys) / PDM_RATE;
+        pio_sm_set_clkdiv(ch->pio, ch->sm, div);
+        pio_sm_set_enabled(ch->pio, ch->sm, true);
+    }
+
+    while (1) 
     {
 
         this_count++;
@@ -120,24 +175,23 @@ int main()
             this_count = 0;
         }
 
-        // Check if there is room in the TX FIFO
-        if (!pio_sm_is_tx_fifo_full(pio, sm)) {
-            // If both words have been sent, generate next sample
-            if (pdm_word_index >= 2) {
-                uint16_t sample = sine_table[phase >> 16];
-                generate_pdm_words(sample, pdm_words);
-                phase += phase_step;
-                if ((phase >> 16) >= TABLE_SIZE)
-                    phase -= (TABLE_SIZE << 16);
-                pdm_word_index = 0;
+
+        for (int i = 0; i < CHANNELS; i++) {
+            pdm_channel_t *ch = &channels[i];
+
+            if (!pio_sm_is_tx_fifo_full(ch->pio, ch->sm)) {
+                if (ch->word_index >= PDM_WORDS_PER_SAMPLE) {
+                    uint16_t sample = sine_table[ch->phase >> 16];
+                    generate_pdm_words(ch, sample);
+                    ch->phase += ch->phase_step;
+                    if ((ch->phase >> 16) >= TABLE_SIZE)
+                        ch->phase -= (TABLE_SIZE << 16);
+                }
+
+                pio_sm_put(ch->pio, ch->sm, ch->pdm_words[ch->word_index++]);
             }
-
-            // Send the next word (non-blocking)
-            pio_sm_put(pio, sm, pdm_words[pdm_word_index++]);
         }
-
-        // Optional: sleep or yield if you're doing other work
-        // __wfi(); // Wait for interrupt — super low power
-        // sleep_us(1); // light delay to avoid spinning too fast
     }
+
+    return 0;
 }
