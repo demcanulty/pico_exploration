@@ -1,0 +1,8 @@
+.program pdm_output
+.wrap_target
+    pull block
+    mov x, ~null      ; x = 31 for 32 bits
+bitloop:
+    out pins, 1
+    jmp x-- bitloop
+.wrap
