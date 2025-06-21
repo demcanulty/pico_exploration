@@ -58,6 +58,7 @@ extern u32 audio_interrupt_count;
 
 void set_oscillator_frequency(float this_freq);
 
+void set_pwm(float dutycycle);
 
 #ifdef __cplusplus
 }

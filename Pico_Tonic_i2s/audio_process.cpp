@@ -158,6 +158,18 @@ void set_oscillator_frequency(float this_freq)
 }
 
 
+void set_pwm(float dutycycle)
+{
+    if((dutycycle > 0.2) && (dutycycle < 0.9))
+    {
+        rectWaveBL->pwm(FixedValue(dutycycle));
+        printf("set_pwm %f\n", dutycycle);
+    }
+
+    
+}
+
+
 //*************************************************************
 //*************************************************************
 //*************************************************************

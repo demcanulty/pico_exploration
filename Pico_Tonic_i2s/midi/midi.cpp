@@ -166,6 +166,11 @@ void handle_cc(u8 status, u8 cc_num, u8 cc_val)
 
     switch(cc_num)
     {
+        case 1:
+            set_pwm(map_val);
+        break;
+
+
         //***  For Launch Control XL
         //*********************************************
         //***********  KNOBS ROW 1  *******************
@@ -228,7 +233,11 @@ float midi_to_freq(u8 midi_note_num)
 
 
 void handle_note(u8 status, u8 note_num, u8 note_velocity)
-{
+{   
+    if(note_velocity == 0)
+    {
+        status = MIDI_NOTEOFF |  (status & 0x0F);
+    }
 
     switch(status & 0xF0)
     {
@@ -237,6 +246,8 @@ void handle_note(u8 status, u8 note_num, u8 note_velocity)
 
         case MIDI_NOTEON:
         {
+
+            
             float this_freq = midi_to_freq(note_num);
             set_oscillator_frequency(this_freq);
             

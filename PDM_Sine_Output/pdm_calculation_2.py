@@ -2,7 +2,7 @@
 
 def generate_pdm_word_from_16bit(input_value):
     """
-    Generate a 32-bit PDM word from an unsigned 16-bit input value (0 to 65535),
+    Generate a 32-bit PDM word from a 16-bit input value (0 to 65535),
     Prints out value, target, error, accumulator, and bit.
     """
     global accumulator
