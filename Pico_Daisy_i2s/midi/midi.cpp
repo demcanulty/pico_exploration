@@ -183,7 +183,8 @@ void handle_cc(u8 status, u8 cc_num, u8 cc_val)
 
         case 14:      
         {
-            map_val = (map_val * 30); 
+            map_val = (map_val * 5000); 
+            set_oscillator_frequency(map_val);
 
         }break;
         

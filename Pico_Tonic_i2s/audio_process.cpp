@@ -116,8 +116,8 @@ void process_audio(void)
         
         //*****  CONVERT FLOAT TO INT16  AND INTERLEAVE  *****
         
-        //*buff++ = (int16_t)(  sineBuff[i] * -1 * 32767);      //RIGHT OUTPUT BUFFER LOCATION
-        *buff++ = (int16_t)(sawBuff[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
+        *buff++ = (int16_t)(  sineBuff[i] * -1 * 32767);      //RIGHT OUTPUT BUFFER LOCATION
+        //*buff++ = (int16_t)(sawBuff[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
         *buff++ = (int16_t)(rectBuffBL[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
         
     }
