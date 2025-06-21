@@ -48,7 +48,7 @@ u32 audio_interrupt_count;
 
 void init_audio_code(void)
 {
-    Tonic::setSampleRate(SAMPLE_RATE);
+    //Tonic::setSampleRate(SAMPLE_RATE);
     sineSynth = new Synth;	
 	sawSynth  = new Synth;
     rectSynthBL = new Synth;
@@ -97,7 +97,7 @@ void process_audio(void)
     //***************************************************
     in_audio_interrupt = true;
     sineSynth->fillBufferOfFloats(   (float*)sineBuff,     BLOCK_SIZE, 1);
-    // sawSynth ->fillBufferOfFloats(   (float*)sawBuff,      BLOCK_SIZE, 1);
+    sawSynth ->fillBufferOfFloats(   (float*)sawBuff,      BLOCK_SIZE, 1);
     rectSynthBL ->fillBufferOfFloats((float*)rectBuffBL,   BLOCK_SIZE, 1);
     
     in_audio_interrupt = false;
@@ -116,8 +116,8 @@ void process_audio(void)
         
         //*****  CONVERT FLOAT TO INT16  AND INTERLEAVE  *****
         
-        *buff++ = (int16_t)(  sineBuff[i] * -1 * 32767);      //RIGHT OUTPUT BUFFER LOCATION
-        //*buff++ = (int16_t)(sawBuff[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
+        //*buff++ = (int16_t)(  sineBuff[i] * -1 * 32767);      //RIGHT OUTPUT BUFFER LOCATION
+        *buff++ = (int16_t)(sawBuff[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
         *buff++ = (int16_t)(rectBuffBL[i]  * 32767);      //LEFT OUTPUT BUFFER LOCATION 
         
     }
@@ -167,12 +167,12 @@ void set_pwm(float dutycycle)
     
 
     //***  REJECT IF HAPPENS TOO SOON  ***
-    if(board_millis() - this_time < 20)
+    if(board_millis() - this_time < 10)
     {
         return;
     }
 
-    if((dutycycle > 0.2) && (dutycycle < 0.9))
+    if((dutycycle > 0.1) && (dutycycle < 0.9))
     {
         u32 diff = board_millis() - this_time;
         this_time = board_millis();
@@ -193,10 +193,10 @@ void check_for_param_changes()
 {
 
     //***  CHECK PARAMS CHANGED FLAG  ***
-    // if(!params_changed)
-    // {
-    //     return;     //NOTHING CHANGED, LEAVE FUNCTION 
-    // }
+    if(!params_changed)
+    {
+        return;     //NOTHING CHANGED, LEAVE FUNCTION 
+    }
 
     
     if (fabsf(sine_freq - new_sine_freq) >= EPSILON) 
