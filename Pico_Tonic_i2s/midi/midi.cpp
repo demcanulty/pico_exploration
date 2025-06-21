@@ -177,8 +177,8 @@ void handle_cc(u8 status, u8 cc_num, u8 cc_val)
         //*********************************************
         case 13:        //set_atten
         {
-            map_val = (map_val * 41) ; 
-
+            //map_val = (map_val * 41) ; 
+            set_pwm(map_val);
         }break;
 
         case 14:      

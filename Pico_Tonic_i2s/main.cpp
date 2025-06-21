@@ -178,13 +178,13 @@ int main()
             this_time = board_millis();
 
             
-            printf("\nCore 0 - Runs through main: %d\n", this_count);
-            printf("Core 1 - Runs through main: %d\n", core1_this_count);
-            printf("Time (in millis)          : %d\n", this_time);
-            printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
-            printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
-            printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
-            printf("clock_speed:  %d\n", clock_speed/1000);
+            // printf("\nCore 0 - Runs through main: %d\n", this_count);
+            // printf("Core 1 - Runs through main: %d\n", core1_this_count);
+            // printf("Time (in millis)          : %d\n", this_time);
+            // printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
+            // printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
+            // printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
+            // printf("clock_speed:  %d\n", clock_speed/1000);
             this_count = 0;
             audio_interrupt_count = 0;
             core1_this_count = 0;

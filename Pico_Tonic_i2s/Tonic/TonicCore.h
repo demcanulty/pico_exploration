@@ -41,6 +41,15 @@ extern "C" {
 
 #endif
 
+#include "pico/sync.h"
+
+  #define TONIC_MUTEX_T           mutex_t
+  #define TONIC_MUTEX_INIT(x)     mutex_init(&x)
+  //#define TONIC_MUTEX_DESTROY(x)  pthread_mutex_destroy(&x)
+  #define TONIC_MUTEX_LOCK(x)     mutex_enter_blocking (&x)
+  #define TONIC_MUTEX_UNLOCK(x)   mutex_exit(&x)
+
+
 #if (defined (__APPLE__) || defined (__linux__))
 
 //   #include <pthread.h> 

@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "pico/stdlib.h"
 #include "audio_process.h"
-
+#include "bsp/board_api.h"
 
 
 #ifdef __cplusplus
@@ -16,7 +16,7 @@ extern "C"
 #endif
 
 
-
+#define EPSILON 1e-6f // For floats
 
 
 

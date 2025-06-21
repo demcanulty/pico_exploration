@@ -30,7 +30,7 @@ namespace Tonic{
     private:
       
       unsigned long               bufferReadPosition_;
-      //TONIC_MUTEX_T               mutex_;
+      TONIC_MUTEX_T               mutex_;
       
     protected:
       
