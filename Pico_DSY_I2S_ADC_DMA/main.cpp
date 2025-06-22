@@ -16,6 +16,10 @@
 #include "adc.h"
 #include <hardware/structs/qmi.h>
 
+/*
+Note: text labels from https://patorjk.com/software/taag/#p=display&f=Bright&t=CORE-1
+*/
+
 
 //#define OVERCLOCK_300MHZ  
 #define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
@@ -41,14 +45,52 @@ static const struct sound_i2s_config sound_config =
 };
 
 
+//****  INIT PINS  ****
+
+
+// This is just initializing debug pins and the led pulse
+void init_pins(void) 
+
+{
+
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_init(DEBUG_A);
+    gpio_init(DEBUG_B);
+    gpio_init(DEBUG_C);
+
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    gpio_set_dir(DEBUG_A, GPIO_OUT);
+    gpio_set_dir(DEBUG_B, GPIO_OUT);
+    gpio_set_dir(DEBUG_C, GPIO_OUT);
 
 
 
+
+}
+
+// Turn the led on or off
+void pico_set_led(bool led_on) 
+{
+    // Just set the GPIO on or off
+    gpio_put(PICO_DEFAULT_LED_PIN, led_on);
+
+}
+
+
+
+
 //**************************************************************
 //**************************************************************
-//**********   SECOND MAIN LOOP FOR SECOND CORE  ***************
 //**************************************************************
 //**************************************************************
+//**************************************************************
+//************* ..####....####...#####...######............##...
+//************* .##..##..##..##..##..##..##...............###...
+//************* .##......##..##..#####...####....######....##...
+//************* .##..##..##..##..##..##..##................##...
+//************* ..####....####...##..##..######..........######.
+//************* ................................................
+
 
 uint32_t core1_this_time, core1_main_count;
 
@@ -78,7 +120,7 @@ void core1_main()
         //***  ADC Routine ***
         //********************
 
-        //adc_collect();
+        process_adc();
 
 
         //**********************************
@@ -109,7 +151,12 @@ void core1_main()
 //**************************************************************
 //**************************************************************
 //**************************************************************
-
+//***** ..####....####...#####...######...........####..........
+//***** .##..##..##..##..##..##..##..............##..##.........
+//***** .##......##..##..#####...####....######..######.........
+//***** .##..##..##..##..##..##..##..............##..##.........
+//***** ..####....####...##..##..######...........####..........
+//***** ........................................................
 
 uint32_t core0_main_count;
 uint32_t this_time, blink_time, this_millis, adc_millis;
@@ -142,7 +189,7 @@ int main()
     board_init();
     init_pins();
 
-    init_audio_code();
+    init_audio_processing();
 
 
     //***********************
@@ -177,16 +224,17 @@ int main()
     //*******************
     //***  ADC INIT  ****
     //*******************
-    printf("about to start adc init\n");
     init_project_adc();
 
 
 
-    //*********************************************************************************************
-    //*********************************************************************************************
-    //******************************  MAIN LOOP  **************************************************
-    //*********************************************************************************************
-    //*********************************************************************************************
+    //*********************** .##...##...####...######..##..##. ***********************************
+    //*********************** .###.###..##..##....##....###.##. ***********************************
+    //*********************** .##.#.##..######....##....##.###. ***********************************
+    //*********************** .##...##..##..##....##....##..##. ***********************************
+    //*********************** .##...##..##..##..######..##..##. ***********************************
+    //*********************** ................................. ***********************************
+
     this_time = board_millis();
     multicore_launch_core1(core1_main);  
     while (true) 
@@ -229,7 +277,7 @@ int main()
         if(board_millis() != adc_millis)
         {
             adc_millis = board_millis();
-            //check_adc_vals();           
+            check_adc_vals();           
         }
         
         //*******************************
@@ -259,44 +307,21 @@ int main()
 //*******************************************************************************************
 
 
-// This is just initializing debug pins and the led pulse
-void init_pins(void) 
-
-{
-
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_init(DEBUG_A);
-    gpio_init(DEBUG_B);
-    gpio_init(DEBUG_C);
-
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-    gpio_set_dir(DEBUG_A, GPIO_OUT);
-    gpio_set_dir(DEBUG_B, GPIO_OUT);
-    gpio_set_dir(DEBUG_C, GPIO_OUT);
 
 
-
-
-}
-
-
-
-
-
-// Turn the led on or off
-void pico_set_led(bool led_on) 
-{
-    // Just set the GPIO on or off
-    gpio_put(PICO_DEFAULT_LED_PIN, led_on);
-
-}
 
 
 //***************************************************************
 //***************************************************************
 //***************************************************************
 //***************************************************************
+//***** .##...##..######..######..#####...######...####....####..
+//***** .###.###..##........##....##..##....##....##..##..##.....
+//***** .##.#.##..####......##....#####.....##....##.......####..
+//***** .##...##..##........##....##..##....##....##..##......##.
+//***** .##...##..######....##....##..##..######...####....####..
 
+                                                         
 
 void print_cpu_performance_information(u8 skipnum)
 {
@@ -379,8 +404,8 @@ void print_cpu_performance_information(u8 skipnum)
     //*********************
     //***  ADC METRICS  ***
     //*********************
-    printf("ADC Scan time: %d  mS\n", time_to_finish_adc_scan);
-    printf("Num ADC Interrupts:  %d,  samples per second: %d\n", adc_interrupt_count, adc_interrupt_count * NUM_SAMPLES);
+    printf("ADC Scan time: %d  uS   Process time: %d  uS\n", time_to_finish_adc_scan, time_to_finish_adc_process);
+    printf("Num ADC Interrupts:  %d,  samples per second: %d\n", adc_interrupt_count, adc_interrupt_count * NUM_ADC_SAMPLES);
     //*****  RESET RUNNING VARIABLES  ***
     core0_main_count = 0;
     audio_interrupt_count = 0;

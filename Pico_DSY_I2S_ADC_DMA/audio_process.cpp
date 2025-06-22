@@ -34,7 +34,7 @@ u32 audio_interrupt_count;
 //****  INIT AUDIO DEVICES
 //********************************************
 
-void init_audio_code(void)
+void init_audio_processing(void)
 {
    saw_osc.Init(SAMPLE_RATE);
 

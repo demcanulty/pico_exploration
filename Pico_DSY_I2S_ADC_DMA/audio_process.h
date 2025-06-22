@@ -38,7 +38,7 @@ extern int16_t buffer_0[I2S_BLOCK_SIZE * 2];  //times 2 because buffer needs to 
 extern int16_t buffer_1[I2S_BLOCK_SIZE * 2];
 
 
-void init_audio_code(void);
+void init_audio_processing(void);
 extern float audio_in_0[BLOCK_SIZE];
 extern float audio_in_1[BLOCK_SIZE];
 

@@ -16,7 +16,7 @@ u8 adc_buff_index;
 u8 adc_buff_index_to_process;
 u32 time_to_finish_adc_scan;
 
-uint16_t  __attribute__((aligned(4))) adc_buffer[NUM_SAMPLES][2];
+uint16_t  __attribute__((aligned(4))) adc_buffer[2][NUM_ADC_SAMPLES];
 uint16_t adc_val[3];        
 uint16_t last_adc_val[3];
 int adc_dma_chan_num;
@@ -24,26 +24,42 @@ dma_channel_config dma_cfg;
 
 bool adc_dma_finished;
 uint32_t adc_interrupt_count;
+u8 adc_pin_to_process;
 
 
 static void __isr __time_critical_func(dma_handler)(void)
 {
     static u32 this_time;
+    static u8  this_adc_pin;
 
-    time_to_finish_adc_scan = board_millis() - this_time;
-    this_time = board_millis();
-    
+    //***  START TIMER  ***
+    u32 timer_snapshot = timer_hw->timerawl;
+    time_to_finish_adc_scan = timer_snapshot - this_time;
+    this_time = timer_snapshot;
     adc_interrupt_count++;
-
+    
+    //***  STOP ADC  ***
+    adc_run(false);
+    
     //*** SWAP BUFFERS  ***
     adc_buff_index_to_process = adc_buff_index;
     adc_buff_index = !adc_buff_index;
 
+
+    //*** START PROCESSING  ***
+    adc_pin_to_process = this_adc_pin;
     adc_dma_finished = true;
 
-    
+    //***  INCREMENT PIN AND CHECK BOUNDS  ***
+    //this_adc_pin++;
+    if(this_adc_pin >= NUM_ADC_PINS)
+    {
+        this_adc_pin = 0;
+    }
+    adc_select_input(this_adc_pin);
+    //***  RESTART DMA **************************
     //***  NEED TO RESET THE WRITE ADDRESS!!  ***
-    dma_channel_hw_addr(adc_dma_chan_num)->al3_write_addr = (uintptr_t) &adc_buffer[0][adc_buff_index];
+    dma_channel_hw_addr(adc_dma_chan_num)->al3_write_addr = (uintptr_t) &adc_buffer[adc_buff_index][0];
     dma_channel_hw_addr(adc_dma_chan_num)->al3_read_addr_trig = (uintptr_t) &adc_hw->fifo;
 
     //***  ACK / CLEAR THE DMA ISR  ***
@@ -53,6 +69,48 @@ static void __isr __time_critical_func(dma_handler)(void)
     adc_run(true);
 }
 
+//*************************************************************
+//*************************************************************
+//*************************************************************
+//*************************************************************
+
+u32 time_to_finish_adc_process;
+
+void process_adc()
+{
+    u32 timer_snapshot = timer_hw->timerawl;
+
+    if(adc_dma_finished)
+    {
+        adc_dma_finished = false;
+
+        u32 this_sum = 0;
+        uint16_t * ptr = &(adc_buffer[adc_buff_index_to_process][0]);
+
+        for(int i = 0; i < NUM_ADC_SAMPLES; i++ )
+        {
+            this_sum += *ptr;
+            //*ptr = 0;
+            ptr++;
+        }
+
+        adc_val[adc_pin_to_process] = this_sum / NUM_ADC_SAMPLES;
+
+    }
+
+    time_to_finish_adc_process = timer_hw->timerawl - timer_snapshot;
+    adc_run(true);
+}
+
+
+
+
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+
 
 void init_project_adc()
 {
@@ -60,7 +118,6 @@ void init_project_adc()
     adc_gpio_init(26);
     adc_gpio_init(27);
     adc_gpio_init(28);
-
     adc_select_input(0);
 
 
@@ -81,8 +138,7 @@ void init_project_adc()
 
     adc_set_clkdiv(0);   //0 is full speed 
 
-    printf("Arming DMA\n");
-    // sleep_ms(1000);
+
     //**************************
     //*** Set up DMA channel ***
     //**************************
@@ -98,9 +154,9 @@ void init_project_adc()
     dma_channel_configure(
         adc_dma_chan_num,     // DMA Channel number that we got from dma_claim_unused_channel
         &dma_cfg,             // Configuration packet that we just made
-        &adc_buffer[0][0],           // Destination pointer
+        &adc_buffer[0][0],    // Destination pointer
         &adc_hw->fifo,        // Source pointer (ADC FIFO)
-        NUM_SAMPLES,          // Number of transfers
+        NUM_ADC_SAMPLES,      // Number of transfers
         false                 // Do not start immediately
     );
 
@@ -123,63 +179,6 @@ void init_project_adc()
 
 }
 
-//*****************************************
-//*****************************************
-//******  COLLECT ADC DATA
-//*****************************************
-//*****************************************
-
-
-
-/*
-uint16_t adc_val[NUM_ADC_CHANNELS];        
-uint16_t last_adc_val[NUM_ADC_CHANNELS];
-u32 adc_accum;
-u32 adc_accum_count;
-
-
-void adc_collect()
-{
-    static u8 this_adc;   //initialized to 0 by compiler
-    static u32 this_time;
-
-    //***  TAKE SAMPLE  
-    adc_accum+= adc_read();
-
-    //***  INCREMENT COUNTER  
-    adc_accum_count++;
-
-    if(adc_accum_count >= NUM_SAMPLES)
-    {
-        //***  DECIMATE ACCUMULATOR  
-        u16 val = adc_accum / adc_accum_count;
-
-        //***  ADDITIONAL FILTERING  ***
-        adc_val[this_adc]  = fir_filter_channel(this_adc, val);
-
-        //***  OR NO FILTERING  
-        //adc_val[this_adc]  = val;
-
-        //***  CLEAR ACCUMULATOR VARIABLES 
-        adc_accum = 0;
-        adc_accum_count = 0;
-
-        //***  INCREMENT ADC 
-        this_adc++;
-        if(this_adc >= NUM_ADC_CHANNELS)
-        {
-            this_adc = 0;
-
-            time_to_finish_adc_scan = board_millis() - this_time;
-            this_time = board_millis();
-        }
-
-        //***  MUX TO CORRECT PIN  
-        adc_select_input(this_adc);
-
-    }
-}
-
 
 //*****************************************
 //*****************************************
@@ -192,7 +191,7 @@ void check_adc_vals()
     bool adc_val_changed = false;
     for(int i=0; i<NUM_ADC_PINS; i++)
     {
-        if(abs(adc_val[i] - last_adc_val[i]) > 0)   
+        if(abs(adc_val[i] - last_adc_val[i]) > 1)   
         {
         
             last_adc_val[i] = adc_val[i];
@@ -208,7 +207,7 @@ void check_adc_vals()
     }
 
 }
-*/
+
 //*****************************************
 //*****************************************
 //******  FILTERING   *********************
