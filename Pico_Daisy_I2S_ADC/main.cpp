@@ -102,7 +102,7 @@ void core1_main()
 
 
 uint32_t core0_main_count;
-uint32_t this_time, blink_time, this_millis;
+uint32_t this_time, blink_time, this_millis, adc_millis;
 bool led_state;
 
 
@@ -213,7 +213,14 @@ int main()
             pico_set_led(led_state);
         }
 
-
+        //*******************************
+        //***  EVERY 10 milliseconds   ***
+        //*******************************
+        if(board_millis() != adc_millis)
+        {
+            adc_millis = board_millis();
+            check_adc_vals();           
+        }
         
         //*******************************
         //***  ONCE PER MILLISECOND   ***
@@ -223,7 +230,6 @@ int main()
             this_millis = board_millis();
             usb_midi_task();
             
-            check_adc_vals();           
         }
         
         core0_main_count++;
@@ -285,7 +291,23 @@ void pico_set_led(bool led_on)
 void print_cpu_performance_information()
 {
 
+    static uint8_t this_count;
 
+    this_count++;
+    if(this_count < 5)
+    {
+        //just clear all the variables and return
+        accum_dt = 0;
+        accum_dt_count = 0;
+        max_dt = 0;
+        accum_dt_lockout = false;
+        core0_main_count = 0;
+        audio_interrupt_count = 0;
+        core1_main_count = 0;
+        return;
+    }
+
+    this_count = 0;
     //**************************************
     //***  CALCULATE AUDIO PERFORMANCE  ****
     //**************************************
