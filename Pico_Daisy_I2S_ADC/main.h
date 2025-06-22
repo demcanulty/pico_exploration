@@ -8,6 +8,7 @@
 #include "pico/stdlib.h"
 #include "audio_process.h"
 #include "bsp/board_api.h"
+#include "utils/utils.h"
 
 
 #ifdef __cplusplus
@@ -96,7 +97,7 @@ extern uint32_t blink_interval_ms;
 
 void init_pins(void);
 void pico_set_led(bool led_on);
-
+void print_cpu_performance_information();
 #ifdef __cplusplus
 }
 #endif

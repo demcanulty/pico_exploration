@@ -31,7 +31,7 @@ typedef int64_t s64;
 #define MAX_IN_OUT_CHANNELS  8
 
 
-extern u32 accum_dt, ave_dt, accum_dt_count;
+extern u32 accum_dt, ave_dt_in_us, accum_dt_count;
 extern u32 dt;
 extern u32 max_dt;
 extern bool accum_dt_lockout;

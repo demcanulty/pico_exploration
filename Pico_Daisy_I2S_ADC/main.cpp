@@ -9,10 +9,11 @@
 #include "pico/multicore.h"
 #include "hardware/clocks.h"
 #include "hardware/vreg.h"
+#include "hardware/adc.h"
 
 #include "midi/midi.h"
 #include "sound_i2s/sound_i2s.h"
-
+#include "adc.h"
 #include <hardware/structs/qmi.h>
 
 
@@ -49,11 +50,11 @@ static const struct sound_i2s_config sound_config =
 //**************************************************************
 //**************************************************************
 
-uint32_t core1_this_time, core1_this_count;
+uint32_t core1_this_time, core1_main_count;
 
 
-float dt_in_us;
-float max_dt_in_us;
+uint32_t dt_in_us;
+uint32_t max_dt_in_us;
 
 
 bool core_1_trigger_process;
@@ -73,7 +74,7 @@ void core1_main()
 
         }
 
-        core1_this_count++;
+        core1_main_count++;
 
         //*************************
         //***  PROCESS AUDIO
@@ -94,7 +95,7 @@ void core1_main()
 //**************************************************************
 
 
-uint32_t this_count;
+uint32_t core0_main_count;
 uint32_t this_time, blink_time, this_millis;
 bool led_state;
 
@@ -114,12 +115,12 @@ int main()
 
     #ifdef OVERCLOCK_400MHZ
     //***  REDUCE FLASH TIMING CLOCK  ***
-    qmi_hw->m[0].timing |= 0x4;             //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit,              qmi clkdiv is now 7)
-    //qmi_hw->m[0].timing &= ~(0x3);        //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits,   qmi clkdiv is now 4) 
-    qmi_hw->m[0].timing &= ~(0x2);        //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit,          qmi clkdiv is now 5) 
-    vreg_set_voltage(VREG_VOLTAGE_1_30);    //400 Mhz may be highest achievable at 1.30v. 
+    qmi_hw->m[0].timing |= 0x4;                     //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit,              qmi clkdiv is now 7)
+    //qmi_hw->m[0].timing &= ~(0x3);                //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits,   qmi clkdiv is now 4) 
+    qmi_hw->m[0].timing &= ~(0x2);                  //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit,          qmi clkdiv is now 5) 
+    vreg_set_voltage(VREG_VOLTAGE_1_30);            //400 Mhz may be highest achievable clockspeed at 1.30v. 
     clock_speed = 380000;
-    set_sys_clock_khz(clock_speed, true);        //400 Mhz may be too unstable
+    set_sys_clock_khz(clock_speed, true);           //400 Mhz needs clockdiv of 7, 380 Mhz works well with clockdiv of 5
     #endif
 
     board_init();
@@ -128,7 +129,7 @@ int main()
     init_audio_code();
 
 
-    //***********************`
+    //***********************
     //***  TINY USB INIT  ***
     //***********************
    
@@ -143,7 +144,13 @@ int main()
     //***  USB UART INIT  ****
     //************************
 
-    stdio_init_all();
+    // stdio_init_all();
+
+    // //wait for connection
+    // while(!tud_cdc_connected())
+    // {
+    //     tud_task();    
+    // }
 
     //******************************************
     //****  I2S AUDIO OUT  *********************
@@ -151,6 +158,12 @@ int main()
     sound_i2s_init(&sound_config);
     sound_i2s_playback_start();
     
+    //************************
+    //***  ADC INIT  ****
+    //************************
+    printf("about to start adc init\n");
+    init_project_adc();
+
 
 
     //*********************************************************************************************
@@ -163,6 +176,16 @@ int main()
     while (true) 
     {
         
+        //********************
+        //***  ADC Routine ***
+        //********************
+
+        //adc_collect();
+        if(adc_dma_finished)
+        {
+            adc_dma_finished = false;
+            flash_dma_handler();
+        }
 
         //*****************************
         //***  TinyUSB device task  ***
@@ -176,36 +199,7 @@ int main()
         {
             this_time = board_millis();
 
-            
-            printf("\nCore 0 - Runs through main: %d\n", this_count);
-            printf("Core 1 - Runs through main: %d\n", core1_this_count);
-            // printf("Time (in millis)          : %d\n", this_time);
-            // printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
-            printf("ave_dt: %d    max_dt: %d\n", (int)ave_dt, (int)max_dt);
-            // printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
-            // printf("clock_speed:  %d\n", clock_speed/1000);
-            this_count = 0;
-            audio_interrupt_count = 0;
-            core1_this_count = 0;
-
-            //**************************************
-            //***  CALCULATE AUDIO PERFORMANCE  ****
-            //**************************************
-
-            accum_dt_lockout = true;
-
-            dt_in_us     = (float) accum_dt / accum_dt_count;
-            max_dt_in_us = (float)   max_dt;
-            ave_dt = accum_dt / accum_dt_count;
-
-            //*************************
-            //***  RESET VARIABLES  ***
-            //*************************
-            accum_dt = 0;
-            accum_dt_count = 0;
-            max_dt = 0;
-            accum_dt_lockout = false;
-
+            print_cpu_performance_information();
             
             
             //gpio_put(DEBUG_C, !gpio_get(DEBUG_C));
@@ -222,6 +216,8 @@ int main()
             pico_set_led(led_state);
         }
 
+
+        
         //*******************************
         //***  ONCE PER MILLISECOND   ***
         //*******************************
@@ -229,9 +225,11 @@ int main()
         {
             this_millis = board_millis();
             usb_midi_task();
+            
+            //check_adc_vals();           
         }
         
-        this_count++;
+        core0_main_count++;
 
     }
 }
@@ -248,7 +246,7 @@ int main()
 //*******************************************************************************************
 
 
-// Perform initialisation
+// This is just initializing debug pins and the led pulse
 void init_pins(void) 
 
 {
@@ -279,3 +277,82 @@ void pico_set_led(bool led_on)
     gpio_put(PICO_DEFAULT_LED_PIN, led_on);
 
 }
+
+
+//***************************************************************
+//***************************************************************
+//***************************************************************
+//***************************************************************
+
+
+void print_cpu_performance_information()
+{
+
+
+    //**************************************
+    //***  CALCULATE AUDIO PERFORMANCE  ****
+    //**************************************
+
+    accum_dt_lockout = true;
+
+    dt_in_us     = accum_dt / accum_dt_count;
+    max_dt_in_us = max_dt;
+    ave_dt_in_us = accum_dt / accum_dt_count;
+
+    //*************************
+    //***  RESET VARIABLES  ***
+    //*************************
+    accum_dt = 0;
+    accum_dt_count = 0;
+    max_dt = 0;
+    accum_dt_lockout = false;
+
+
+    // ***  NOW WITH COMMA FORMATTING  !
+    char formatted_num_string[20];
+
+    //****************
+    //***  CORE 0  ***
+    //****************
+    format_with_commas(core0_main_count, formatted_num_string);
+    printf("\nCore 0 - Runs through main: %s\n", formatted_num_string);
+
+    //****************
+    //***  CORE 1  ***
+    //****************
+    format_with_commas(core1_main_count, formatted_num_string);
+    printf("Core 1 - Runs through main: %s\n", formatted_num_string);
+
+    //**********************
+    //***  Running Time  ***
+    //**********************
+    
+    // printf("Time (in millis)          : %d\n", this_time);
+
+    //******************************
+    //***  AUDIO INTERRUPT INFO  ***
+    //******************************
+
+    // printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
+    printf("ave_dt_in_us: %d    max_dt: %d\n", (int)ave_dt_in_us, (int)max_dt_in_us);
+
+
+    //*******************
+    //***  CPU CLOCK  ***
+    //*******************
+
+    // printf("qmi_hw->m[0].timing: %x\n", qmi_hw->m[0].timing);
+    // printf("clock_speed:  %d\n", clock_speed/1000);
+
+
+
+    //*****  RESET RUNNING VARIABLES  ***
+    core0_main_count = 0;
+    audio_interrupt_count = 0;
+    core1_main_count = 0;
+
+
+
+}
+
+

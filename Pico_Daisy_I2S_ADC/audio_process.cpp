@@ -51,7 +51,7 @@ void init_audio_code(void)
 
 
 
-u32 accum_dt, ave_dt, accum_dt_count;
+u32 accum_dt, ave_dt_in_us, accum_dt_count;
 u32 dt;
 u32 max_dt;
 bool accum_dt_lockout;

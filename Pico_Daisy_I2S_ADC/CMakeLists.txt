@@ -67,12 +67,12 @@ pico_sdk_init()
 add_library(audio_i2s INTERFACE)
 
 target_include_directories(audio_i2s INTERFACE
-        ${CMAKE_CURRENT_LIST_DIR}/sound_i2s
-        ${CMAKE_CURRENT_LIST_DIR}/usb
         ${CMAKE_CURRENT_LIST_DIR}/midi
-        ${CMAKE_CURRENT_LIST_DIR}/blink
         ${CMAKE_CURRENT_LIST_DIR}/Daisy_source
         ${CMAKE_CURRENT_LIST_DIR}/Daisy_source/Utility
+        ${CMAKE_CURRENT_LIST_DIR}/sound_i2s
+        ${CMAKE_CURRENT_LIST_DIR}/usb
+        ${CMAKE_CURRENT_LIST_DIR}/utils
 
 )
 
@@ -84,12 +84,14 @@ pico_generate_pio_header(audio_i2s ${CMAKE_CURRENT_LIST_DIR}/sound_i2s/sound_i2s
 
 add_executable(Pico_project 
                         main.cpp
+                        adc.cpp
                         audio_process.cpp
+                        midi/midi.cpp
+                        sound_i2s/sound_i2s.c
                         usb/cdc_app.c 
                         #usb/uac2_app.c
                         usb/usb_descriptors.c
-                        midi/midi.cpp
-                        sound_i2s/sound_i2s.c
+                        utils/string_help.cpp
                         Daisy_source/Filters/soap.cpp
                         Daisy_source/Filters/svf.cpp
                         Daisy_source/PhysicalModeling/drip.cpp
@@ -143,20 +145,21 @@ pico_enable_stdio_usb(Pico_project 1)
 
 # Add the standard library to the build
 target_link_libraries(  Pico_project        #THIS PROJECT
-                        pico_stdlib
-                        tinyusb_board   #needed for bsp/board_api.h
-                        tinyusb_device
-                        pico_multicore
+                        audio_i2s           #declared above, this creates the pio.h files
+                        hardware_adc
                         hardware_clocks
+                        hardware_dma
+                        hardware_irq
                         hardware_pio
                         hardware_pwm
-                        hardware_irq
-                        hardware_dma
-                        audio_i2s       #declared above, this creates the pio.h files
+                        hardware_sync
                         hardware_vreg
                         pico_bootrom
-                        hardware_sync
+                        pico_multicore
+                        pico_stdlib
                         pico_sync
+                        tinyusb_board   #needed for bsp/board_api.h
+                        tinyusb_device
                         )
 
 # Add the standard include files to the build
