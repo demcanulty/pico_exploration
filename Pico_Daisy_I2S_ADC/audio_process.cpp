@@ -199,8 +199,8 @@ void control_val_changed(u8 control_num, u16 val)
         case 2:
         {   //fval *= 4000;
 
-            fval = mapfloat(fval, 0, 1, 0.6, 0.9);
-            
+            fval = mapfloat(fval, 0, 1, 0.6, 0.95);
+            //printf("%f\n",fval);
             if((fval > 0.5) && (fval < 1))
             {
                 m_filter.SetRes(fval);
