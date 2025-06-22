@@ -14,7 +14,7 @@ extern "C"
 void init_project_adc();
 void adc_collect();
 void check_adc_vals();
-void dma_handler();
+// void dma_handler();
 extern bool adc_dma_finished;
 void flash_dma_handler();
 #ifdef __cplusplus

@@ -6,10 +6,11 @@
 
 #include <stdio.h>
 #include "pico/stdlib.h"
-//#include "tusb.h"               //
-//#include "bsp/board_api.h"
+#include "tusb.h"               //
+#include "bsp/board_api.h"
 #include  "adc.h"
-
+#include "hardware/clocks.h"
+#include "hardware/vreg.h"
 #ifndef LED_DELAY_MS
 #define LED_DELAY_MS 1000
 #endif
@@ -21,7 +22,7 @@
 //Blink Pico  RP2040 at 133Mhz - 1,373,298 runs through main
 //Blink Pico  RP2040 at 200Mhz - 2,197,497 runs through main
 //Blink Pico2 RP2350 at 150Mhz - 2,542,031 runs through main
-
+extern uint32_t adc_interrupt;
 
 // Perform initialisation
 int pico_led_init(void) 
@@ -43,17 +44,23 @@ void pico_set_led(bool led_on)
 
 }
 
-
+#define OVERCLOCK_300MHZ
 uint32_t this_count;
 uint32_t this_time;
 int main() 
 {
+    #ifdef OVERCLOCK_300MHZ
+    vreg_set_voltage(VREG_VOLTAGE_1_20);    //300Mhz was locking up at 1.10v, bumping to 1.20v
+    set_sys_clock_khz(300000, true);
+    #endif
+
+
     bool led_state;
-    //stdio_init_all();
-    // while (!tud_cdc_connected()) 
-    // {
-    //     tight_loop_contents();
-    // }
+    stdio_init_all();
+    while (!tud_cdc_connected()) 
+    {
+        tight_loop_contents();
+    }
     
     printf("hello\n");
     int rc = pico_led_init();
@@ -61,7 +68,7 @@ int main()
 
 
 
-    //this_time = board_millis();
+    this_time = board_millis();
 
     init_project_adc();
 
@@ -71,18 +78,20 @@ int main()
 
         
 
-        //if(board_millis() - this_time > 999)
-        if(this_count > 4000000)
+        if(board_millis() - this_time > 999)
+        //if(this_count > 4000000)
         {
-            //this_time = board_millis();
+            this_time = board_millis();
 
             led_state = !led_state;
             pico_set_led(led_state);
 
 
-            // printf("Runs through main: %d\n", this_count);
-            // printf("Time (in millis) : %d\n\n", this_time);
-
+            printf("Runs through main: %d\n", this_count);
+            //printf("Time (in millis) : %d\n\n", this_time);
+            printf("ADC Interrupt: %d\n", adc_interrupt);
+            printf("Samples per second: %d\n\n", adc_interrupt * 1024);
+            adc_interrupt=0;
             this_count = 0;
 
             if(adc_dma_finished)

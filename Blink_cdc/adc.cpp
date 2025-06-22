@@ -9,14 +9,42 @@
 
 
 
-#define NUM_SAMPLES 1024 / 4
+#define NUM_SAMPLES 1024
 uint16_t  __attribute__((aligned(4))) adc_buffer[NUM_SAMPLES];
 
-
+dma_channel_config dma_cfg;
 uint16_t adc_val[3];        
 uint16_t last_adc_val[3];
 
 int adc_dma_chan_num;
+
+
+bool adc_dma_finished;
+uint32_t adc_interrupt;
+
+static void __isr __time_critical_func(dma_handler)(void)
+{
+   
+    adc_run(false);
+    adc_interrupt++;
+
+    //dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
+
+    // dma_channel_configure(
+    //     adc_dma_chan_num,     // DMA Channel number that we got from dma_claim_unused_channel
+    //     &dma_cfg,             // Configuration packet that we just made
+    //     adc_buffer,           // Destination pointer
+    //     &adc_hw->fifo,        // Source pointer (ADC FIFO)
+    //     NUM_SAMPLES,          // Number of transfers
+    //     false                 // Do not start immediately
+    // );
+
+    dma_channel_hw_addr(adc_dma_chan_num)->al3_write_addr = (uintptr_t) &adc_buffer;
+    dma_channel_hw_addr(adc_dma_chan_num)->al3_read_addr_trig = (uintptr_t) &adc_hw->fifo;
+    dma_hw->ints0 = 1u << adc_dma_chan_num;
+    adc_run(true);
+}
+
 
 
 void init_project_adc()
@@ -44,12 +72,12 @@ void init_project_adc()
     adc_set_clkdiv(0);   //0 is full speed 
 
     printf("Arming DMA\n");
-    sleep_ms(1000);
+    // sleep_ms(1000);
     //**************************
     //*** Set up DMA channel ***
     //**************************
     adc_dma_chan_num             = dma_claim_unused_channel(true);
-    dma_channel_config dma_cfg   = dma_channel_get_default_config(adc_dma_chan_num);
+    dma_cfg  = dma_channel_get_default_config(adc_dma_chan_num);
     channel_config_set_transfer_data_size (&dma_cfg, DMA_SIZE_16);      // 16-bit
     channel_config_set_read_increment     (&dma_cfg, false);            // Read from same address (ADC Register)
     channel_config_set_write_increment    (&dma_cfg, true);             // Write to buffer and increment pointer every time
@@ -77,29 +105,14 @@ void init_project_adc()
 
 
     //*** DMA IRQ Setup ***
-    dma_channel_set_irq1_enabled(adc_dma_chan_num, true);   // Enable IRQ on specific DMA channel
-    irq_set_exclusive_handler(DMA_IRQ_1, dma_handler);      // Label our interrupt handler function 
-    irq_set_priority(DMA_IRQ_1, 0xff);
-    irq_set_enabled(DMA_IRQ_1, true);                       // Enables interrupt on the executing core             
+    dma_channel_set_irq0_enabled(adc_dma_chan_num, true);   // Enable IRQ on specific DMA channel
+    irq_set_exclusive_handler(DMA_IRQ_0, dma_handler);      // Label our interrupt handler function 
+    irq_set_priority(DMA_IRQ_0, 0xff);
+    irq_set_enabled(DMA_IRQ_0, true);                       // Enables interrupt on the executing core             
 
 }
 
 
-
-bool adc_dma_finished;
-
-//https://forums.raspberrypi.com/viewtopic.php?t=342829
-void (dma_handler)() 
-{
-    if (dma_hw->ints1 & (1u << adc_dma_chan_num)) 
-    {
-        dma_hw->ints1 = 1u << adc_dma_chan_num;
-    }
-
-    adc_dma_finished = true;
-
-
-}
 
 
 void flash_dma_handler()
@@ -114,8 +127,9 @@ void flash_dma_handler()
     // }
 
     // Optionally restart DMA here if you want continuous streaming
-    dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
     adc_run(true);
+    dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
+    
 }
 
 
