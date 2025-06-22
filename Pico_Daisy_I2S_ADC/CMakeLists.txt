@@ -68,6 +68,7 @@ add_library(audio_i2s INTERFACE)
 
 target_include_directories(audio_i2s INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}/midi
+        ${CMAKE_CURRENT_LIST_DIR}/Daisy_LGPL
         ${CMAKE_CURRENT_LIST_DIR}/Daisy_source
         ${CMAKE_CURRENT_LIST_DIR}/Daisy_source/Utility
         ${CMAKE_CURRENT_LIST_DIR}/sound_i2s
@@ -92,6 +93,25 @@ add_executable(Pico_project
                         #usb/uac2_app.c
                         usb/usb_descriptors.c
                         utils/string_help.cpp
+
+                        Daisy_LGPL/Filters/allpass.cpp
+                        Daisy_LGPL/Filters/tone.cpp
+                        Daisy_LGPL/Filters/comb.cpp
+                        Daisy_LGPL/Filters/biquad.cpp
+                        Daisy_LGPL/Filters/nlfilt.cpp
+                        Daisy_LGPL/Filters/atone.cpp
+                        Daisy_LGPL/Filters/moogladder.cpp
+                        Daisy_LGPL/Filters/mode.cpp
+                        Daisy_LGPL/PhysicalModeling/pluck.cpp
+                        Daisy_LGPL/Dynamics/balance.cpp
+                        Daisy_LGPL/Dynamics/compressor.cpp
+                        Daisy_LGPL/Synthesis/blosc.cpp
+                        Daisy_LGPL/Effects/reverbsc.cpp
+                        Daisy_LGPL/Effects/fold.cpp
+                        Daisy_LGPL/Effects/bitcrush.cpp
+                        Daisy_LGPL/Control/line.cpp
+                        Daisy_LGPL/Utility/jitter.cpp
+                        Daisy_LGPL/Utility/port.cpp
                         Daisy_source/Filters/soap.cpp
                         Daisy_source/Filters/svf.cpp
                         Daisy_source/PhysicalModeling/drip.cpp

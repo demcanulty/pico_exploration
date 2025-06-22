@@ -64,6 +64,12 @@ void core1_main()
     {
 
 
+        //********************
+        //***  ADC Routine ***
+        //********************
+
+        adc_collect();
+
 
         //**********************************
         //***  Do nothing every second   ***
@@ -144,13 +150,13 @@ int main()
     //***  USB UART INIT  ****
     //************************
 
-    // stdio_init_all();
+    stdio_init_all();
 
-    // //wait for connection
-    // while(!tud_cdc_connected())
-    // {
-    //     tud_task();    
-    // }
+    //wait for connection
+    while(!tud_cdc_connected())
+    {
+        tud_task();    
+    }
 
     //******************************************
     //****  I2S AUDIO OUT  *********************
@@ -176,16 +182,7 @@ int main()
     while (true) 
     {
         
-        //********************
-        //***  ADC Routine ***
-        //********************
 
-        //adc_collect();
-        if(adc_dma_finished)
-        {
-            adc_dma_finished = false;
-            flash_dma_handler();
-        }
 
         //*****************************
         //***  TinyUSB device task  ***
@@ -226,7 +223,7 @@ int main()
             this_millis = board_millis();
             usb_midi_task();
             
-            //check_adc_vals();           
+            check_adc_vals();           
         }
         
         core0_main_count++;
@@ -333,8 +330,10 @@ void print_cpu_performance_information()
     //***  AUDIO INTERRUPT INFO  ***
     //******************************
 
-    // printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
-    printf("ave_dt_in_us: %d    max_dt: %d\n", (int)ave_dt_in_us, (int)max_dt_in_us);
+    float percentage_full =   (((float)max_dt_in_us) / MAX_TIME_FOR_AUDIO_INTERRUPT)  * 100;
+
+    //printf("Audio Interrupts per sec: %d\n", audio_interrupt_count);
+    printf("ave_dt_in_us: %d    max_dt: %d   CPU%%: %d\n", (int)ave_dt_in_us, (int)max_dt_in_us, (int)percentage_full);
 
 
     //*******************
@@ -345,6 +344,10 @@ void print_cpu_performance_information()
     // printf("clock_speed:  %d\n", clock_speed/1000);
 
 
+    //*********************
+    //***  ADC METRICS  ***
+    //*********************
+    printf("ADC Scan time: %d  mS\n", time_to_finish_adc_scan);
 
     //*****  RESET RUNNING VARIABLES  ***
     core0_main_count = 0;

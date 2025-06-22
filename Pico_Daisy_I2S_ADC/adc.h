@@ -14,9 +14,11 @@ extern "C"
 void init_project_adc();
 void adc_collect();
 void check_adc_vals();
-void dma_handler();
-extern bool adc_dma_finished;
-void flash_dma_handler();
+
+
+
+extern u32 time_to_finish_adc_scan;
+uint16_t fir_filter_channel(int channel, float new_sample);
 #ifdef __cplusplus
 }
 #endif
