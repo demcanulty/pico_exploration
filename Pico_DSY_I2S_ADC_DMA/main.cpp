@@ -227,10 +227,6 @@ int main()
     sound_i2s_init(&sound_config);
     sound_i2s_playback_start();
     
-    //*******************
-    //***  ADC INIT  ****
-    //*******************
-    //init_project_adc();
 
 
 
