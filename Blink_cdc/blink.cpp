@@ -89,20 +89,15 @@ int main()
 
             printf("Runs through main: %d\n", this_count);
             //printf("Time (in millis) : %d\n\n", this_time);
-            printf("ADC Interrupt: %d\n", adc_interrupt);
-            printf("Samples per second: %d\n\n", adc_interrupt * 1024);
+            printf("ADC Interrupt: %d\n", adc_interrupt_count);
+            printf("Samples per second: %d\n\n", adc_interrupt_count * 1024);
             adc_interrupt=0;
             this_count = 0;
 
-            if(adc_dma_finished)
-            {
-                adc_dma_finished = false;
-                flash_dma_handler();
-            }
-
+           
         }
-
-        
+        process_adc();
+        check_adc_vals();
 
         this_count++;
 

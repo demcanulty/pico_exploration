@@ -50,7 +50,8 @@
             "tusb.h": "c",
             "main.h": "c",
             "sound_i2s.h": "c",
-            "sound_i2s_16bits.pio.h": "c"
+            "sound_i2s_16bits.pio.h": "c",
+            "random": "cpp"
         }
     }
 }

@@ -6,44 +6,120 @@
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include <stdio.h>
+#include "math.h"
 
 
 
-#define NUM_SAMPLES 1024
-uint16_t  __attribute__((aligned(4))) adc_buffer[NUM_SAMPLES];
+u8 adc_buff_index;
+u8 adc_buff_index_to_process;
+u32 time_to_finish_adc_scan;
 
-dma_channel_config dma_cfg;
+uint16_t  __attribute__((aligned(4))) adc_buffer[2][NUM_ADC_SAMPLES];
 uint16_t adc_val[3];        
 uint16_t last_adc_val[3];
-
 int adc_dma_chan_num;
-
+dma_channel_config dma_cfg;
 
 bool adc_dma_finished;
-uint32_t adc_interrupt;
+uint32_t adc_interrupt_count;
+u8 adc_pin_to_process;
+
+u32 adc_interrupt;
 
 static void __isr __time_critical_func(dma_handler)(void)
 {
    
+
+    static u32 this_time;
+    static u8  this_adc_pin;
+
+    //***  START TIMER  ***
+    u32 timer_snapshot = timer_hw->timerawl;
+    time_to_finish_adc_scan = timer_snapshot - this_time;
+    this_time = timer_snapshot;
+    adc_interrupt_count++;
+    
+    //***  STOP ADC  ***
     adc_run(false);
-    adc_interrupt++;
+    
+    //*** SWAP BUFFERS  ***
+    adc_buff_index_to_process = adc_buff_index;
+    adc_buff_index = !adc_buff_index;
 
-    //dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
 
-    // dma_channel_configure(
-    //     adc_dma_chan_num,     // DMA Channel number that we got from dma_claim_unused_channel
-    //     &dma_cfg,             // Configuration packet that we just made
-    //     adc_buffer,           // Destination pointer
-    //     &adc_hw->fifo,        // Source pointer (ADC FIFO)
-    //     NUM_SAMPLES,          // Number of transfers
-    //     false                 // Do not start immediately
-    // );
+    //*** START PROCESSING  ***
+    adc_pin_to_process = this_adc_pin;
+    adc_dma_finished = true;
 
-    dma_channel_hw_addr(adc_dma_chan_num)->al3_write_addr = (uintptr_t) &adc_buffer;
+    //***  INCREMENT PIN AND CHECK BOUNDS  ***
+    this_adc_pin++;
+    if(this_adc_pin >= NUM_ADC_PINS)
+    {
+        this_adc_pin = 0;
+    }
+    adc_select_input(this_adc_pin);
+    //***  RESTART DMA **************************
+    //***  NEED TO RESET THE WRITE ADDRESS!!  ***
+    dma_channel_hw_addr(adc_dma_chan_num)->write_addr = (uintptr_t) &adc_buffer[adc_buff_index][0];
     dma_channel_hw_addr(adc_dma_chan_num)->al3_read_addr_trig = (uintptr_t) &adc_hw->fifo;
-    dma_hw->ints0 = 1u << adc_dma_chan_num;
+
+    //***  ACK / CLEAR THE DMA ISR  ***
+    dma_hw->ints0 |= 1u << adc_dma_chan_num;
+
+    //RESTART THE ADC
+    adc_run(true);
+
+
+}
+
+
+
+u32 time_to_finish_adc_process;
+
+void process_adc()
+{
+    u32 timer_snapshot = timer_hw->timerawl;
+
+    if(adc_dma_finished)
+    {
+        adc_dma_finished = false;
+
+        u32 this_sum = 0;
+        uint16_t * ptr = &(adc_buffer[adc_buff_index_to_process][0]);
+
+        for(int i = 0; i < NUM_ADC_SAMPLES; i++ )
+        {
+            this_sum += *ptr;
+            //*ptr = 0;
+            ptr++;
+        }
+
+        adc_val[adc_pin_to_process] = this_sum / NUM_ADC_SAMPLES;
+
+    }
+
+    time_to_finish_adc_process = timer_hw->timerawl - timer_snapshot;
     adc_run(true);
 }
+
+
+
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+
 
 
 
@@ -90,7 +166,7 @@ void init_project_adc()
         &dma_cfg,             // Configuration packet that we just made
         adc_buffer,           // Destination pointer
         &adc_hw->fifo,        // Source pointer (ADC FIFO)
-        NUM_SAMPLES,          // Number of transfers
+        NUM_ADC_SAMPLES,          // Number of transfers
         false                 // Do not start immediately
     );
 
@@ -130,6 +206,37 @@ void flash_dma_handler()
     adc_run(true);
     dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
     
+}
+
+
+
+
+
+//*****************************************
+//*****************************************
+//******  LOOK FOR CHANGES
+//*****************************************
+//*****************************************
+
+void check_adc_vals()
+{
+    bool adc_val_changed = false;
+    for(int i=0; i<NUM_ADC_PINS; i++)
+    {
+        if(abs(adc_val[i] - last_adc_val[i]) > 1)   
+        {
+        
+            last_adc_val[i] = adc_val[i];
+            adc_val_changed = true;
+
+        }
+    }
+
+    if(adc_val_changed)
+    {
+        printf("adc0: %5u  adc1: %5u  adc3: %5u \n", adc_val[0], adc_val[1], adc_val[2]);
+    }
+
 }
 
 
