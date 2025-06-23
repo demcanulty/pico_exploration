@@ -11,6 +11,7 @@
 #include  "adc.h"
 #include "hardware/clocks.h"
 #include "hardware/vreg.h"
+#include <hardware/structs/qmi.h>
 #ifndef LED_DELAY_MS
 #define LED_DELAY_MS 1000
 #endif
@@ -43,17 +44,28 @@ void pico_set_led(bool led_on)
     gpio_put(PICO_DEFAULT_LED_PIN, led_on);
 
 }
+//#define OVERCLOCK_300MHZ  
+#define OVERCLOCK_400MHZ      //See RP2350 datasheet, QMI: M0_TIMING, M1_TIMING Registers, CLKDIV bits
 
-#define OVERCLOCK_300MHZ
+
 uint32_t this_count;
-uint32_t this_time;
+uint32_t this_time, adc_time;
 int main() 
 {
+    float clock_speed;
     #ifdef OVERCLOCK_300MHZ
     vreg_set_voltage(VREG_VOLTAGE_1_20);    //300Mhz was locking up at 1.10v, bumping to 1.20v
     set_sys_clock_khz(300000, true);
     #endif
-
+    #ifdef OVERCLOCK_400MHZ
+    //***  REDUCE FLASH TIMING CLOCK  ***
+    qmi_hw->m[0].timing |= 0x4;                     //qmi_hw->m[0].timing now equals 0x60007207  (raise third bit,              qmi clkdiv is now 7)
+    //qmi_hw->m[0].timing &= ~(0x3);                //qmi_hw->m[0].timing now equals 0x60007204  (drop first and second bits,   qmi clkdiv is now 4) 
+    qmi_hw->m[0].timing &= ~(0x2);                  //qmi_hw->m[0].timing now equals 0x60007205  (drop the second bit,          qmi clkdiv is now 5) 
+    vreg_set_voltage(VREG_VOLTAGE_1_30);            //400 Mhz may be highest achievable clockspeed at 1.30v. 
+    clock_speed = 380000;
+    set_sys_clock_khz(clock_speed, true);           //400 Mhz needs clockdiv of 7, 380 Mhz works well with clockdiv of 5
+    #endif
 
     bool led_state;
     stdio_init_all();
@@ -91,14 +103,21 @@ int main()
             //printf("Time (in millis) : %d\n\n", this_time);
             printf("ADC Interrupt: %d\n", adc_interrupt_count);
             printf("Samples per second: %d\n\n", adc_interrupt_count * 1024);
-            adc_interrupt=0;
+            adc_interrupt_count=0;
             this_count = 0;
 
            
         }
-        process_adc();
-        check_adc_vals();
 
+
+        
+        if(board_millis() - adc_time > 9)
+        {
+            adc_time = 0;
+            check_adc_vals();
+            process_adc();
+        }        
+        
         this_count++;
 
 
