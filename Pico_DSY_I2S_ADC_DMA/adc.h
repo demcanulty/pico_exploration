@@ -10,7 +10,7 @@ extern "C"
 #include "main.h"
 
 #define NUM_ADC_PINS 3
-#define NUM_ADC_SAMPLES 1024   
+#define NUM_ADC_SAMPLES (1024  * 2)
 void init_project_adc();
 void adc_collect();
 void check_adc_vals();

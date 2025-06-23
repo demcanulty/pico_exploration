@@ -102,7 +102,7 @@ int main()
             printf("Runs through main: %d\n", this_count);
             //printf("Time (in millis) : %d\n\n", this_time);
             printf("ADC Interrupt: %d\n", adc_interrupt_count);
-            printf("Samples per second: %d\n\n", adc_interrupt_count * 1024);
+            printf("Samples per second: %d\n\n", adc_interrupt_count * NUM_ADC_SAMPLES);
             adc_interrupt_count=0;
             this_count = 0;
 

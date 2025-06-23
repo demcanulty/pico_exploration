@@ -29,6 +29,7 @@ u8 adc_pin_to_process;
 
 static void __isr __time_critical_func(dma_handler)(void)
 {
+    
     static u32 this_time;
     static u8  this_adc_pin;
 
@@ -51,7 +52,7 @@ static void __isr __time_critical_func(dma_handler)(void)
     adc_dma_finished = true;
 
     //***  INCREMENT PIN AND CHECK BOUNDS  ***
-    //this_adc_pin++;
+    this_adc_pin++;
     if(this_adc_pin >= NUM_ADC_PINS)
     {
         this_adc_pin = 0;
@@ -59,7 +60,7 @@ static void __isr __time_critical_func(dma_handler)(void)
     adc_select_input(this_adc_pin);
     //***  RESTART DMA **************************
     //***  NEED TO RESET THE WRITE ADDRESS!!  ***
-    dma_channel_hw_addr(adc_dma_chan_num)->al3_write_addr = (uintptr_t) &adc_buffer[adc_buff_index][0];
+    dma_channel_hw_addr(adc_dma_chan_num)->write_addr = (uintptr_t) &adc_buffer[adc_buff_index][0];
     dma_channel_hw_addr(adc_dma_chan_num)->al3_read_addr_trig = (uintptr_t) &adc_hw->fifo;
 
     //***  ACK / CLEAR THE DMA ISR  ***
@@ -78,10 +79,11 @@ u32 time_to_finish_adc_process;
 
 void process_adc()
 {
-    u32 timer_snapshot = timer_hw->timerawl;
+    
 
     if(adc_dma_finished)
     {
+        u32 timer_snapshot = timer_hw->timerawl;
         adc_dma_finished = false;
 
         u32 this_sum = 0;
@@ -89,17 +91,18 @@ void process_adc()
 
         for(int i = 0; i < NUM_ADC_SAMPLES; i++ )
         {
-            this_sum += *ptr;
-            //*ptr = 0;
-            ptr++;
+            this_sum += *ptr++;
+            // //*ptr = 0;
+            // ptr++;
         }
 
         adc_val[adc_pin_to_process] = this_sum / NUM_ADC_SAMPLES;
 
+        time_to_finish_adc_process = timer_hw->timerawl - timer_snapshot;
+
     }
 
-    time_to_finish_adc_process = timer_hw->timerawl - timer_snapshot;
-    adc_run(true);
+    
 }
 
 
@@ -114,14 +117,12 @@ void process_adc()
 
 void init_project_adc()
 {
-    adc_init();
+     adc_init();
     adc_gpio_init(26);
     adc_gpio_init(27);
     adc_gpio_init(28);
+
     adc_select_input(0);
-
-
-    //*** it would be a good idea to initialize the fir filter buffers here
 
 
     //****************************
@@ -138,7 +139,8 @@ void init_project_adc()
 
     adc_set_clkdiv(0);   //0 is full speed 
 
-
+    printf("Arming DMA\n");
+    // sleep_ms(1000);
     //**************************
     //*** Set up DMA channel ***
     //**************************
@@ -154,9 +156,9 @@ void init_project_adc()
     dma_channel_configure(
         adc_dma_chan_num,     // DMA Channel number that we got from dma_claim_unused_channel
         &dma_cfg,             // Configuration packet that we just made
-        &adc_buffer[0][0],    // Destination pointer
+        adc_buffer,           // Destination pointer
         &adc_hw->fifo,        // Source pointer (ADC FIFO)
-        NUM_ADC_SAMPLES,      // Number of transfers
+        NUM_ADC_SAMPLES,          // Number of transfers
         false                 // Do not start immediately
     );
 
@@ -173,8 +175,8 @@ void init_project_adc()
     //*** DMA IRQ Setup ***
     dma_channel_set_irq1_enabled(adc_dma_chan_num, true);   // Enable IRQ on specific DMA channel
     irq_set_exclusive_handler(DMA_IRQ_1, dma_handler);      // Label our interrupt handler function 
-    irq_set_priority(DMA_IRQ_1, 0xf0);
-    irq_set_enabled(DMA_IRQ_1, true);                       // Enables interrupt on the executing core          
+    irq_set_priority(DMA_IRQ_1, 0xff);
+    irq_set_enabled(DMA_IRQ_1, true);                       // Enables interrupt on the executing core       
 
 
 }

@@ -9,7 +9,7 @@ extern "C"
 
 #include "stdint.h"
 
-#define NUM_ADC_SAMPLES 1024
+#define NUM_ADC_SAMPLES 3024
 
 typedef uint8_t   u8;
 typedef uint16_t u16;

@@ -94,7 +94,7 @@ void pico_set_led(bool led_on)
 
 uint32_t core1_this_time, core1_main_count;
 
-
+u32 adc_millis;
 uint32_t dt_in_us;
 uint32_t max_dt_in_us;
 
@@ -103,6 +103,8 @@ bool core_1_trigger_process;
 void core1_main()
 {
 
+
+
     //*******************
     //***  ADC INIT  ****
     //*******************
@@ -110,17 +112,21 @@ void core1_main()
     init_project_adc();
 
 
-
-
     while(true)
     {
 
+        //***********************************
+        //***  ADC EVERY 2 milliseconds   ***
+        //***********************************
+        if(board_millis() - adc_millis > 1) 
+        {
+            adc_millis = board_millis();
+            process_adc();
+            check_adc_vals();           
+        }
+ 
 
-        //********************
-        //***  ADC Routine ***
-        //********************
-
-        process_adc();
+        
 
 
         //**********************************
@@ -159,7 +165,7 @@ void core1_main()
 //***** ........................................................
 
 uint32_t core0_main_count;
-uint32_t this_time, blink_time, this_millis, adc_millis;
+uint32_t this_time, blink_time, this_millis;
 bool led_state;
 
 
@@ -224,7 +230,7 @@ int main()
     //*******************
     //***  ADC INIT  ****
     //*******************
-    init_project_adc();
+    //init_project_adc();
 
 
 
@@ -271,14 +277,7 @@ int main()
             pico_set_led(led_state);
         }
 
-        //*******************************
-        //***  EVERY 10 milliseconds   ***
-        //*******************************
-        if(board_millis() != adc_millis)
-        {
-            adc_millis = board_millis();
-            check_adc_vals();           
-        }
+       
         
         //*******************************
         //***  ONCE PER MILLISECOND   ***

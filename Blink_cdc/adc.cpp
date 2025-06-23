@@ -64,7 +64,7 @@ static void __isr __time_critical_func(dma_handler)(void)
     dma_channel_hw_addr(adc_dma_chan_num)->al3_read_addr_trig = (uintptr_t) &adc_hw->fifo;
 
     //***  ACK / CLEAR THE DMA ISR  ***
-    dma_hw->ints0 |= 1u << adc_dma_chan_num;
+    dma_hw->ints1 |= 1u << adc_dma_chan_num;
 
     //RESTART THE ADC
     adc_run(true);
@@ -87,7 +87,7 @@ void process_adc()
         u32 this_sum = 0;
         uint16_t * ptr = &(adc_buffer[adc_buff_index_to_process][0]);
 
-        for(int i = 0; i < NUM_ADC_SAMPLES; i++ )
+        for(int i = 0; i < NUM_ADC_SAMPLES; i++ )  //bump up i to skip some of the first values right after the mux change 
         {
             this_sum += *ptr;
             //*ptr = 0;
@@ -181,10 +181,10 @@ void init_project_adc()
 
 
     //*** DMA IRQ Setup ***
-    dma_channel_set_irq0_enabled(adc_dma_chan_num, true);   // Enable IRQ on specific DMA channel
-    irq_set_exclusive_handler(DMA_IRQ_0, dma_handler);      // Label our interrupt handler function 
-    irq_set_priority(DMA_IRQ_0, 0xff);
-    irq_set_enabled(DMA_IRQ_0, true);                       // Enables interrupt on the executing core             
+    dma_channel_set_irq1_enabled(adc_dma_chan_num, true);   // Enable IRQ on specific DMA channel
+    irq_set_exclusive_handler(DMA_IRQ_1, dma_handler);      // Label our interrupt handler function 
+    irq_set_priority(DMA_IRQ_1, 0xff);
+    irq_set_enabled(DMA_IRQ_1, true);                       // Enables interrupt on the executing core             
 
 }
 
