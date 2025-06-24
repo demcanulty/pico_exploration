@@ -5,6 +5,6 @@
 
 
 void format_with_commas(uint32_t value, char *output);
-
+void startup_splash();
 
 #endif

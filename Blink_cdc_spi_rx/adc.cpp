@@ -1,14 +1,12 @@
 #include "adc.h"
-#include "bsp/board_api.h"
+//#include "bsp/board_api.h"
 #include "hardware/adc.h"
 #include "hardware/dma.h"
 #include "hardware/irq.h"
-#include "main.h"
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include <stdio.h>
 #include "math.h"
-#include "audio_process.h"
 
 
 
@@ -26,10 +24,12 @@ bool adc_dma_finished;
 uint32_t adc_interrupt_count;
 u8 adc_pin_to_process;
 
+u32 adc_interrupt;
 
 static void __isr __time_critical_func(dma_handler)(void)
 {
-    
+   
+
     static u32 this_time;
     static u8  this_adc_pin;
 
@@ -68,61 +68,64 @@ static void __isr __time_critical_func(dma_handler)(void)
 
     //RESTART THE ADC
     adc_run(true);
+
+
 }
 
-//*************************************************************
-//*************************************************************
-//*************************************************************
-//*************************************************************
+
 
 u32 time_to_finish_adc_process;
 
 void process_adc()
 {
-    
-    //***  ONLY RUN AFTER INTERRUPT  ***
+    u32 timer_snapshot = timer_hw->timerawl;
+
     if(adc_dma_finished)
     {
-        //*** START TIMER ***
-        u32 timer_snapshot = timer_hw->timerawl;
-
-        //***  CLEAR FLAG  *** */
         adc_dma_finished = false;
 
         u32 this_sum = 0;
-
-        //***  GET POINTER TO INACTIVE BUFFER ***
         uint16_t * ptr = &(adc_buffer[adc_buff_index_to_process][0]);
 
-        for(int i = 0; i < NUM_ADC_SAMPLES; i++ )
+        for(int i = 0; i < NUM_ADC_SAMPLES; i++ )  //bump up i to skip some of the first values right after the mux change 
         {
-            //*** SUM BUFFER  ***
-            this_sum += *ptr++;
+            this_sum += *ptr;
+            //*ptr = 0;
+            ptr++;
         }
 
-        //*** DECIMATE AND STORE  ***
         adc_val[adc_pin_to_process] = this_sum / NUM_ADC_SAMPLES;
-
-        time_to_finish_adc_process = timer_hw->timerawl - timer_snapshot;
 
     }
 
-    
+    time_to_finish_adc_process = timer_hw->timerawl - timer_snapshot;
+    adc_run(true);
 }
 
 
 
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
+//**************************************************************************
 
-//**************************************************************************
-//**************************************************************************
-//**************************************************************************
-//**************************************************************************
-//**************************************************************************
+
 
 
 void init_project_adc()
 {
-     adc_init();
+    adc_init();
     adc_gpio_init(26);
     adc_gpio_init(27);
     adc_gpio_init(28);
@@ -181,10 +184,32 @@ void init_project_adc()
     dma_channel_set_irq1_enabled(adc_dma_chan_num, true);   // Enable IRQ on specific DMA channel
     irq_set_exclusive_handler(DMA_IRQ_1, dma_handler);      // Label our interrupt handler function 
     irq_set_priority(DMA_IRQ_1, 0xff);
-    irq_set_enabled(DMA_IRQ_1, true);                       // Enables interrupt on the executing core       
-
+    irq_set_enabled(DMA_IRQ_1, true);                       // Enables interrupt on the executing core             
 
 }
+
+
+
+
+void flash_dma_handler()
+{
+    // Stop the ADC
+    adc_run(false);
+    adc_fifo_drain();
+    // Example action: print the last few samples
+    // printf("ISR DMA complete. Last 5 samples:\n");
+    // for (int i = NUM_SAMPLES - 5; i < NUM_SAMPLES; i++) {
+    //     printf("%d\n", adc_buffer[i]);
+    // }
+
+    // Optionally restart DMA here if you want continuous streaming
+    adc_run(true);
+    dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
+    
+}
+
+
+
 
 
 //*****************************************
@@ -204,7 +229,6 @@ void check_adc_vals()
             last_adc_val[i] = adc_val[i];
             adc_val_changed = true;
 
-            control_val_changed(i, adc_val[i]);
         }
     }
 
@@ -215,62 +239,87 @@ void check_adc_vals()
 
 }
 
-//*****************************************
-//*****************************************
-//******  FILTERING   *********************
-//*****************************************
-//*****************************************
 
-#define FIR_TAP_NUM 11 
-// float fir_coeffs[FIR_TAP_NUM] = 
-// {
-//     0.045, 0.075, 0.105, 0.125, 0.140,
-//     0.150, 0.140, 0.125, 0.105, 0.075, 0.045
-// };
 
-float fir_coeffs[FIR_TAP_NUM] = {
-    0.045 / 1.13,
-    0.075 / 1.13,
-    0.105 / 1.13,
-    0.125 / 1.13,
-    0.140 / 1.13,   //normalized
-    0.150 / 1.13,
-    0.140 / 1.13,
-    0.125 / 1.13,
-    0.105 / 1.13,
-    0.075 / 1.13,
-    0.045 / 1.13
-};
-
-// #define FIR_TAP_NUM 7 
-// float fir_coeffs[7] = {
-//     //0.2, 0.2, 0.2, 0.2, 0.2
-//      0.1, 0.2, 0.2, 0.2, 0.1, 0.1, 0.1
-// }; 
-
-// Per-channel filter buffers
-float fir_buffers[NUM_ADC_CHANNELS][FIR_TAP_NUM];
-
-// Apply FIR filter to a single channel input
-uint16_t fir_filter_channel(int channel, float new_sample) 
+/*
+void dma_handler() 
 {
-    //***  check channel bounds
-    if(channel >= NUM_ADC_CHANNELS)
+    // Check and clear the interrupt for our channel
+    if (dma_hw->ints1 & (1u << adc_dma_chan_num)) 
     {
-        return 0;
+        dma_hw->ints1 = 1u << adc_dma_chan_num;
+    }
+        
+    // Stop the ADC
+    adc_run(false);
+    adc_fifo_drain();
+    // Example action: print the last few samples
+    printf("ISR DMA complete. Last 5 samples:\n");
+    for (int i = NUM_SAMPLES - 5; i < NUM_SAMPLES; i++) {
+        printf("%d\n", adc_buffer[i]);
     }
 
-    // Shift buffer
-    for (int i = FIR_TAP_NUM - 1; i > 0; i--) 
-    {
-        fir_buffers[channel][i] = fir_buffers[channel][i - 1];
-    }
-    fir_buffers[channel][0] = new_sample;
+    // Optionally restart DMA here if you want continuous streaming
+    dma_channel_set_read_addr(adc_dma_chan_num, &adc_hw->fifo, true);
+    adc_run(true);
 
-    // Apply filter
-    float result = 0.0f;
-    for (int i = 0; i < FIR_TAP_NUM; i++) {
-        result += fir_coeffs[i] * fir_buffers[channel][i];
+    // Clear the interrupt request
+    // dma_hw->ints0 = (1u << adc_dma_chan_num);
+
+     // Check and clear the interrupt for our channel
+    if (dma_hw->ints1 & (1u << adc_dma_chan_num)) 
+    {
+        dma_hw->ints1 = 1u << adc_dma_chan_num;
     }
-    return (uint16_t) result;
+        
 }
+    */
+
+
+
+/*
+void adc_collect()
+{
+
+
+    switch(adc_accumulate_count)
+    {
+        case 0 ... 50000:
+        {
+            adc_accumulate_count++;
+            adc0_accumulate += adc_read();
+        }break;
+        case 50001:
+        {
+            adc_val[0] = adc0_accumulate / adc_accumulate_count;
+            
+            adc0_accumulate = 0;
+            adc_accumulate_count = 0;
+        }
+    }
+
+}
+
+
+
+void check_adc_vals()
+{
+    bool adc_val_changed = false;
+    for(int i=0; i<NUM_ADC_PINS; i++)
+    {
+        if(adc_val[i] != last_adc_val[i])
+        {
+            last_adc_val[i] = adc_val[i];
+            adc_val_changed = true;
+
+        }
+    }
+
+    if(adc_val_changed)
+    {
+        printf("adc0: %5u  adc1: %5u  adc3: %5u \n", adc_val[0], adc_val[1], adc_val[2]);
+    }
+
+}
+
+*/

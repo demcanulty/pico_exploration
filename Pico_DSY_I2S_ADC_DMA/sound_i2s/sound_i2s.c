@@ -16,6 +16,28 @@
 #include "audio_process.h"
 #include "main.h"
 
+
+//*************************************
+//**********   I2S STUFF  *************
+//*************************************
+#define I2S_DATA_PIN             20 // -> I2S DIN
+#define I2S_LRCK                 19 // -> I2S LRCK  (or word select)
+#define I2S_CLOCK                18 // -> I2S BCK
+// The third required connection is GPIO 19 -> I2S LRCK (BCK+1)
+
+const struct sound_i2s_config sound_config = 
+{
+    .pio_num         = 0, // 0 for pio0, 1 for pio1
+    .pin_scl         = I2S_CLOCK,
+    .pin_sda         = I2S_DATA_PIN,
+    .pin_ws          = I2S_LRCK,
+    .sample_rate     = SAMPLE_RATE,
+    .bits_per_sample = 16,
+};
+
+
+
+
 volatile unsigned int sound_i2s_num_buffers_played = 0;
 
 static struct sound_i2s_config config;

@@ -20,7 +20,7 @@ struct sound_i2s_config {
   uint16_t sample_rate;
   uint8_t  bits_per_sample;
 };
-
+extern const struct sound_i2s_config sound_config;
 int sound_i2s_init(const struct sound_i2s_config *cfg);
 void sound_i2s_playback_start(void);
 int16_t *sound_i2s_get_next_buffer(void);

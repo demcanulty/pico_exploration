@@ -89,6 +89,7 @@ add_executable(Pico_project
                         audio_process.cpp
                         midi/midi.cpp
                         sound_i2s/sound_i2s.c
+                        spi.cpp
                         usb/cdc_app.c 
                         #usb/uac2_app.c
                         usb/usb_descriptors.c
@@ -172,6 +173,7 @@ target_link_libraries(  Pico_project        #THIS PROJECT
                         hardware_irq
                         hardware_pio
                         hardware_pwm
+                        hardware_spi
                         hardware_sync
                         hardware_vreg
                         pico_bootrom

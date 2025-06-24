@@ -1,6 +1,6 @@
 
 #ifndef _MAIN_H_
-#define _MAIN_H_ 1
+#define _MAIN_H_ 
 
 
 #include <stdint.h>
@@ -97,8 +97,13 @@ extern uint32_t blink_interval_ms;
 
 void init_pins(void);
 void pico_set_led(bool led_on);
-
+void core1_main();
 void print_cpu_performance_information(u8 skipnum);
+
+
+
+
+
 #ifdef __cplusplus
 }
 #endif

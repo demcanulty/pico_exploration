@@ -1,6 +1,6 @@
 #include "main.h"
 #include "utils.h"
-
+#include <stdio.h>
 
 
 void format_with_commas(uint32_t value, char *output) 
@@ -28,4 +28,19 @@ void format_with_commas(uint32_t value, char *output)
             digit_count = 0;
         }
     }
+}
+
+
+
+void startup_splash()
+{
+    printf("                (                   (          (       )                \n");
+    printf("            )\\ )  *   )   (     )\\ )  *   ))\\ ) ( /( (                  \n");
+    printf("            (()/(` )  /(   )\\   (()/(` )  /(()/( )\\()))\\ )              \n");
+    printf("            /(_))( )(_)|(((_)(  /(_))( )(_))(_)|(_)\\(()/(               \n");
+    printf("            (_)) (_(_()) )\\ _ )\\(_)) (_(_()|_))  _((_)/(_))_            \n");
+    printf("            / __||_   _| (_)_\\(_) _ \\|_   _|_ _|| \\| (_)) __|           \n");
+    printf("            \\__ \\  | |    / _ \\ |   /  | |  | | | .` | | (_ |           \n");
+    printf("            |___/  |_|   /_/ \\_\\|_|_\\  |_| |___||_|\\_|  \\___|           \n");
+    printf("                                                                        \n");
 }
