@@ -10,6 +10,7 @@
 #include "pico/sync.h"
 #include "daisysp.h"
 #include "daisysp-lgpl.h"
+#include "spi.h"
 using namespace daisysp;
 
 alignas(32) int16_t buffer_0[I2S_BLOCK_SIZE * 2];
@@ -112,7 +113,7 @@ void process_audio(void)
         *buff++ = (int16_t)(filter_output * 32767);      //LEFT OUTPUT BUFFER LOCATION 
         
     }
-   
+    //spi_dma_transfer(buff, sizeof(buffer_0));
    
     //**********************************
     //***  TIMING METRICS CONTINUED  ***

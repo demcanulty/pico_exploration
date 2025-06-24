@@ -208,10 +208,10 @@ void check_adc_vals()
         }
     }
 
-    if(adc_val_changed)
-    {
-        printf("adc0: %5u  adc1: %5u  adc3: %5u \n", adc_val[0], adc_val[1], adc_val[2]);
-    }
+    // if(adc_val_changed)
+    // {
+    //     printf("adc0: %5u  adc1: %5u  adc3: %5u \n", adc_val[0], adc_val[1], adc_val[2]);
+    // }
 
 }
 

@@ -14,19 +14,64 @@
 #define LED_DELAY_MS 1000
 
 //SPI configurations
-#define PIN_MISO 2
-#define PIN_CS   3
-#define PIN_SCK  4
-#define PIN_MOSI 5
+#define PIN_SCK   2
+#define PIN_MOSI  3 
+#define PIN_MISO  4
+#define PIN_CS    5
 #define SPI_PORT spi0
 
 
+#define BUF_SIZE 128
+#define BUF_SIZE_BYTES   (BUF_SIZE * 4)
+float rx_buffer[BUF_SIZE];
+#define SPI_SPEED  20000000
 
+int spi_dma_chan;
+dma_channel_config spi_dma_cfg;
 
+void setup_spi_slave() 
+{
+    spi_init(SPI_PORT, SPI_SPEED);  // Clock is controlled by master
+    spi_set_slave(SPI_PORT, true);
+    // Configure SPI pins
+    gpio_set_function(PIN_MISO, GPIO_FUNC_SPI);
+    gpio_set_function(PIN_MOSI, GPIO_FUNC_SPI);
+    gpio_set_function(PIN_SCK,  GPIO_FUNC_SPI);
+    gpio_set_function(PIN_CS,   GPIO_FUNC_SPI);
 
+    spi_set_format(SPI_PORT, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);  
+}
 
+void setup_dma_rx() 
+{
+    spi_dma_chan = dma_claim_unused_channel(true);
+    spi_dma_cfg = dma_channel_get_default_config(spi_dma_chan);
 
+    channel_config_set_transfer_data_size(&spi_dma_cfg, DMA_SIZE_8); // 8-bit transfers
+    channel_config_set_read_increment(&spi_dma_cfg, false);          // Always read from FIFO
+    channel_config_set_write_increment(&spi_dma_cfg, true);          // Fill buffer sequentially
+    channel_config_set_dreq(&spi_dma_cfg, spi_get_dreq(SPI_PORT, false));
+}
 
+void start_dma_receive(uint8_t *dest, size_t num_bytes) 
+{
+    dma_channel_configure(
+        spi_dma_chan,
+        &spi_dma_cfg,
+        dest,
+        &spi_get_hw(SPI_PORT)->dr,
+        num_bytes,
+        true  // start immediately
+    );
+}
+
+void print_floats(const float *buf, size_t count) 
+{
+    for (size_t i = 0; i < count; ++i) {
+        printf("[%03d] %.6f\n", i, buf[i]);
+        //printf("%d\n", i, buf[i]);
+    }
+}
 
 
 //******************************************
@@ -79,6 +124,12 @@ int main()
     pico_led_init();
 
 
+    setup_spi_slave();
+    setup_dma_rx();
+
+    printf("SPI DMA RX ready to receive %d floats (%d bytes)...\n", 128, 128 * 4);
+
+
 
     this_time = board_millis();
 
@@ -108,6 +159,12 @@ int main()
            
         }
 
+        start_dma_receive((uint8_t *)rx_buffer, BUF_SIZE_BYTES);
+        dma_channel_wait_for_finish_blocking(spi_dma_chan);
+        printf("Received float data:\n");
+        print_floats(rx_buffer, BUF_SIZE);
+
+        printf("Waiting for next transfer...\n");
 
 
         this_count++;
