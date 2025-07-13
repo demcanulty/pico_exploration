@@ -55,8 +55,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 389.0, 286.0, 117.0, 22.0 ],
-					"text" : "midiout \"pico buddy\""
+					"patching_rect" : [ 389.0, 286.0, 132.0, 22.0 ],
+					"text" : "midiout \"Buchla Pico 1\""
 				}
 
 			}
@@ -78,8 +78,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 169.0, 251.0, 122.0, 22.0 ],
-					"text" : "midiout \"Buchla Pico\""
+					"patching_rect" : [ 169.0, 251.0, 132.0, 22.0 ],
+					"text" : "midiout \"Buchla Pico 1\""
 				}
 
 			}
