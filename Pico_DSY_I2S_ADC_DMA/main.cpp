@@ -187,7 +187,7 @@ int main()
             print_cpu_performance_information(0);
             
             //spi_dma_transfer(random_data, sizeof(random_data));
-            spi_dma_transfer(buffer_0, sizeof(buffer_0));
+            //spi_dma_transfer(buffer_0, sizeof(buffer_0));
             //gpio_put(DEBUG_C, !gpio_get(DEBUG_C));
         }
 
